@@ -1,12 +1,12 @@
 # Kodeva design specification
 
-Status: **draft pending P-003 approval**. Only the modern SaaS, Stripe-inspired direction is approved (D-005). Exact tokens, measurements, fonts and treatments below are proposals. No UI has been implemented.
+Status: **P-003 option A approved in D-009**. The owner approved the tokens, system typography, responsive rules and shared component treatments below. Screen-specific compositions remain proposals for their assigned tasks. T01 implements only the shared foundation.
 
 ## Reference and scope
 
 Inspected the actual [VoltAgent Stripe reference](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/stripe/DESIGN.md) on 2026-10-30. It uses light surfaces, dark text, a vivid primary, product imagery and expressive typography. It is inspiration, not evidence of Kodeva token approval or font licensing. DESIGN.md is the single project design specification; the external reference is linked here without a duplicate local copy.
 
-Taste Skill is advisory and constrained by the approved direction and assessment. Do not use random direction draws to replace the brand, add features or expand scope. No contrast measurements, browser renders or visual approval are claimed.
+Taste Skill is advisory and constrained by the approved direction and assessment. Do not use random direction draws to replace the brand, add features or expand scope. The owner reviewed and accepted the T01 foundation on 2026-10-30; future screen-specific designs remain subject to their assigned tasks and approvals.
 
 ## Identity and page argument
 
@@ -16,11 +16,11 @@ Proposed idea: the small business's software choice becomes a clear package comp
 
 Required landing argument: hero explains the offer and links to catalog; featured products show choices; testimonials provide demo social proof; FAQ resolves purchasing questions; lead form allows contact. Composition/order remain proposed; preserve all required editable content.
 
-## Proposed tokens
+## Approved tokens (D-009)
 
-P-003 option A uses system fonts without extra downloads. Option B adds a licensed self-hosted font after approval.
+Approved P-003 option A uses system fonts without extra downloads. A custom font would require a new approval.
 
-| Role | Proposed value | Use |
+| Role | Approved value | Use |
 | --- | --- | --- |
 | Font | system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif | One family; tabular figures for prices/counts |
 | Primary / hover | #533afd / #4434d4 | Main actions and links |
@@ -34,11 +34,11 @@ P-003 option A uses system fonts without extra downloads. Option B adds a licens
 | Radius | Inputs 6px; cards 12px; buttons 9999px | Shared treatments |
 | Container | Up to 1200px; gutters 16px phone, 24px tablet, 32px desktop | Equal outer margins and aligned content |
 
-Check actual foreground/background contrast before implemented UI approval. Do not copy thin reference body type or accessibility claims untested. Proposed minimum control size is 44×44px for comfortable tapping; this alone does not establish WCAG conformance.
+Check actual foreground/background contrast before implemented UI approval. Do not copy thin reference body type or accessibility claims untested. Approved minimum control size is 44×44px for comfortable tapping; this alone does not establish WCAG conformance.
 
 ## Layout and responsiveness
 
-Propose mobile-first, content-driven layout with 768px/1024px transitions where useful. Phones use one content column; tablet product grids may use two, desktop three. Articles stay around 65 characters per line. Cart/checkout stack on phones; summaries remain readable without page overflow.
+Approved shared rules use mobile-first, content-driven layout with 768px/1024px transitions where useful. Screen-specific grid and composition choices below remain proposals. Phones use one content column; tablet product grids may use two, desktop three. Articles stay around 65 characters per line. Cart/checkout stack on phones; summaries remain readable without page overflow.
 
 Review at 360px, 768px, 1280px and a 320px stress width; these are review viewports, not additional CSS breakpoints. Hero may use copy beside a lightweight product screenshot on desktop, then copy/action before image on mobile. A static color wash needs approval and a measured performance budget; the reference mesh is not mandatory. Separate sections clearly without identical card grids everywhere. No animation dependency proposed.
 

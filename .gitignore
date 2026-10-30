@@ -19,3 +19,8 @@ coverage/
 *.log
 .DS_Store
 .codegraph/
+.playwright-cli/
+.taste-skill/
+
+# Routine T01 verification artifacts stay local
+/evidence/T01/

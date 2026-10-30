@@ -1,6 +1,6 @@
 # AI usage log
 
-Filled incrementally under the owner-verification rules in [AGENTS.md](AGENTS.md). No implementation task has been verified and accepted by the owner yet.
+Filled incrementally under the owner-approval and verification rules in [AGENTS.md](AGENTS.md). T01 was reviewed and accepted by the owner on 2026-10-30 with the documented Studio authentication limitation.
 
 ## Tools used
 
@@ -9,7 +9,8 @@ Filled incrementally under the owner-verification rules in [AGENTS.md](AGENTS.md
 | Codex | Assist with assessment planning, project documentation and Git/ignore setup. |
 | Shell/Git | Inspect repository files and manage local repository setup. |
 | Web tool | Consult the design reference and official tooling documentation. |
-| Skills | Ponytail, verification-before-completion, design-taste-frontend and requesting-code-review used as guidance during planning. |
+| Skills | Ponytail, verification-before-completion, design-taste-frontend, requesting-code-review, Astro best practices/docs lookup, Sanity best practices, systematic debugging, Playwright CLI and Impeccable used as guidance. |
+| Playwright CLI / Chrome | Inspect the assigned task in a browser. |
 
 ## Owner-approved prompt references
 

@@ -1,0 +1,36 @@
+---
+import Shell from "../layouts/Shell.astro";
+import { FoundationControls } from "../components/FoundationControls";
+---
+
+<Shell
+  title="Kodeva — Foundation"
+  description="Kodeva design foundation: typography, surfaces and accessible controls."
+>
+  <div class="space-y-8">
+    <div class="max-w-prose space-y-4">
+      <h1 class="text-hero font-semibold">Kodeva foundation</h1>
+      <p>Shared styles and controls for the Kodeva assessment.</p>
+    </div>
+    <section class="panel space-y-6" aria-labelledby="controls-heading">
+      <div class="space-y-2">
+        <h2 class="text-section font-semibold" id="controls-heading">
+          Controls
+        </h2>
+        <p class="text-secondary">
+          Keyboard focus, button states and a small React island.
+        </p>
+      </div>
+      <div class="max-w-prose">
+        <FoundationControls client:load />
+      </div>
+    </section>
+    <section class="space-y-4" aria-labelledby="feedback-heading">
+      <h2 class="text-section font-semibold" id="feedback-heading">
+        Feedback
+      </h2>
+      <p class="text-success">Success: the example is ready.</p>
+      <p class="text-error">Error example: check the highlighted field.</p>
+    </section>
+  </div>
+</Shell>

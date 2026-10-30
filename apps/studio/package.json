@@ -1,0 +1,17 @@
+{
+  "name": "@kodeva/studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "typecheck": "tsc --noEmit",
+    "build": "sanity build",
+    "preview": "sanity start"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sanity": "6.21.0",
+    "styled-components": "6.6.0"
+  }
+}

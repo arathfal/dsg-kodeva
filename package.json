@@ -1,0 +1,35 @@
+{
+  "name": "kodeva",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=24.16.0 <25",
+    "pnpm": "10.13.1"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter './apps/*' dev",
+    "dev:web": "pnpm --filter @kodeva/web dev",
+    "dev:studio": "pnpm --filter @kodeva/studio dev",
+    "lint": "eslint apps eslint.config.mjs prettier.config.mjs",
+    "typecheck": "pnpm -r typecheck",
+    "build": "pnpm -r build",
+    "format": "prettier --write apps package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs",
+    "format:check": "prettier --check apps package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "10.14.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-astro": "3.2.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "prettier": "3.9.10",
+    "prettier-plugin-astro": "1.1.2",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1"
+  }
+}

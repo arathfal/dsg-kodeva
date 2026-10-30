@@ -1,0 +1,31 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 6d6c68a0f9ca97da614e8a2da87e87dedb2597f8..bbc71b23d693eae03b98fad7463c2a0519a1f924 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -802,9 +802,12 @@ function transformJavaScript(ast, env) {
+ 			node = node;
+ 			if (!node.value) return;
+ 			if (typeof node.name.name !== "string") return;
+-			if (!matcher.hasStaticAttr(node.name.name)) return;
+-			if (isStringLiteral(node.value)) sortStringLiteral(node.value, { env });
+-			else if (node.value.type === "JSXExpressionContainer") sortInside(node.value);
++			let name = node.name.name;
++			if (isStringLiteral(node.value)) {
++				if (matcher.hasStaticAttr(name)) sortStringLiteral(node.value, { env });
++			} else if (node.value.type === "JSXExpressionContainer") {
++				if (matcher.hasStaticAttr(name) || matcher.hasDynamicAttr(name)) sortInside(node.value);
++			}
+ 		},
+ 		CallExpression(node) {
+ 			node = node;
+@@ -868,6 +871,10 @@ function transformCss(ast, env) {
+ 	});
+ }
+ function transformAstro(ast, env) {
++	if (ast.type === "AstroRoot") {
++		transformJavaScript(ast.template, env);
++		return;
++	}
+ 	let { matcher } = env;
+ 	if (ast.type === "element" || ast.type === "custom-element" || ast.type === "component") {
+ 		for (let attr of ast.attributes ?? []) if (matcher.hasStaticAttr(attr.name) && attr.type === "attribute" && attr.kind === "quoted") attr.value = sortClasses(attr.value, { env });

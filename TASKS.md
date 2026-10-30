@@ -1,13 +1,13 @@
 # Task tracker
 
-Planning draft: decomposition P-001 awaits explicit approval. No implementation task has been assigned or started. Git/.gitignore setup was independently requested and is recorded in TIME_LOG.md.
+P-001 option A (ten tasks) is approved in D-007. T01 was explicitly assigned and its P-002/P-003 prerequisites approved. Git/.gitignore setup was independently requested and is recorded in TIME_LOG.md.
 
 Workflow: **proposed → ready → in progress → review → accepted**. Use **blocked** with a stated prerequisite when necessary. “Ready” requires approved scope/decisions and accepted dependencies; starting still requires explicit assignment. Verification is separately recorded as not run / failed / passed / unavailable. Human acceptance never follows automatically from passed checks.
 
 | ID | Task / objective | Dependencies | Requirements | Status | Verification | Acceptance | Actual active time | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | P00 | Planning documentation and workflow | D-002 | All mapped | review | Document audit passed; human review pending | Pending | See TIME_LOG.md | None |
-| T01 | [Foundation](tasks/T01-foundation.md): pnpm apps, tooling, approved design primitives | P-001/002/003; test tooling part of P-009 if installed | R-001/002/004/005/018/022 | proposed | Not run | Pending | Not measured; not started | None |
+| T01 | [Foundation](tasks/T01-foundation.md): pnpm apps, tooling, approved design primitives | P-001/002/003; test tooling part of P-009 if installed | R-001/002/004/005/018/022 | accepted | Available foundation checks passed; Studio authentication unverified | Owner accepted 2026-10-30 with documented Studio limitation | See TIME_LOG.md; active time needs owner confirmation | Authorized; reference follows commit |
 | T02 | [CMS contracts](tasks/T02-cms.md): content models, public reads, publish policy | T01; P-004/005/006 | R-004/005/007/008/010/011/017 | proposed | Not run | Pending | Not measured; not started | None |
 | T03 | [Landing and leads](tasks/T03-landing-leads.md): CMS sections and stored submissions | T02; approved P-006 and attribution payload contract P-008 | R-004/005/006/007/008/017/018/019/021/022 | proposed | Not run | Pending | Not measured; not started | None |
 | T04 | [Blog](tasks/T04-blog.md): pagination, articles, SEO and live publication | T02 | R-004/009/010/011/017/018/022 | proposed | Not run | Pending | Not measured; not started | None |
