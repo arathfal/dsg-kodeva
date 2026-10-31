@@ -97,7 +97,7 @@ Tailwind v4 uses the Vite plugin and `apps/web/src/styles/global.css`. Prettier 
 
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG session S-021 and owner-confirmed S-018A:
+Recorded-interval snapshot through TIME_LOG session S-022 and owner-confirmed S-018A:
 
 | Scope | Recorded time |
 | --- | --- |
@@ -109,8 +109,9 @@ Recorded-interval snapshot through TIME_LOG session S-021 and owner-confirmed S-
 | T03 takeover corrections and verification (S-019) | 15m 26s |
 | T02 amendment + T03 testimonial polish (S-020) | 12m 55s |
 | T03 owner-revised testimonial verification (S-021) | 2m 01s |
-| T03 combined | **43m 31s** |
-| **Whole project combined (recorded)** | **2h 07m 03s** |
+| T03 AI_LOG and tracker update (S-022) | 31s |
+| T03 combined | **44m 02s** |
+| **Whole project combined (recorded)** | **2h 07m 34s** |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
 
