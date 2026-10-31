@@ -1,0 +1,42 @@
+---
+interface Props {
+  page: number;
+  lastPage: number;
+}
+
+const { page, lastPage } = Astro.props;
+// Page 1 lives only at /blog; page 2 starts /blog/halaman/N (D-026).
+// Both controls stay rendered (the owner requested a disabled-looking
+// inactive control and a geometry-stable centered indicator).
+const hrefFor = (target: number) =>
+  target === 1 ? "/blog" : `/blog/halaman/${target}`;
+const previous = page > 1 ? hrefFor(page - 1) : undefined;
+const next = page < lastPage ? hrefFor(page + 1) : undefined;
+---
+
+<nav
+  aria-label="Navigasi halaman artikel"
+  class="grid grid-cols-[1fr_auto_1fr] items-center gap-4"
+>
+  {previous ? (
+    <a class="button justify-self-start" href={previous} rel="prev">
+      Sebelumnya
+    </a>
+  ) : (
+    <span class="button justify-self-start" aria-disabled="true">
+      Sebelumnya
+    </span>
+  )}
+  <p class="text-secondary">
+    Halaman {page} dari {lastPage}
+  </p>
+  {next ? (
+    <a class="button justify-self-end" href={next} rel="next">
+      Berikutnya
+    </a>
+  ) : (
+    <span class="button justify-self-end" aria-disabled="true">
+      Berikutnya
+    </span>
+  )}
+</nav>

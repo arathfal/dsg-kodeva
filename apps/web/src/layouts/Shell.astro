@@ -7,9 +7,16 @@ interface Props {
   description: string;
   canonical?: URL;
   image?: URL;
+  ogType?: "website" | "article";
 }
 
-const { title, description, canonical, image } = Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  image,
+  ogType = "website",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -22,7 +29,7 @@ const { title, description, canonical, image } = Astro.props;
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     {canonical && <link rel="canonical" href={canonical} />}
     {canonical && <meta property="og:url" content={canonical} />}
     {image && <meta property="og:image" content={image} />}

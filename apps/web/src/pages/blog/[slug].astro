@@ -1,0 +1,130 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import RichText from "../../components/RichText.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import CmsImage from "../../components/CmsImage.astro";
+import { cms } from "../../lib/cms/server";
+import { socialImageUrl } from "../../lib/cms/image";
+import { formatDate } from "../../lib/format";
+import { CATALOG_PATH, products } from "../../../../../shared/content";
+import { productSummaries } from "../../../../../shared/products";
+
+const { slug: raw } = Astro.params;
+const result = await cms.article(raw ?? "");
+const article = "data" in result ? result.data : undefined;
+if (!article) Astro.response.status = result.status === "not-found" ? 404 : 503;
+const date = article ? formatDate(article.publishedAt) : undefined;
+const title = article
+  ? article.seo?.title || `${article.title} | Kodeva`
+  : "Artikel tidak ditemukan | Kodeva";
+const description = article
+  ? article.seo?.description || article.excerpt
+  : "Artikel blog Kodeva tidak ditemukan.";
+const social = article?.seo?.image || article?.cover;
+let canonical: URL | undefined;
+if (article) {
+  try {
+    const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
+    if (["https:", "http:"].includes(origin.protocol))
+      canonical = new URL(`/blog/${article.slug}`, origin.origin);
+  } catch {
+    /* Missing configuration must not use an untrusted request origin. */
+  }
+}
+---
+
+<Shell
+  title={title}
+  description={description}
+  canonical={canonical}
+  image={social ? socialImageUrl(social) : undefined}
+  ogType={article ? "article" : undefined}
+>
+  {article ? (
+    <div class="space-y-10 pb-16">
+      <article class="space-y-6 pt-4" aria-labelledby="article-title">
+        <a class="inline-flex min-h-11 items-center text-sm" href="/blog">
+          ← Semua artikel
+        </a>
+        <header class="max-w-3xl space-y-4">
+          <p class="text-sm text-secondary">
+            <span class="rounded-input border border-border px-2 py-0.5 font-semibold text-ink">
+              {article.category.name}
+            </span>
+            {date && (
+              <span>
+                {" "}
+                · <time datetime={article.publishedAt}>{date}</time>
+              </span>
+            )}
+          </p>
+          <h1 id="article-title" class="text-hero font-semibold tracking-tight">
+            {article.title}
+          </h1>
+          <p class="max-w-prose text-secondary">{article.excerpt}</p>
+        </header>
+        <div class="max-w-3xl overflow-hidden rounded-card bg-soft">
+          <CmsImage image={article.cover} hero />
+        </div>
+        <p class="text-sm text-secondary">Gambar: {article.cover.provenance}</p>
+        <div class="rich-text max-w-3xl">
+          <RichText body={article.body} />
+        </div>
+      </article>
+      {article.relatedProducts.length > 0 && (
+        <section aria-labelledby="related-heading" class="space-y-8">
+          <h2 id="related-heading" class="text-section font-semibold">
+            Produk terkait di artikel ini
+          </h2>
+          <p class="max-w-2xl text-secondary">
+            Aplikasi yang dibahas dalam artikel. Harga dan paket berada di
+            katalog marketplace.
+          </p>
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {article.relatedProducts.map((productId) => {
+              const product = products.find((p) => p.id === productId)!;
+              return (
+                <ProductCard
+                  productId={productId}
+                  name={product.name}
+                  description={productSummaries[productId].description}
+                  features={productSummaries[productId].features}
+                  href={`${CATALOG_PATH}/${productId}`}
+                />
+              );
+            })}
+          </div>
+        </section>
+      )}
+    </div>
+  ) : (
+    <section
+      class="max-w-prose space-y-6 py-16"
+      aria-labelledby={
+        result.status === "not-found" ? "missing-title" : "error-title"
+      }
+    >
+      {result.status === "not-found" ? (
+        <>
+          <h1 id="missing-title" class="text-section font-semibold">
+            Artikel tidak ditemukan
+          </h1>
+          <p>
+            Artikel yang Anda buka tidak tersedia. Mungkin sudah tidak
+            dipublikasikan atau tautannya berubah.
+          </p>
+        </>
+      ) : (
+        <>
+          <h1 id="error-title" class="text-section font-semibold">
+            Artikel sedang tidak dapat dimuat
+          </h1>
+          <p>Silakan coba lagi nanti.</p>
+        </>
+      )}
+      <a class="button" href="/blog">
+        Buka daftar artikel
+      </a>
+    </section>
+  )}
+</Shell>

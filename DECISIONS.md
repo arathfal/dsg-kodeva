@@ -41,6 +41,27 @@ Core/runtime pins are in D-008 above. Supporting packages: @astrojs/react 7.1.2,
 
 ## Pending proposals
 
+### T04 approvals — 2026-11-01
+
+Interactive Q&A (D-007 interactive rule) for T04. Explicit owner selections:
+
+- **D-026 / Blog URL routing:** Owner selected “Dedicated pagination segment (Recommended)”: `/blog` is listing page 1; pages 2+ use `/blog/halaman/N`; detail is `/blog/[slug]`. Out-of-range, malformed (`/blog/halaman/abc`) and `/blog/halaman/1` return 404 so page 1 keeps a single URL with no duplicate content. No collision with digit-only slugs because no numeric path segment is a route. These URL-shape details are scoped to T04.
+- **D-027 / Rich text rendering:** Owner selected “Small typed renderer (Recommended)”: a small server-rendered Astro component keyed to the validated `TextBlock` contract (paragraphs, h2/h3, strong/em, bullet/number lists, http(s) links). No `@portabletext/react` or other new dependency.
+- **D-028 / Blog page compositions:** Owner approved proposal A: listing with “Blog” heading, intro copy, responsive article-card grid (cover, category, title, excerpt, date) at 1/2/3 columns, accessible Sebelumnya/Berikutnya pagination with a page indicator; detail with category/date, title, cover, validated rich text, then a “Produk terkait” section reusing the existing ProductCard with registry descriptions linking to `/products/[id]`. Uses D-009 tokens; product destinations remain verified after T05.
+- **D-029 / QA records:** Owner approved “Temporary articles via token (Recommended)”: the agent creates clearly labeled temporary QA articles through the previously approved server-only Editor token (D-023), runs pagination/unpublish/freshness checks, then deletes the records and verifies deletion.
+
+### D-030 — T04 rendering follow-up
+
+Owner explicitly approved extending the shared Shell with an `og:type` prop only (default `website`; article detail uses `article`) so initial-HTML social metadata on blog pages matches R-022 without other Shell changes.
+
+### D-031 — T04 listing card consistency
+
+Owner instruction during T04 (2026-11-01): blog listing cards truncate long content with an ellipsis so card heights stay consistent. Implemented as fixed-aspect covers, a single truncated category/date line and line-clamped/fixed-slot titles (2 lines) and excerpts (3 lines). Scoped to the T04 article card.
+
+### D-032 — Pagination control geometry
+
+Owner correction during T04 (2026-11-01): the “Halaman X dari Y” indicator must stay visually centered even when one of the Sebelumnya/Berikutnya controls does not apply. Owner’s own options were a disabled control or an in-DOM hidden control. Implemented as the owner’s first option: both controls always render in a `1fr auto 1fr` grid; the inapplicable one is a non-focusable `aria-disabled` control with the approved disabled button style. The owner then reported that the disabled control still reacted to hover (color change); hover/active states now exclude `[aria-disabled="true"]` alongside `:disabled`, verified by computed-style checks.
+
 ### T03 approvals — 2026-10-31
 
 - **D-020 / P-008 payload interface:** Owner approved using the existing `utm: {source, medium, campaign, term, content}` shape. This explicitly corrected and superseded the earlier approved suggestion of `attribution` with `utm_`-prefixed keys. Values are strings, trimmed, maximum 200 characters; empty values are omitted; unknown keys/types are rejected. Capture, touch policy, browser persistence and navigation verification remain T08.

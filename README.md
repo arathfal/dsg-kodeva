@@ -10,7 +10,9 @@ T02 adds CMS schemas/editor workspaces, typed published-content reads, request-t
 
 T03 implements the campaign landing page (hero, product cards, testimonials, FAQ, lead form), the server-side lead endpoint, and the cart icon in the shared header. Format/lint/typecheck/tests/build pass. Playwright responsive, keyboard, form-state and product-card checks pass. A real dummy lead was stored in the private leads dataset, confirmed server-side, and cleaned up; anonymous reads of the private dataset returned no lead data. CMS edit/publish freshness was verified on the landing route without redeploying.
 
-A scoped T02 amendment (D-025) makes the featured-product cards fully CMS-editable: description, features, and optional image, while product IDs, names, prices, packages, routes and business logic remain code-owned. The amendment is reflected in the Studio schema, web types/validator, GROQ query, seed data, and frontend rendering. The owner accepted T03 on 2026-11-01.
+A scoped T02 amendment (D-025) makes the featured-product cards fully CMS-editable: description, features, and optional image, while product IDs, names, prices, packages, routes and business logic remain code-owned. The amendment is reflected in the Studio schema, web types/validator, GROQ query, seed data, and frontend rendering. The owner accepted T03 on 2026-11-01 and accepted T04 on 2026-11-01 after a parallel review of the delivered blog implementation.
+
+T04 implements the blog: `/blog` listing and `/blog/halaman/N` pagination with approved six-per-page size and 404 policy, `/blog/[slug]` article detail with validated safe rich text rendering (headings, lists, emphasis, http(s) links), related-product links to `/products/[id]`, and per-route SEO/canonical/social metadata including `og:type article` and rasterized sharing images. Blog URL policy, rich text approach, page compositions, and temporary QA records were approved through interactive Q&A (DECISIONS.md D-026–D-030). Runtime owner corrections (D-031, D-032) made listing cards uniformly tall with ellipsized title/excerpt truncation, and kept the pagination indicator centered with always-rendered disabled controls whose hover state is inert. Available checks passed: format, lint, typecheck, 14 CMS/contract tests, and both production builds. Live temporary QA records exercised pagination splits, out-of-range/malformed pages, publish→refresh freshness, unpublish, slug changes, and draft isolation; all QA records were deleted and zero leftovers were verified. Deployed Vercel behavior and Lighthouse remain T09; product destinations remain verified after T05.
 
 Requirements and implementation scope are documented in [PRD.md](PRD.md) and [TASKS.md](TASKS.md).
 
@@ -95,9 +97,11 @@ pnpm build
 
 Tailwind v4 uses the Vite plugin and `apps/web/src/styles/global.css`. Prettier loads the Astro plugin first and Tailwind plugin last, with that actual stylesheet for class sorting. The owner-approved [upstream compatibility patch](patches/README.md) keeps Astro formatter 1.1.2 and Tailwind formatter 0.8.1 working together. The pinned lockfile and pnpm patch are part of setup; do not omit the patch files when copying the repository.
 
+The blog uses the D-026 URL policy: `/blog` (page 1), `/blog/halaman/N` (pages 2+, out-of-range or malformed → 404), and `/blog/[slug]` for details. Article rich text renders from the validated Portable Text contract in a server-side typed component; no Portable Text library was added. Dynamic routes read params from `Astro.params` (Astro 7 on-demand routing).
+
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG session S-022 and owner-confirmed S-018A:
+Recorded-interval snapshot through TIME_LOG session S-023:
 
 | Scope | Recorded time |
 | --- | --- |
@@ -111,7 +115,8 @@ Recorded-interval snapshot through TIME_LOG session S-022 and owner-confirmed S-
 | T03 owner-revised testimonial verification (S-021) | 2m 01s |
 | T03 AI_LOG and tracker update (S-022) | 31s |
 | T03 combined | **44m 02s** |
-| **Whole project combined (recorded)** | **2h 07m 34s** |
+| T04 implementation and verification (S-023) | 27m 53s |
+| **Whole project combined (recorded)** | **2h 35m 27s** |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
 

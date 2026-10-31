@@ -1,0 +1,44 @@
+---
+import CmsImage from "./CmsImage.astro";
+import type { ArticleSummary } from "../lib/cms/models";
+import { formatDate } from "../lib/format";
+
+interface Props {
+  article: ArticleSummary;
+}
+
+const { article } = Astro.props;
+const date = formatDate(article.publishedAt);
+const titleId = `article-card-${article.slug}`;
+---
+
+<article class="panel flex flex-col gap-3" aria-labelledby={titleId}>
+  <div class="[&amp;_img]:h-full [&amp;_img]:w-full [&amp;_img]:object-cover aspect-[3/2] overflow-hidden rounded-card bg-soft">
+    <CmsImage image={article.cover} card />
+  </div>
+  <p class="truncate text-sm text-secondary">
+    <span class="rounded-input border border-border px-2 py-0.5 font-semibold text-ink">
+      {article.category.name}
+    </span>
+    {date && (
+      <span>
+        {" "}
+        · <time datetime={article.publishedAt}>{date}</time>
+      </span>
+    )}
+  </p>
+  <h3
+    id={titleId}
+    class="[display:-webkit-box] h-[50px] overflow-hidden text-xl leading-tight font-semibold [-webkit-box-orient:vertical] [-webkit-line-clamp:2]"
+  >
+    <a
+      class="text-ink underline-offset-4 hover:text-primary hover:underline focus-visible:underline"
+      href={`/blog/${article.slug}`}
+    >
+      {article.title}
+    </a>
+  </h3>
+  <p class="[display:-webkit-box] h-[4.8em] overflow-hidden text-secondary [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
+    {article.excerpt}
+  </p>
+</article>

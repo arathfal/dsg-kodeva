@@ -1,0 +1,79 @@
+---
+import type { Span, TextBlock } from "../lib/cms/models";
+
+interface Props {
+  body: TextBlock[];
+}
+
+const { body } = Astro.props;
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Marks are validated against the approved whitelist and link hrefs only
+// accept http(s); all text is escaped and rendering stays server-side.
+function inline(spans: Span[], markDefs: TextBlock["markDefs"]): string {
+  const map = new Map(markDefs.map((def) => [def._key, def.href]));
+  return spans
+    .map((span) => {
+      let html = escapeHtml(span.text);
+      if (span.marks.includes("strong")) html = `<strong>${html}</strong>`;
+      if (span.marks.includes("em")) html = `<em>${html}</em>`;
+      const link = span.marks.find((mark) => map.has(mark));
+      if (link) html = `<a href="${escapeHtml(map.get(link)!)}">${html}</a>`;
+      return html;
+    })
+    .join("");
+}
+
+export type RenderedRich =
+  | { kind: "block"; tag: "h2" | "h3" | "p"; html: string }
+  | { kind: "list"; ordered: boolean; level: number; html: string };
+
+function renderRich(blocks: TextBlock[]): RenderedRich[] {
+  const rendered: RenderedRich[] = [];
+  for (const block of blocks) {
+    const html = inline(block.children, block.markDefs);
+    const ordered = block.listItem === "number";
+    const level = block.level ?? 1;
+    if (block.listItem === "bullet" || block.listItem === "number") {
+      const previous = rendered.at(-1);
+      if (
+        previous?.kind === "list" &&
+        previous.ordered === ordered &&
+        previous.level === level
+      ) {
+        previous.html += `</li><li class="rich-item">${html}`;
+      } else {
+        rendered.push({ kind: "list", ordered, level, html });
+      }
+    } else {
+      const tag = block.style === "normal" ? "p" : block.style;
+      rendered.push({ kind: "block", tag, html });
+    }
+  }
+  return rendered;
+}
+
+const rendered = renderRich(body);
+---
+
+{rendered.map((item) =>
+  item.kind === "list" ? (
+    <Fragment
+      set:html={`<${item.ordered ? "ol" : "ul"}${
+        item.level > 1
+          ? ' class="rich-list rich-sublist"'
+          : ' class="rich-list"'
+      }><li class="rich-item">${item.html}</li></${item.ordered ? "ol" : "ul"}>`}
+    />
+  ) : (
+    <Fragment set:html={`<${item.tag}>${item.html}</${item.tag}>`} />
+  ),
+)}

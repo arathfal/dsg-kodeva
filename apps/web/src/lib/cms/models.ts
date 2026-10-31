@@ -48,13 +48,19 @@ export interface Category {
   name: string;
   slug: string;
 }
+export interface Span {
+  _key: string;
+  _type: "span";
+  text: string;
+  marks: string[];
+}
 export interface TextBlock {
   _key: string;
   _type: "block";
   style: "normal" | "h2" | "h3";
   listItem?: "bullet" | "number" | null;
   level?: number | null;
-  children: { _key: string; _type: "span"; text: string; marks: string[] }[];
+  children: Span[];
   markDefs: { _key: string; _type: "link"; href: string }[];
 }
 export interface Article {

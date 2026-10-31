@@ -1,0 +1,84 @@
+---
+import Shell from "../../../layouts/Shell.astro";
+import ArticleCard from "../../../components/ArticleCard.astro";
+import Pagination from "../../../components/Pagination.astro";
+import { cms } from "../../../lib/cms/server";
+import type { ArticlePage } from "../../../lib/cms/models";
+
+// Only plain integers are page numbers; anything malformed is not-found.
+// Page 1 lives only at /blog (D-026), so the pagination segment starts at 2.
+const raw = Astro.params.page;
+const valid = /^[1-9][0-9]*$/.test(raw ?? "") && raw !== "1";
+let data: ArticlePage | undefined;
+let unavailable = false;
+if (valid) {
+  const result = await cms.articles(Number(raw));
+  if (result.status === "ok") data = result.data;
+  else if (result.status === "unavailable") unavailable = true;
+}
+const showEmpty = !data && !unavailable;
+Astro.response.status = data ? 200 : unavailable ? 503 : 404;
+const lastPage = data ? Math.ceil(data.total / data.pageSize) : 0;
+const title = data
+  ? `Halaman ${data.page} dari daftar artikel blog Kodeva`
+  : unavailable
+    ? "Daftar artikel tidak dapat dimuat | Kodeva"
+    : "Halaman artikel tidak ditemukan | Kodeva";
+const description =
+  "Daftar artikel ilustrasi assessment dari Kodeva, maksimal enam artikel per halaman.";
+let canonical: URL | undefined;
+if (data) {
+  try {
+    const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
+    if (["https:", "http:"].includes(origin.protocol))
+      canonical = new URL(`/blog/halaman/${data.page}`, origin.origin);
+  } catch {
+    /* Missing configuration must not use an untrusted request origin. */
+  }
+}
+---
+
+<Shell title={title} description={description} canonical={canonical}>
+  {data ? (
+    <div class="space-y-10 pb-16">
+      <header class="max-w-2xl space-y-3 pt-4">
+        <h1 class="text-section font-semibold tracking-tight">Blog</h1>
+        <p class="text-secondary">
+          Artikel ilustrasi assessment, halaman {data.page} dari {lastPage}.
+        </p>
+      </header>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {data.items.map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </div>
+      <Pagination page={data.page} lastPage={lastPage} />
+    </div>
+  ) : showEmpty ? (
+    <section
+      class="max-w-prose space-y-6 py-16"
+      aria-labelledby="notfound-title"
+    >
+      <h1 id="notfound-title" class="text-section font-semibold">
+        Halaman artikel tidak ditemukan
+      </h1>
+      <p>
+        Halaman daftar artikel yang Anda buka tidak tersedia. Silakan buka
+        halaman pertama untuk melihat artikel terbaru.
+      </p>
+      <a class="button" href="/blog">
+        Buka halaman pertama
+      </a>
+    </section>
+  ) : (
+    <section class="max-w-prose space-y-6 py-16" aria-labelledby="error-title">
+      <h1 id="error-title" class="text-section font-semibold">
+        Daftar artikel sedang tidak dapat dimuat
+      </h1>
+      <p>Silakan coba lagi nanti.</p>
+      <a class="button" href="/blog">
+        Coba muat kembali
+      </a>
+    </section>
+  )}
+</Shell>

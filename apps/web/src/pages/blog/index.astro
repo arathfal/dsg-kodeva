@@ -1,0 +1,78 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import Pagination from "../../components/Pagination.astro";
+import { cms } from "../../lib/cms/server";
+
+const result = await cms.articles(1);
+const page = result.status === "ok" ? result.data : undefined;
+if (!page) Astro.response.status = result.status === "not-found" ? 404 : 503;
+const title = "Blog Kodeva: artikel dan informasi aplikasi";
+const description =
+  "Kumpulan artikel ilustrasi assessment dari Kodeva tentang pencatatan penjualan, administrasi tim, dan penggunaan aplikasi bisnis.";
+let canonical: URL | undefined;
+try {
+  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
+  if (["https:", "http:"].includes(origin.protocol))
+    canonical = new URL("/blog", origin.origin);
+} catch {
+  /* Missing configuration must not use an untrusted request origin. */
+}
+const lastPage = page ? Math.ceil(page.total / page.pageSize) : 0;
+---
+
+<Shell title={title} description={description} canonical={canonical}>
+  {page ? (
+    <div class="space-y-10 pb-16">
+      <header class="max-w-2xl space-y-3 pt-4">
+        <h1 class="text-section font-semibold tracking-tight">Blog</h1>
+        <p class="text-secondary">
+          Artikel ilustrasi assessment: contoh cara merapikan catatan usaha dan
+          administrasi tim dengan aplikasi Kodeva.
+        </p>
+      </header>
+      {page.items.length === 0 ? (
+        <section
+          class="panel max-w-prose space-y-4"
+          aria-labelledby="empty-title"
+        >
+          <h2 id="empty-title" class="text-xl font-semibold">
+            Belum ada artikel
+          </h2>
+          <p class="text-secondary">
+            Artikel yang dipublikasikan akan muncul di sini secara otomatis
+            tanpa perlu deploy ulang situs.
+          </p>
+          <a class="button" href="/products">
+            Lihat katalog
+          </a>
+        </section>
+      ) : (
+        <>
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {page.items.map((article) => (
+              <ArticleCard article={article} />
+            ))}
+          </div>
+          <Pagination page={page.page} lastPage={lastPage} />
+        </>
+      )}
+    </div>
+  ) : (
+    <section class="max-w-prose space-y-6 py-16" aria-labelledby="status-title">
+      <h1 id="status-title" class="text-section font-semibold">
+        {result.status === "unavailable"
+          ? "Daftar artikel sedang tidak dapat dimuat"
+          : "Artikel belum tersedia"}
+      </h1>
+      <p>
+        {result.status === "unavailable"
+          ? "Daftar artikel sedang tidak dapat dimuat. Silakan coba lagi nanti."
+          : "Belum ada artikel yang dipublikasikan."}
+      </p>
+      <a class="button" href="/blog">
+        Coba muat kembali
+      </a>
+    </section>
+  )}
+</Shell>
