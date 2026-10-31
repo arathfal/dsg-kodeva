@@ -10,6 +10,7 @@ export default defineConfig([
     "**/dist/**",
     "**/.astro/**",
     "**/.sanity/**",
+    "**/.vercel/**",
     "**/node_modules/**",
   ]),
   js.configs.recommended,

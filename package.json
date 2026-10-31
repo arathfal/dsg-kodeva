@@ -11,11 +11,12 @@
     "dev": "pnpm --parallel --filter './apps/*' dev",
     "dev:web": "pnpm --filter @kodeva/web dev",
     "dev:studio": "pnpm --filter @kodeva/studio dev",
-    "lint": "eslint apps eslint.config.mjs prettier.config.mjs",
+    "lint": "eslint apps shared eslint.config.mjs prettier.config.mjs",
+    "test:cms": "node --test shared/*.test.ts apps/web/src/lib/cms/*.test.ts",
     "typecheck": "pnpm -r typecheck",
     "build": "pnpm -r build",
-    "format": "prettier --write apps package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs",
-    "format:check": "prettier --check apps package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs"
+    "format": "prettier --write apps shared package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs",
+    "format:check": "prettier --check apps shared package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

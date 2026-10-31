@@ -6,6 +6,8 @@ Fullstack Developer assessment for PT Digital Solusi Grup. Kodeva is a fictional
 
 T01 provides the pnpm workspace, web/Studio foundations and approved design primitives. The owner reviewed and accepted T01 on 2026-10-30 with the documented Studio authentication limitation. Available foundation checks passed. The foundation route is a component example rather than the campaign landing page.
 
+T02 adds CMS schemas/editor workspaces, typed published-content reads, request-time rendering and demo seed material. Available automated/API checks passed. The owner reviewed the content workspace and confirmed the invited-account sign-in/edit/publish/lead-workspace checklist. A separate Editor member is confirmed. Native duplicate/publication-date behavior was also verified by the owner. The owner accepted T02 on 2026-10-31 with the recorded limitations; remaining edge cases and deployed behavior are not claimed verified.
+
 Requirements and implementation scope are documented in [PRD.md](PRD.md) and [TASKS.md](TASKS.md).
 
 ## Approved architecture
@@ -23,7 +25,7 @@ The selected architecture uses:
 
 Astro supports content rendering and SEO while keeping browser JavaScript focused on interactive features. pnpm workspaces keep the web application and Studio in one repository.
 
-The T01 shell is static because it has no CMS content. Its title/description and optional canonical/social image props render in the initial HTML. CMS rendering and publication freshness remain governed by P-004 for T02. One small React island demonstrates controls; the shell stays rendered by Astro. Zustand will be added with cart implementation.
+T02 configures request-time Astro rendering with the Vercel adapter. The existing foundation route still has no CMS content; its title/description and optional canonical/social image props render in the initial HTML. One small React island demonstrates controls; the shell stays rendered by Astro. Zustand will be added with cart implementation.
 
 Approved decisions and implementation proposals are tracked in [DECISIONS.md](DECISIONS.md). The design specification is in [DESIGN.md](DESIGN.md).
 
@@ -44,7 +46,34 @@ pnpm dev
 
 Web: <http://localhost:4321>. Studio: <http://localhost:3333>. Run either app alone with `pnpm dev:web` or `pnpm dev:studio`. Astro 7 runs its dev server in the background; stop it with `pnpm --filter @kodeva/web exec astro dev stop`. Stop the foreground Studio process with Ctrl+C.
 
-T01 web needs no environment values. Studio's example contains dummy public identifiers for build/startup checks. To sign in, replace them in the ignored `.env.local` with an existing Sanity project ID and dataset and configure its localhost CORS origin. Dummy identifiers cannot authenticate and cause Sanity API/CORS errors. Real CMS access, schemas and permission decisions belong to T02; no project or dataset is created by these commands. Every `SANITY_STUDIO_` value reaches the browser bundle, so these variables must never contain tokens or secrets.
+Replace example identifiers in the ignored env files with your Sanity project ID. Web uses `SANITY_PROJECT_ID` and `SANITY_DATASET`; Studio uses `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET` and `SANITY_STUDIO_LEADS_DATASET`. The content dataset must be public and the separate leads dataset private. T02's configured project has public `production` and private `leads`. Studio has `/content` and `/leads` workspaces. Configure the localhost Studio CORS origin and authenticate through Studio to edit content. CLI checks separately require `pnpm --filter @kodeva/studio exec sanity login`.
+
+Every `SANITY_STUDIO_` value reaches the browser bundle, so these variables must never contain tokens or secrets. Content reads are anonymous and server-side. T02 requires no web credential. T03 must establish an approved scoped server-only write credential before implementing submissions; do not substitute a broad project Editor token. `PUBLIC_SITE_URL` is the configured canonical origin for subsequent public-page integration.
+
+## CMS editing and publication
+
+The approved [content contract](tasks/T02-cms.md#approved-content-contract) defines field limits, product identities, dummy content and lead access. In Konten Kodeva, edit Kampanye for hero, featured selections, fictional testimonials and FAQ; Artikel and Kategori manage the blog. Publish a category before an article that references it. Product selections reference the shared code registry; full pricing/packages belong to T05. Draft content is excluded from public reads. Campaign creation/duplication/deletion is restricted in Studio to keep one campaign; administrators/API credentials remain capable of overriding Studio safeguards.
+
+Articles use readable unique slugs. Changing a published slug makes its old URL return not-found; there are no redirects in this assessment. Duplicates receive a new first-publication date when published. Native Sanity validation/publish behavior is retained. Public content is validated again at the read boundary: malformed images, unresolved categories, invalid product IDs or unsafe rich-text links return an explicit unavailable result instead of broken or draft content.
+
+`apps/web/src/lib/cms/server.ts` supplies fixed typed campaign, article and six-item paginated article reads. Future landing/blog routes consume these results in Astro, handling `ok`, `not-found` and `unavailable` explicitly. There is no public raw-document/query endpoint. SEO overrides and image provenance are included in the contracts; public-page layouts are later tasks.
+
+Each read uses the origin Sanity API (not the API CDN), the explicit `published` perspective and fetch `cache: no-store`. Astro middleware sends `Cache-Control`, `CDN-Cache-Control` and `Vercel-CDN-Cache-Control: no-store`. No ISR, application response cache, webhook or manual redeployment is required for subsequent CMS reads, including new slugs and unpublishing. This trades per-request latency/API usage and CMS availability for freshness; it does not promise zero publication delay or offline cached content. Static assets retain their normal hosting behavior.
+
+Live temporary-record checks observed a published edit on the next read in **1.6 seconds including the write**; changed slugs and unpublishing were also reflected without rebuilding. Local HTTP checks confirmed the no-store headers. These are origin-reader/local-server measurements, not deployed Vercel measurements or a latency guarantee. The owner subsequently confirmed the invited-account editing/publishing and lead-workspace checklist; API inspection confirms that member has the Editor role. The owner also verified native duplication: the new article had a new publication time while the original retained its earlier time. Deployed behavior remains a separate check.
+
+The Lead Kodeva workspace displays read-only records from the private dataset. UI restrictions are not dataset permissions. T02 verified authenticated CLI read access and anonymous non-disclosure of a synthetic lead under published/raw/draft queries; some denied queries return an empty result with HTTP 200. The owner later confirmed opening the workspace through the invited account, and its Editor role is confirmed; because the workspace was empty, reading a stored lead as that account is not separately demonstrated. A scoped submission credential remains unverified. Leads are dummy assessment submissions only; the owner manually deletes them after review. Lead submission and spam handling belong to T03.
+
+## Optional manual demo content import
+
+The original SVG and fictional Indonesian copy are in `apps/studio/seed/`. They contain no real customer claims or lead records. The import script defaults to a dry run and does not overwrite content. Review the configured project/dataset first; run the write command only when you intend to publish the supplied demo content into an empty content dataset:
+
+```sh
+pnpm --filter @kodeva/studio exec sanity exec scripts/seed.ts --with-user-token
+pnpm --filter @kodeva/studio exec sanity exec scripts/seed.ts --with-user-token -- --write
+```
+
+The write command uploads one original image and creates the singleton, two categories and two published articles. It requires authenticated write access. If an import fails partway, inspect Studio before retrying; the empty-dataset guard stops overwriting existing editor content. The agent did not run this manual import.
 
 ## Development checks
 
@@ -52,10 +81,13 @@ T01 web needs no environment values. Studio's example contains dummy public iden
 pnpm lint
 pnpm typecheck
 pnpm format:check
+pnpm test:cms
 pnpm build
 ```
 
-`pnpm format` formats app code and workspace configs. ESLint covers Astro, TypeScript and TSX in both apps, including React Hooks rules. Astro check validates web types; TypeScript validates Studio. Both apps have production build and preview commands (`pnpm --filter @kodeva/web preview` and `pnpm --filter @kodeva/studio preview`).
+`pnpm format` formats app code and workspace configs. ESLint covers Astro, TypeScript and TSX in both apps, including React Hooks rules; generated build directories are excluded. Astro check validates web types; TypeScript validates Studio. Use `pnpm dev:web` for local web development; the production adapter targets Vercel. Preview the Studio build with `pnpm --filter @kodeva/studio preview`.
+
+`pnpm test:cms` uses Node 24's built-in runner for content/lead validation, product-link and slug boundaries, fixed anonymous published-only requests, error/configuration states, safe rich text and pagination. These offline checks do not replace actual CMS publication/privacy tests. Validate stored content using `pnpm --filter @kodeva/studio exec sanity documents validate --workspace content --yes` after CLI login.
 
 Tailwind v4 uses the Vite plugin and `apps/web/src/styles/global.css`. Prettier loads the Astro plugin first and Tailwind plugin last, with that actual stylesheet for class sorting. The owner-approved [upstream compatibility patch](patches/README.md) keeps Astro formatter 1.1.2 and Tailwind formatter 0.8.1 working together. The pinned lockfile and pnpm patch are part of setup; do not omit the patch files when copying the repository.
 
@@ -64,6 +96,8 @@ Tailwind v4 uses the Vite plugin and `apps/web/src/styles/global.css`. Prettier 
 Separately measured intervals through S-009 total **20m 37s**, including **16m 59s** of planning intervals and **3m 38s** of T01 prerequisite review and follow-up documentation. T01's main implementation/review work window was an additional **24m 17s**, including permission waits that were not separately timed.
 
 These figures are partial records, not the full actual active project total. Earlier unmeasured planning, discussion/handoff tails and unseparated permission waits prevent a reliable cumulative active total. The owner authorized proceeding without supplying durations. Session records, including failed checks and recovery, are maintained in [TIME_LOG.md](TIME_LOG.md).
+
+T02 adds prerequisite review and an observed implementation/check window recorded in S-010/S-011. That window contains unseparated tool-approval waits; it is not a confirmed active duration and is not included in the older S-009 partial figures above. Owner reconciliation is required for the cumulative actual total. The owner separately reported six minutes spent trying content edits; this confirms that review interval only, not total T02 active time. Agent work is recorded separately in TIME_LOG.md. Parallel review/checks are counted within the parent session once; owner/agent overlaps must also count once, not as summed person-time. Unknown overlap and unseparated waiting prevent a reliable full cumulative active total.
 
 ## Project documentation
 

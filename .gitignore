@@ -24,3 +24,4 @@ coverage/
 
 # Routine T01 verification artifacts stay local
 /evidence/T01/
+/evidence/T02/

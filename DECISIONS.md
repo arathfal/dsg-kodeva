@@ -21,13 +21,27 @@ Status recorded from developer instructions on 2026-10-30. A proposal is not aut
 | D-013 | Agent added the owner's archive-policy finding to AI_LOG without separately asking. Owner instructed its removal and required prior approval for future additions. | Remove that entry. Ask for explicit approval of proposed text before every AI_LOG addition or expansion, including tool/prompt/failure/result entries. Owner reporting or verification alone is not authorization. This additional gate supersedes automatic logging language in D-006/D-012 and applies to task/document update instructions. | Owner: “No, don't recorded in AI_LOG.md. Next ask me before add in AI_LOG.md”. | T01–T10 |
 | D-014 | Owner specified the Git message format before T01 commit authorization. | Use a Conventional Commits title and a nonempty body. Format approval does not replace the separate permission to commit. | Owner: “Commit must be conventional and”, completed by “and add body wkwk”. | T01–T10 |
 
+### T02 approvals — 2026-10-31
+
+- **D-015 / P-004:** Owner selected “Approve request-time reads (recommended)”: request-time CMS reads, Sanity CDN disabled, published-only queries, `Cache-Control: no-store`, compatible pinned Vercel adapter. Missing content returns not-found; CMS failures return an explicit unavailable result without draft exposure or silent demo fallback. Actual freshness remains subject to measurement.
+- **D-016 / P-005 direction:** Owner selected “Approve fixture-linked content direction (recommended)”: singleton campaign, articles/categories, shared six-product TypeScript identity registry, fixed catalog CTA destination, optional SEO overrides, image alt/provenance, Indonesian fictional demo content, six articles per page, invalid pages and old changed slugs return 404. Exact field limits and seed content still require approval before implementation.
+- **D-017 / P-006 boundary:** Owner selected “Separate private leads dataset (recommended)”: public marketing content and separate private leads, authenticated marketing access, server-only write credential. Project access, dataset creation/privacy changes, detailed lead contract and credential permissions remain unapproved/unconfirmed. This does not authorize external mutations.
+
+These selections were received through interactive Q&A for T02. They supersede the corresponding pending directions below only to the extent explicitly approved; remaining details are still pending.
+
+- **D-018 / T02 detailed contract:** Owner selected “Approve the detailed contract (recommended)” for [the T02 contract](tasks/T02-cms.md#approved-content-contract), including field limits, seed content, lead policy and Node built-in checks without a new test dependency. Owner then said “I have add project ID to env, but the project still empty. Just continue”. Continue local implementation and inspect the configured project; do not infer authenticated access, successful dataset creation or scoped-token availability. The compatible Vercel adapter is pinned to 11.0.17 (registry peer range Astro ^7.0.0, matching installed Astro 7.4.4).
+
+### D-019 — T02 reporting follow-up (2026-10-31)
+
+Owner explicitly approved the proposed T02 contribution paragraph for AI_LOG: “Setujui enti AI log”. Only that proposed paragraph is added; no failed-work or independent-authorship claims are authorized. Owner confirmed their editing review was six minutes and instructed: “Catat bagianmum bagianku tadi 6 menit. Kalau ada yang di kerjakan paralel jangan di sum, tapi catat 1 waktu karena paralel”. Record owner and agent contributions separately, use the union of overlapping active intervals for project totals, and do not add parallel reviewer/tool durations to the parent session. Unseparated waiting and untimed intervals remain unknown rather than fabricated active time.
+
 ### D-008 — Concrete tooling pins
 
 Core/runtime pins are in D-008 above. Supporting packages: @astrojs/react 7.1.2, @astrojs/check 0.9.12, @tailwindcss/vite 4.3.3, react-dom 19.3.1, styled-components 6.6.0 (Studio peer), @types/node 24.19.2, @types/react and @types/react-dom 19.3.0; eslint 10.14.0, @eslint/js 10.0.1, typescript-eslint 8.72.1, eslint-plugin-astro 3.2.1, eslint-plugin-react-hooks 7.1.1, eslint-config-prettier 10.1.8; prettier 3.9.10, prettier-plugin-astro 1.1.2, prettier-plugin-tailwindcss 0.8.1. The TypeScript 6 pin follows the checkers' supported peer ranges. Registry metadata checks preceded installation; install/build results are separate evidence.
 
 ## Pending proposals
 
-P-001 through P-003 have been approved as recorded above. All remaining proposals have status **pending explicit approval**. Recommendations describe proposed behavior only. Ask for the decisions needed by the next assigned task; unrelated future choices can remain pending.
+P-001 through P-003 are approved above. T02's P-004 through P-006 selections and detailed contract are approved in D-015–D-018; remaining access/credential verification is not implied. P-007 through P-009 remain pending except for T02's approved Node built-in checks and Indonesian demo content. The original proposal comparisons below remain context; the explicit decisions and T02 contract control the approved behavior.
 
 ### P-001 — Approved
 
