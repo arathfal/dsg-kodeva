@@ -1,4 +1,5 @@
 import {
+  isProductId,
   isProductList,
   isRecord,
   isSlug,
@@ -25,7 +26,12 @@ export interface Campaign {
   image: Image;
   ctaLabel: string;
   featuredHeading: string;
-  featuredProducts: ProductId[];
+  featuredProducts: {
+    product: ProductId;
+    description: string;
+    features: string[];
+    image?: Image | null;
+  }[];
   testimonialsHeading: string;
   testimonials: {
     quote: string;
@@ -114,6 +120,24 @@ function isSeo(value: unknown): value is Seo {
     optional(value.image, isImage)
   );
 }
+function isFeaturedProduct(
+  value: unknown,
+): value is Campaign["featuredProducts"][number] {
+  return (
+    isRecord(value) &&
+    isProductId(value.product) &&
+    isText(value.description, 200) &&
+    items(value.features, 1, 6, (v) => isText(v, 100)) &&
+    optional(value.image, isImage)
+  );
+}
+function isFeaturedProductList(
+  value: unknown,
+): value is Campaign["featuredProducts"] {
+  if (!items(value, 1, 6, isFeaturedProduct)) return false;
+  const list = value as Campaign["featuredProducts"];
+  return new Set(list.map((p) => p.product)).size === list.length;
+}
 export function isCampaign(value: unknown): value is Campaign {
   return (
     isRecord(value) &&
@@ -123,7 +147,7 @@ export function isCampaign(value: unknown): value is Campaign {
     isImage(value.image) &&
     isText(value.ctaLabel, 60) &&
     isText(value.featuredHeading, 100) &&
-    isProductList(value.featuredProducts, 1) &&
+    isFeaturedProductList(value.featuredProducts) &&
     isText(value.testimonialsHeading, 100) &&
     items(
       value.testimonials,

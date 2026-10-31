@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import CartIcon from "../components/icons/CartIcon.astro";
 
 interface Props {
   title: string;
@@ -12,7 +13,7 @@ const { title, description, canonical, image } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,12 +33,30 @@ const { title, description, canonical, image } = Astro.props;
   </head>
   <body>
     <a class="skip-link" href="#main">
-      Skip to content
+      Langsung ke konten
     </a>
-    <header class="page-container py-6">
+    <header class="page-container flex flex-wrap items-center justify-between gap-4 py-6">
       <a class="inline-flex min-h-11 items-center font-semibold" href="/">
         Kodeva
       </a>
+      <nav
+        aria-label="Navigasi utama"
+        class="flex flex-wrap items-center gap-x-4 gap-y-2"
+      >
+        <a class="inline-flex min-h-11 min-w-11 items-center" href="/blog">
+          Blog
+        </a>
+        <a class="inline-flex min-h-11 items-center" href="/products">
+          Katalog
+        </a>
+        <a
+          class="inline-flex min-h-11 min-w-11 items-center justify-center font-semibold"
+          href="/cart"
+          aria-label="Keranjang"
+        >
+          <CartIcon />
+        </a>
+      </nav>
     </header>
     <main id="main" class="page-container pb-16" tabindex="-1">
       <slot />

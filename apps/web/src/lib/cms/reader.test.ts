@@ -35,7 +35,13 @@ const campaign = {
   image,
   ctaLabel: "Katalog",
   featuredHeading: "Aplikasi",
-  featuredProducts: ["kasir"],
+  featuredProducts: [
+    {
+      product: "kasir",
+      description: "Demo description",
+      features: ["Feature one"],
+    },
+  ],
   testimonialsHeading: "Ilustrasi",
   testimonials: [
     {
@@ -97,7 +103,12 @@ test("missing, malformed, network and configuration states remain distinct", asy
   assert.deepEqual(
     await createContentReader(
       config,
-      respond({ ...campaign, featuredProducts: ["unknown"] }),
+      respond({
+        ...campaign,
+        featuredProducts: [
+          { product: "unknown", description: "Bad", features: [] },
+        ],
+      }),
     ).campaign(),
     { status: "unavailable", reason: "invalid-content" },
   );
@@ -152,5 +163,54 @@ test("pagination validates bounds and preserves an empty first page", async () =
       ).articles()
     ).status,
     "unavailable",
+  );
+});
+
+test("campaign rejects missing required media/items and overlong titles", () => {
+  for (const invalid of [
+    { ...campaign, image: null },
+    { ...campaign, featuredProducts: [] },
+    { ...campaign, testimonials: [] },
+    { ...campaign, faq: [] },
+    { ...campaign, title: "x".repeat(121) },
+  ])
+    assert.equal(isCampaign(invalid), false);
+});
+
+test("campaign featured products reject duplicates and malformed items", () => {
+  assert.equal(
+    isCampaign({
+      ...campaign,
+      featuredProducts: [
+        { product: "kasir", description: "A", features: ["One"] },
+        { product: "kasir", description: "B", features: ["Two"] },
+      ],
+    }),
+    false,
+  );
+  assert.equal(
+    isCampaign({
+      ...campaign,
+      featuredProducts: [
+        { product: "kasir", description: "A", features: ["x".repeat(101)] },
+      ],
+    }),
+    false,
+  );
+  assert.equal(
+    isCampaign({
+      ...campaign,
+      featuredProducts: [{ product: "kasir", description: "A", features: [] }],
+    }),
+    false,
+  );
+  assert.equal(
+    isCampaign({
+      ...campaign,
+      featuredProducts: [
+        { product: "kasir", description: "", features: ["One"] },
+      ],
+    }),
+    false,
   );
 });

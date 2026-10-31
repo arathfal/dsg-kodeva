@@ -8,6 +8,10 @@ T01 provides the pnpm workspace, web/Studio foundations and approved design prim
 
 T02 adds CMS schemas/editor workspaces, typed published-content reads, request-time rendering and demo seed material. Available automated/API checks passed. The owner reviewed the content workspace and confirmed the invited-account sign-in/edit/publish/lead-workspace checklist. A separate Editor member is confirmed. Native duplicate/publication-date behavior was also verified by the owner. The owner accepted T02 on 2026-10-31 with the recorded limitations; remaining edge cases and deployed behavior are not claimed verified.
 
+T03 implements the campaign landing page (hero, product cards, testimonials, FAQ, lead form), the server-side lead endpoint, and the cart icon in the shared header. Format/lint/typecheck/tests/build pass. Playwright responsive, keyboard, form-state and product-card checks pass. A real dummy lead was stored in the private leads dataset, confirmed server-side, and cleaned up; anonymous reads of the private dataset returned no lead data. CMS edit/publish freshness was verified on the landing route without redeploying.
+
+A scoped T02 amendment (D-025) makes the featured-product cards fully CMS-editable: description, features, and optional image, while product IDs, names, prices, packages, routes and business logic remain code-owned. The amendment is reflected in the Studio schema, web types/validator, GROQ query, seed data, and frontend rendering. The owner accepted T03 on 2026-11-01.
+
 Requirements and implementation scope are documented in [PRD.md](PRD.md) and [TASKS.md](TASKS.md).
 
 ## Approved architecture
@@ -93,18 +97,24 @@ Tailwind v4 uses the Vite plugin and `apps/web/src/styles/global.css`. Prettier 
 
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG session S-018:
+Recorded-interval snapshot through TIME_LOG session S-021 and owner-confirmed S-018A:
 
 | Scope | Recorded time |
 | --- | --- |
-| T02 — Codex/agent intervals | 32m 38s |
+| T02 — agent intervals | 32m 38s |
 | T02 — owner editing review, confirmed not overlapping | 6m |
-| **T02 combined** | **38m 38s** |
-| **Whole project combined** | **1h 23m 32s** |
+| T02 combined | **38m 38s** |
+| T03 initial implementation (S-018A, owner-confirmed) | 12m 00s |
+| T03 prerequisite review | 1m 09s |
+| T03 takeover corrections and verification (S-019) | 15m 26s |
+| T02 amendment + T03 testimonial polish (S-020) | 12m 55s |
+| T03 owner-revised testimonial verification (S-021) | 2m 01s |
+| T03 combined | **43m 31s** |
+| **Whole project combined (recorded)** | **2h 07m 03s** |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
 
-These figures are sums of recorded intervals, **not complete actual active working-time totals**. Main agent windows still include unseparated approval waits, while some intake, discussion, staging/commit, handoff and later time-reconciliation work was not continuously timed. Unknown time is not assumed to be zero. [TIME_LOG.md](TIME_LOG.md) preserves session details, arithmetic and these limitations.
+These figures are sums of recorded and owner-confirmed intervals, **not complete actual active working-time totals**. Main agent windows still include unseparated approval waits, while some intake, discussion, staging/commit, handoff and later time-reconciliation work was not continuously timed. The T03 initial implementation duration is the owner-confirmed 12-minute figure, not an independently measured session. Unknown time is not assumed to be zero. [TIME_LOG.md](TIME_LOG.md) preserves session details, arithmetic and these limitations.
 
 ## Project documentation
 

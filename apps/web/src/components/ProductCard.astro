@@ -1,0 +1,51 @@
+---
+import type { ProductId } from "../../../../shared/content.ts";
+import type { Image } from "../lib/cms/models";
+import ProductIcon from "./icons/ProductIcon.astro";
+import CheckIcon from "./icons/CheckIcon.astro";
+import CmsImage from "./CmsImage.astro";
+
+interface Props {
+  productId: ProductId;
+  name: string;
+  description: string;
+  features: string[];
+  image?: Image | null;
+  href: string;
+}
+
+const { productId, name, description, features, image, href } = Astro.props;
+const titleId = `product-${productId}`;
+---
+
+<article class="panel flex flex-col gap-4" aria-labelledby={titleId}>
+  {image && (
+    <div class="overflow-hidden rounded-card bg-soft">
+      <CmsImage image={image} card />
+    </div>
+  )}
+  <div class="flex items-center gap-3">
+    <div class="text-primary">
+      <ProductIcon id={productId} />
+    </div>
+    <h3 id={titleId} class="text-xl leading-tight font-semibold">
+      {name}
+    </h3>
+  </div>
+  <p class="text-secondary">{description}</p>
+  {features.length > 0 && (
+    <ul class="flex-1 space-y-2">
+      {features.map((feature) => (
+        <li class="flex items-start gap-2 text-secondary">
+          <span class="mt-0.5 shrink-0 text-primary">
+            <CheckIcon />
+          </span>
+          <span>{feature}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+  <a class="button mt-2 w-full md:w-auto" href={href}>
+    Lihat Detail
+  </a>
+</article>

@@ -41,6 +41,18 @@ Core/runtime pins are in D-008 above. Supporting packages: @astrojs/react 7.1.2,
 
 ## Pending proposals
 
+### T03 approvals — 2026-10-31
+
+- **D-020 / P-008 payload interface:** Owner approved using the existing `utm: {source, medium, campaign, term, content}` shape. This explicitly corrected and superseded the earlier approved suggestion of `attribution` with `utm_`-prefixed keys. Values are strings, trimmed, maximum 200 characters; empty values are omitted; unknown keys/types are rejected. Capture, touch policy, browser persistence and navigation verification remain T08.
+- **D-021 / landing composition:** Owner approved Kodeva/Blog/Katalog/Keranjang navigation (`/cart`), desktop two-column hero stacked on mobile, featured product name links from the registry without prices before T05, fictional testimonial disclosures, native details FAQ, then the lead form. Use DESIGN.md tokens and CMS illustration; no animation or additional dependency.
+- **D-022 / lead transport:** Owner approved same-origin POST JSON `/api/leads`, streamed 8 KiB body limit, `website` honeypot, no automatic retry/server deduplication, and responses 400 validation, 403 origin, 413 body limit, 415 media type, 503 CMS/write failure. Success follows confirmed storage only. Existing D-018 name/contact and private dataset policies apply.
+
+**D-023 / demo credential exception:** After the scoped-versus-Editor explanation, owner explicitly replied “Oke saya Approve A untuk token”. A server-only Editor token is allowed for this assessment demo, superseding D-018's scoped-token requirement only for T03's demo submission integration. Its read/write permissions cover all project datasets; private dataset isolation, server-only environment storage and no browser credential exposure remain required. The owner creates/stores the token manually; no token value is recorded here. A production rollout needs narrower credentials/access policy.
+
+**D-024 / T03 navigation correction:** Owner explicitly approved replacing the text “Keranjang” navigation item with a shopping-cart icon in the shared global header as part of T03. Implementation: inline SVG, `aria-label="Keranjang"`, minimum 44×44 px touch target, preserved `/cart` destination, no React hydration, no badge or cart state. Cart count and checkout flow remain T06/T07.
+
+**D-025 / T02 content-contract amendment (featured products):** Owner approved amending the accepted T02 campaign schema so the “Pilihan aplikasi” section supports CMS-editable marketing content. `featuredProducts` becomes an array of objects: required `product` selection from the existing shared registry, required `description` (≤200 characters), required `features` list (1–6 items, ≤100 characters each), and optional `image` (`contentImage`). Product IDs, names, prices, packages and all commerce business logic remain unchanged; the shared registry stays the source of truth. Duplicate product selections are rejected. Existing product routes and `isProductList` usage in article `relatedProducts` are unaffected. This is a scoped amendment to the T02 content contract.
+
 P-001 through P-003 are approved above. T02's P-004 through P-006 selections and detailed contract are approved in D-015–D-018; remaining access/credential verification is not implied. P-007 through P-009 remain pending except for T02's approved Node built-in checks and Indonesian demo content. The original proposal comparisons below remain context; the explicit decisions and T02 contract control the approved behavior.
 
 ### P-001 — Approved

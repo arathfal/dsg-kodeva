@@ -1,36 +1,164 @@
 ---
 import Shell from "../layouts/Shell.astro";
-import { FoundationControls } from "../components/FoundationControls";
+import { LeadForm } from "../components/LeadForm";
+import CmsImage from "../components/CmsImage.astro";
+import ProductCard from "../components/ProductCard.astro";
+import TestimonialCard from "../components/TestimonialCard.astro";
+import { cms } from "../lib/cms/server";
+import { socialImageUrl } from "../lib/cms/image";
+import { CATALOG_PATH, products } from "../../../../shared/content";
+import { productSummaries } from "../../../../shared/products";
+
+const result = await cms.campaign();
+const campaign = result.status === "ok" ? result.data : undefined;
+if (!campaign)
+  Astro.response.status = result.status === "not-found" ? 404 : 503;
+const title = campaign
+  ? campaign.seo?.title || `${campaign.title} | Kodeva`
+  : "Kampanye belum tersedia | Kodeva";
+const description = campaign
+  ? campaign.seo?.description || campaign.subtitle
+  : "Kampanye Kodeva belum dapat ditampilkan. Silakan coba lagi nanti.";
+let canonical: URL | undefined;
+try {
+  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
+  if (["https:", "http:"].includes(origin.protocol))
+    canonical = new URL("/", origin.origin);
+} catch {
+  /* Missing configuration must not use an untrusted request origin. */
+}
+const social = campaign?.seo?.image || campaign?.image;
 ---
 
 <Shell
-  title="Kodeva — Foundation"
-  description="Kodeva design foundation: typography, surfaces and accessible controls."
+  title={title}
+  description={description}
+  canonical={canonical}
+  image={social ? socialImageUrl(social) : undefined}
 >
-  <div class="space-y-8">
-    <div class="max-w-prose space-y-4">
-      <h1 class="text-hero font-semibold">Kodeva foundation</h1>
-      <p>Shared styles and controls for the Kodeva assessment.</p>
-    </div>
-    <section class="panel space-y-6" aria-labelledby="controls-heading">
-      <div class="space-y-2">
-        <h2 class="text-section font-semibold" id="controls-heading">
-          Controls
+  {campaign ? (
+    <div class="space-y-16 md:space-y-24">
+      <section
+        class="grid items-center gap-8 pt-8 md:grid-cols-2 md:gap-12 md:pt-16"
+        aria-labelledby="campaign-title"
+      >
+        <div class="space-y-6">
+          <h1
+            id="campaign-title"
+            class="text-hero font-semibold tracking-tight"
+          >
+            {campaign.title}
+          </h1>
+          <p class="max-w-prose text-secondary">{campaign.subtitle}</p>
+          <a
+            class="button"
+            href={CATALOG_PATH}
+            data-campaign-key={campaign.campaignKey}
+          >
+            {campaign.ctaLabel}
+          </a>
+        </div>
+        <CmsImage image={campaign.image} hero />
+      </section>
+      <section aria-labelledby="featured-heading" class="space-y-8">
+        <h2 id="featured-heading" class="text-section font-semibold">
+          {campaign.featuredHeading}
         </h2>
-        <p class="text-secondary">
-          Keyboard focus, button states and a small React island.
-        </p>
-      </div>
-      <div class="max-w-prose">
-        <FoundationControls client:load />
-      </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {campaign.featuredProducts.map((item) => {
+            const product = products.find((p) => p.id === item.product)!;
+            const summary = productSummaries[item.product];
+            return (
+              <ProductCard
+                productId={item.product}
+                name={product.name}
+                description={item.description || summary?.description || ""}
+                features={
+                  item.features?.length
+                    ? item.features
+                    : (summary?.features ?? [])
+                }
+                image={item.image}
+                href={`${CATALOG_PATH}/${item.product}`}
+              />
+            );
+          })}
+        </div>
+      </section>
+      <section aria-labelledby="testimonials-heading" class="space-y-8">
+        <div class="max-w-2xl space-y-3">
+          <h2 id="testimonials-heading" class="text-section font-semibold">
+            {campaign.testimonialsHeading}
+          </h2>
+          <p class="text-secondary">
+            Cerita ilustrasi dari usaha fiktif untuk memberi gambaran penggunaan
+            aplikasi Kodeva.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {campaign.testimonials.map((item) => (
+            <TestimonialCard
+              quote={item.quote}
+              name={item.name}
+              business={item.business}
+              disclosure={item.disclosure}
+              portrait={item.portrait}
+            />
+          ))}
+        </div>
+      </section>
+      <section aria-labelledby="faq-heading" class="space-y-8">
+        <h2 id="faq-heading" class="text-section font-semibold">
+          {campaign.faqHeading}
+        </h2>
+        <div class="divide-y divide-border border-y border-border">
+          {campaign.faq.map((item) => (
+            <details class="py-4">
+              <summary class="min-h-11 cursor-pointer py-2 text-lg font-semibold">
+                {item.question}
+              </summary>
+              <p class="max-w-prose py-4 text-secondary">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+      <section
+        aria-labelledby="lead-heading"
+        class="grid gap-8 md:grid-cols-2 md:gap-12"
+      >
+        <div class="space-y-4">
+          <h2 id="lead-heading" class="text-section font-semibold">
+            Bicarakan kebutuhan usaha Anda
+          </h2>
+          <p class="text-secondary">
+            Tinggalkan kontak contoh untuk mencoba formulir Kodeva. Formulir ini
+            merupakan simulasi assessment.
+          </p>
+        </div>
+        <LeadForm campaignKey={campaign.campaignKey} client:load />
+      </section>
+      <footer class="border-t border-border pt-8 text-sm text-secondary">
+        Kodeva — demo software bisnis untuk UMKM. Seluruh konten dan penawaran
+        merupakan ilustrasi assessment.
+      </footer>
+    </div>
+  ) : (
+    <section
+      class="max-w-prose space-y-6 py-16"
+      aria-labelledby="unavailable-title"
+    >
+      <h1 id="unavailable-title" class="text-section font-semibold">
+        {result.status === "not-found"
+          ? "Kampanye belum tersedia"
+          : "Kampanye sedang tidak dapat dimuat"}
+      </h1>
+      <p>
+        Silakan coba lagi nanti. Formulir akan tersedia saat kampanye dapat
+        ditampilkan.
+      </p>
+      <a class="button" href="/">
+        Coba muat kembali
+      </a>
     </section>
-    <section class="space-y-4" aria-labelledby="feedback-heading">
-      <h2 class="text-section font-semibold" id="feedback-heading">
-        Feedback
-      </h2>
-      <p class="text-success">Success: the example is ready.</p>
-      <p class="text-error">Error example: check the highlighted field.</p>
-    </section>
-  </div>
+  )}
 </Shell>

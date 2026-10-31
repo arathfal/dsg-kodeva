@@ -28,7 +28,7 @@ const seo = `seo{title,description,image${image}}`;
 const publicArticles =
   '_type == "article" && !(_id in path("drafts.**")) && !(_id in path("versions.**"))';
 const articleFields = `_id,title,"slug":slug.current,cover${image},excerpt,"category":category->{name,"slug":slug.current},"relatedProducts":coalesce(relatedProducts,[]),publishedAt,${seo}`;
-const campaignQuery = `*[_type == "campaign" && _id == "campaign"][0]{campaignKey,title,subtitle,image${image},ctaLabel,featuredHeading,featuredProducts,testimonialsHeading,testimonials[]{quote,name,business,disclosure,portrait${image}},faqHeading,faq[]{question,answer},${seo}}`;
+const campaignQuery = `*[_type == "campaign" && _id == "campaign"][0]{campaignKey,title,subtitle,image${image},ctaLabel,featuredHeading,featuredProducts[]{product,description,features,image${image}},testimonialsHeading,testimonials[]{quote,name,business,disclosure,portrait${image}},faqHeading,faq[]{question,answer},${seo}}`;
 
 // Only fixed public-content queries are exposed; this reader never accepts a token.
 export function createContentReader(

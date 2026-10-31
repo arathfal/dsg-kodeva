@@ -42,6 +42,92 @@ const productIds = (name: string, title: string, min: number) =>
     validation: (rule) =>
       min > 0 ? rule.required().min(min).max(6).unique() : rule.max(6).unique(),
   });
+const featuredProducts = (name: string, title: string) =>
+  defineField({
+    name,
+    title,
+    type: "array",
+    validation: (rule) =>
+      rule
+        .required()
+        .min(1)
+        .max(6)
+        .custom((items) => {
+          if (!Array.isArray(items)) return true;
+          const ids = items
+            .map((item) => (item as { product?: string }).product)
+            .filter(Boolean);
+          return (
+            new Set(ids).size === ids.length ||
+            "Setiap produk hanya boleh dipilih sekali."
+          );
+        }),
+    of: [
+      defineArrayMember({
+        type: "object",
+        fields: [
+          defineField({
+            name: "product",
+            title: "Produk",
+            type: "string",
+            options: {
+              list: products.map(({ id, name }) => ({
+                title: name,
+                value: id,
+              })),
+            },
+            validation: (rule) =>
+              rule
+                .required()
+                .custom(
+                  (id) =>
+                    products.some((p) => p.id === id) ||
+                    "Pilih produk yang tersedia.",
+                ),
+          }),
+          text("description", "Deskripsi singkat", 200),
+          defineField({
+            name: "features",
+            title: "Fitur utama",
+            type: "array",
+            validation: (rule) => rule.required().min(1).max(6),
+            of: [
+              defineArrayMember({
+                type: "string",
+                validation: (rule) =>
+                  rule
+                    .required()
+                    .max(100)
+                    .custom(
+                      (value) =>
+                        isText(value, 100) || "Isi teks yang tidak kosong.",
+                    ),
+              }),
+            ],
+          }),
+          defineField({
+            name: "image",
+            title: "Ilustrasi produk",
+            type: "contentImage",
+          }),
+        ],
+        preview: {
+          select: {
+            title: "product",
+            subtitle: "description",
+          },
+          prepare(value: Record<string, unknown>) {
+            const id = String(value.title ?? "");
+            const product = products.find((p) => p.id === id);
+            return {
+              title: product?.name || id || "Produk",
+              subtitle: String(value.subtitle ?? ""),
+            };
+          },
+        },
+      }),
+    ],
+  });
 const slug = (source: string, max: number) =>
   defineField({
     name: "slug",
@@ -154,7 +240,7 @@ export const campaign = defineType({
     }),
     text("ctaLabel", "Teks tombol katalog", 60),
     text("featuredHeading", "Judul produk unggulan", 100),
-    productIds("featuredProducts", "Produk unggulan", 1),
+    featuredProducts("featuredProducts", "Produk unggulan"),
     text("testimonialsHeading", "Judul testimoni", 100),
     defineField({
       name: "testimonials",

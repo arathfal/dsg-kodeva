@@ -8,7 +8,41 @@ export const seedCampaign = {
     "Jelajahi pilihan aplikasi Kodeva untuk membantu pekerjaan harian usaha Anda. Seluruh penawaran di situs ini adalah simulasi.",
   ctaLabel: "Lihat katalog",
   featuredHeading: "Pilihan aplikasi",
-  featuredProducts: ["kasir", "hr", "payroll"],
+  featuredProducts: [
+    {
+      _key: "kasir",
+      product: "kasir",
+      description:
+        "Mencatat transaksi penjualan harian dan mengelola item penjualan untuk usaha kecil.",
+      features: [
+        "Pencatatan transaksi cepat",
+        "Manajemen item/produk",
+        "Laporan penjualan sederhana",
+      ],
+    },
+    {
+      _key: "hr",
+      product: "hr",
+      description:
+        "Mengatur data karyawan dan kehadiran untuk tim kecil yang sedang berkembang.",
+      features: [
+        "Data karyawan terpusat",
+        "Pencatatan kehadiran",
+        "Informasi tim yang terorganisir",
+      ],
+    },
+    {
+      _key: "payroll",
+      product: "payroll",
+      description:
+        "Menghitung gaji dan komponen pendapatan karyawan secara terstruktur.",
+      features: [
+        "Perhitungan gaji dasar",
+        "Komponen pendapatan",
+        "Ringkasan penggajian",
+      ],
+    },
+  ],
   testimonialsHeading: "Cerita usaha contoh",
   testimonials: [
     {

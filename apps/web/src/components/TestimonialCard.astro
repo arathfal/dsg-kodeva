@@ -1,0 +1,69 @@
+---
+import type { Image } from "../lib/cms/models";
+import CmsImage from "./CmsImage.astro";
+import QuoteIcon from "./icons/QuoteIcon.astro";
+
+interface Props {
+  quote: string;
+  name: string;
+  business: string;
+  disclosure: string;
+  portrait?: Image | null;
+}
+
+const { quote, name, business, disclosure, portrait } = Astro.props;
+
+const initials = name
+  .trim()
+  .split(/\s+/)
+  .map((word) => word[0])
+  .filter(Boolean)
+  .slice(0, 2)
+  .join("")
+  .toUpperCase();
+---
+
+<figure class="mx-auto w-full max-w-190 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="px-6 pt-7 pb-6 sm:px-9 sm:pt-9 sm:pb-8">
+    <!-- Decorative quote -->
+    <div
+      class="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500"
+      aria-hidden="true"
+    >
+      <QuoteIcon />
+    </div>
+
+    <!-- Testimonial -->
+    <blockquote class="max-w-[60ch] text-[18px] leading-[1.65] font-medium tracking-[-0.015em] text-slate-800 sm:text-[21px]">
+      {quote}
+    </blockquote>
+
+    <!-- Author -->
+    <figcaption class="mt-7 flex items-center gap-3.5 border-t border-slate-100 pt-6">
+      {portrait ? (
+        <div class="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-slate-100 [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
+          <CmsImage image={portrait} />
+        </div>
+      ) : (
+        <span
+          class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-600"
+          aria-hidden="true"
+        >
+          {initials}
+        </span>
+      )}
+
+      <div class="min-w-0">
+        <p class="text-sm font-semibold text-slate-900 sm:text-base">{name}</p>
+        <p class="mt-0.5 text-sm leading-snug text-slate-500">{business}</p>
+      </div>
+    </figcaption>
+  </div>
+
+  <!-- Transparent demo disclosure -->
+  {disclosure && (
+    <div class="border-t border-slate-100 bg-slate-50/70 px-6 py-3.5 sm:px-9">
+      <p class="text-xs leading-relaxed text-slate-500">{disclosure}</p>
+    </div>
+  )}
+</figure>

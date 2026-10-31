@@ -1,0 +1,48 @@
+---
+import type { Image } from "../lib/cms/models";
+
+interface Props {
+  image: Image;
+  hero?: boolean;
+  card?: boolean;
+}
+const { image, hero = false, card = false } = Astro.props;
+const vector = new URL(image.url).pathname.endsWith(".svg");
+const widths = hero ? [360, 720, 1088] : card ? [360, 720] : [64, 128];
+function source(width: number) {
+  const url = new URL(image.url);
+  url.searchParams.set("auto", "format");
+  url.searchParams.set("fit", "max");
+  url.searchParams.set("w", String(width));
+  return url.href;
+}
+---
+
+<img
+  src={vector ? image.url : source(hero ? 720 : card ? 720 : 128)}
+  srcset={
+    vector
+      ? undefined
+      : widths.map((width) => `${source(width)} ${width}w`).join(", ")
+  }
+  sizes={
+    hero
+      ? "(min-width: 1200px) 544px, (min-width: 768px) calc((100vw - 96px) / 2), calc(100vw - 32px)"
+      : card
+        ? "(min-width: 1024px) calc((100vw - 80px) / 3), (min-width: 768px) calc((100vw - 64px) / 2), calc(100vw - 32px)"
+        : "64px"
+  }
+  alt={image.alt}
+  width={image.width}
+  height={image.height}
+  loading={hero ? "eager" : "lazy"}
+  fetchpriority={hero ? "high" : "auto"}
+  decoding="async"
+  class={
+    hero
+      ? "h-auto w-full rounded-card bg-soft"
+      : card
+        ? "h-auto w-full rounded-card bg-soft object-cover"
+        : "h-16 w-16 shrink-0 rounded-card object-contain"
+  }
+/>
