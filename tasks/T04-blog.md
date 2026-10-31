@@ -38,4 +38,4 @@ Completion: **accepted by owner on 2026-11-01**. The owner responded “Secara p
 - [x] Draft privacy, publication timing and metadata evidenced.
 - [x] Article/product navigation and phone readability reviewed.
 
-Actual time: TIME_LOG.md S-023 (observed 27m 53s window; final acceptance/documentation tail not separately timed; owner confirmation of the active total remains open). Commit: recorded below after the authorized commit; separate authorization was given with acceptance (“Paralel kamu bisa commit”).
+Actual time: TIME_LOG.md S-023 (observed 27m 53s window; final acceptance/documentation tail not separately timed; owner confirmation of the active total remains open). Owner-authorized implementation commit: `6a67e4da0ad6e8f288d201b4b52e7b0df9c2c703` (`feat(blog): add blog listing, pagination and article publication`), with a nonempty body. A separate documentation commit records this reference without amending the implementation commit.
