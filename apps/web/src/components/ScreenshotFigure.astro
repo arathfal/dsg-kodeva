@@ -1,0 +1,25 @@
+---
+// Product screenshots are original assessment illustrations (public assets)
+// with typed fixture metadata; no third-party imagery and no CMS dependency.
+interface Props {
+  src: string;
+  alt: string;
+  caption: string;
+}
+const { src, alt, caption } = Astro.props;
+---
+
+<figure class="overflow-hidden rounded-card border border-border bg-soft">
+  <img
+    src={src}
+    alt={alt}
+    width="960"
+    height="640"
+    loading="lazy"
+    decoding="async"
+    class="h-auto w-full"
+  />
+  <figcaption class="border-t border-border px-4 py-3 text-sm text-secondary">
+    {caption}
+  </figcaption>
+</figure>

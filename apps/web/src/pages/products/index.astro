@@ -1,0 +1,116 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import CategoryFilter from "../../components/CategoryFilter.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { CATALOG_PATH, products } from "../../../../../shared/content.ts";
+import {
+  catalogResult,
+  getCatalogCategory,
+  productsInCategory,
+} from "../../../../../shared/catalog.ts";
+import { productSummaries } from "../../../../../shared/products.ts";
+
+const query = Astro.url.searchParams.get("kategori");
+const selected =
+  query !== null && query !== "" ? getCatalogCategory(query) : undefined;
+const unknownCategory = query !== null && query !== "" && !selected;
+const result = catalogResult();
+if (unknownCategory) Astro.response.status = 404;
+if (result.status === "unavailable") Astro.response.status = 503;
+
+const title = unknownCategory
+  ? "Kategori tidak ditemukan | Kodeva"
+  : result.status === "unavailable"
+    ? "Katalog sedang tidak dapat dimuat | Kodeva"
+    : "Katalog produk Kodeva";
+const description =
+  "Enam aplikasi Kodeva untuk usaha kecil: harga langganan tahunan, paket Basic/Pro/Business, dan kuota promo. Simulasi assessment, tanpa pembelian nyata.";
+let canonical: URL | undefined;
+try {
+  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
+  if (["https:", "http:"].includes(origin.protocol))
+    canonical = new URL("/products", origin.origin);
+} catch {
+  /* Missing configuration must not use an untrusted request origin. */
+}
+
+const visible =
+  result.status === "ok"
+    ? selected
+      ? productsInCategory(selected.id)
+      : result.data
+    : [];
+---
+
+<Shell title={title} description={description} canonical={canonical}>
+  {result.status === "unavailable" ? (
+    <section class="max-w-prose space-y-6 py-16" aria-labelledby="error-title">
+      <h1 id="error-title" class="text-section font-semibold">
+        Katalog sedang tidak dapat dimuat
+      </h1>
+      <p>Silakan coba lagi nanti.</p>
+      <a class="button" href="/products">
+        Coba muat kembali
+      </a>
+    </section>
+  ) : unknownCategory ? (
+    <section
+      class="max-w-prose space-y-6 py-16"
+      aria-labelledby="missing-title"
+    >
+      <h1 id="missing-title" class="text-section font-semibold">
+        Kategori tidak ditemukan
+      </h1>
+      <p>
+        Tautan kategori mungkin salah atau sudah berubah. Gunakan filter
+        kategori pada katalog.
+      </p>
+      <a class="button" href="/products">
+        Buka katalog
+      </a>
+    </section>
+  ) : (
+    <div class="space-y-8">
+      <header class="space-y-4">
+        <h1 class="text-hero font-semibold tracking-tight">Katalog produk</h1>
+        <p class="max-w-prose text-secondary">
+          Harga langganan tahunan dalam rupiah. Pilih kategori untuk menyaring
+          pilihan aplikasi; seluruh penawaran merupakan simulasi assessment.
+        </p>
+      </header>
+      <CategoryFilter active={selected?.id} />
+      {visible.length === 0 ? (
+        <section
+          class="panel max-w-prose space-y-4"
+          aria-labelledby="empty-title"
+        >
+          <h2 id="empty-title" class="text-xl font-semibold">
+            Belum ada produk di kategori ini
+          </h2>
+          <p>
+            Kategori “{selected?.name}” masih kosong untuk kampanye ini. Lihat
+            pilihan aplikasi yang tersedia di katalog.
+          </p>
+          <a class="button" href="/products">
+            Lihat semua produk
+          </a>
+        </section>
+      ) : (
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {visible.map((entry) => {
+            const product = products.find((p) => p.id === entry.id)!;
+            return (
+              <ProductCard
+                productId={entry.id}
+                name={product.name}
+                description={productSummaries[entry.id].description}
+                features={productSummaries[entry.id].features}
+                href={`${CATALOG_PATH}/${entry.id}`}
+              />
+            );
+          })}
+        </div>
+      )}
+    </div>
+  )}
+</Shell>

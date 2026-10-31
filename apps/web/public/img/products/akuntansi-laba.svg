@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi antarmuka assessment Kodeva</title>
+  <desc id="desc">Ilustrasi layar aplikasi contoh; seluruh data fiktif.</desc>
+  <rect width="960" height="640" fill="#f6f9fc"/>
+  <rect x="64" y="64" width="832" height="512" rx="12" fill="#fff" stroke="#a8c3de"/>
+  <path d="M64 144h832" stroke="#a8c3de"/>
+  <g fill="#0d253d" font-family="system-ui,sans-serif">
+    <text x="96" y="116" font-size="26" font-weight="600">Kodeva Akuntansi · Laba/rugi</text>
+    <text x="96" y="540" font-size="15" fill="#273951">Ilustrasi assessment · seluruh data fiktif</text>
+  </g>
+<text x="96" y="196" font-size="20" font-weight="600" fill="#0d253d">Laporan laba/rugi</text>
+  <text x="96" y="224" font-size="16" font-weight="400" fill="#273951">Enam bulan contoh</text>
+  <path d="M96 300v220h768" fill="none" stroke="#a8c3de"/>
+  <polyline points="140,470 240,430 340,455 440,380 540,395 640,345 740,365 840,320" fill="none" stroke="#533afd" stroke-width="6" stroke-linecap="round"/>
+  <g fill="#533afd">
+    <circle cx="240" cy="430" r="7"/><circle cx="440" cy="380" r="7"/><circle cx="640" cy="345" r="7"/><circle cx="840" cy="320" r="7"/>
+  </g>
+  <path d="M140 470 240 430 340 455 440 380 540 395 640 345 740 365 840 320 840 520 140 520z" fill="#533afd" opacity="0.12"/>
+</svg>

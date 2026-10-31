@@ -14,6 +14,8 @@ A scoped T02 amendment (D-025) makes the featured-product cards fully CMS-editab
 
 T04 implements the blog: `/blog` listing and `/blog/halaman/N` pagination with approved six-per-page size and 404 policy, `/blog/[slug]` article detail with validated safe rich text rendering (headings, lists, emphasis, http(s) links), related-product links to `/products/[id]`, and per-route SEO/canonical/social metadata including `og:type article` and rasterized sharing images. Blog URL policy, rich text approach, page compositions, and temporary QA records were approved through interactive Q&A (DECISIONS.md D-026–D-030). Runtime owner corrections (D-031, D-032) made listing cards uniformly tall with ellipsized title/excerpt truncation, and kept the pagination indicator centered with always-rendered disabled controls whose hover state is inert. Available checks passed: format, lint, typecheck, 14 CMS/contract tests, and both production builds. Live temporary QA records exercised pagination splits, out-of-range/malformed pages, publish→refresh freshness, unpublish, slug changes, and draft isolation; all QA records were deleted and zero leftovers were verified. Deployed Vercel behavior and Lighthouse remain T09; product destinations remain verified after T05.
 
+T05 implements the marketplace catalog and product details from the approved commerce fixtures (D-033: annual IDR prices, struck promotional prices, shared per-product promo quota, per outlet/per pengguna unit labels). The catalog renders server-side with no-JS category filter links (D-034), a reachable empty-result state (D-035), and 404 handling for unknown categories; `/products/[id]` shows original SVG screenshot illustrations, current and struck prices, shared quota ("Sisa kuota promo…" or "Kuota promo habis") and an accessible Basic/Pro/Business radio island that updates the displayed price immediately; no add-to-cart control yet (D-036). Eight Node tests assert the fixture values, shared-quota shape and filter results. Browser checks covered zero horizontal overflow at 360/320px, immediate click and keyboard price updates, unknown-category/unknown-product 404s, initial metadata (title/description/canonical/og:image), and landing-CTA/blog-to-product journeys. The owner accepted T05 on 2026-11-01. Add-to-cart (T06), `view_item`/`add_to_cart` instrumentation (T08) and Lighthouse (T09) remain deferred.
+
 Requirements and implementation scope are documented in [PRD.md](PRD.md) and [TASKS.md](TASKS.md).
 
 ## Approved architecture
@@ -101,7 +103,7 @@ The blog uses the D-026 URL policy: `/blog` (page 1), `/blog/halaman/N` (pages 2
 
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG sessions S-023 and S-023B:
+Recorded-interval snapshot through TIME_LOG sessions S-023B and S-024:
 
 | Scope | Recorded time |
 | --- | --- |
@@ -118,7 +120,9 @@ Recorded-interval snapshot through TIME_LOG sessions S-023 and S-023B:
 | T04 implementation and verification (S-023) | 27m 53s |
 | T04 documentation and authorized commits (S-023B, commit-bounded) | 4m 27s |
 | T04 combined | **32m 20s** |
-| **Whole project combined (recorded)** | **2h 39m 54s** |
+| T05 implementation, verification and documentation (S-024, owner-confirmed) | 19m 58s |
+| T05 combined | **19m 58s** |
+| **Whole project combined (recorded)** | **2h 59m 52s** |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
 

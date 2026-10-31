@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi antarmuka assessment Kodeva</title>
+  <desc id="desc">Ilustrasi layar aplikasi contoh; seluruh data fiktif.</desc>
+  <rect width="960" height="640" fill="#f6f9fc"/>
+  <rect x="64" y="64" width="832" height="512" rx="12" fill="#fff" stroke="#a8c3de"/>
+  <path d="M64 144h832" stroke="#a8c3de"/>
+  <g fill="#0d253d" font-family="system-ui,sans-serif">
+    <text x="96" y="116" font-size="26" font-weight="600">Kodeva Laporan · Ringkasan usaha</text>
+    <text x="96" y="540" font-size="15" fill="#273951">Ilustrasi assessment · seluruh data fiktif</text>
+  </g>
+<text x="96" y="196" font-size="20" font-weight="600" fill="#0d253d">Ringkasan usaha</text>
+  <g>
+    <rect x="96" y="224" width="220" height="132" rx="8" fill="#f6f9fc" stroke="#a8c3de"/>
+    <text x="120" y="264" font-size="12" font-weight="400" fill="#273951">Penjualan</text><text x="120" y="308" font-size="26" font-weight="600" fill="#533afd">Rp4,2 jt</text>
+    <rect x="336" y="224" width="220" height="132" rx="8" fill="#f6f9fc" stroke="#a8c3de"/>
+    <text x="360" y="264" font-size="12" font-weight="400" fill="#273951">Stok menipis</text><text x="360" y="308" font-size="26" font-weight="600" fill="#0d253d">8 item</text>
+    <rect x="576" y="224" width="220" height="132" rx="8" fill="#f6f9fc" stroke="#a8c3de"/>
+    <text x="600" y="264" font-size="12" font-weight="400" fill="#273951">Kehadiran</text><text x="600" y="308" font-size="26" font-weight="600" fill="#533afd">98%</text>
+  </g>
+  <path d="M96 420h700" stroke="#a8c3de"/>
+  <polyline points="120,400 240,372 360,388 480,348 600,360 720,332 816,352" fill="none" stroke="#533afd" stroke-width="6" stroke-linecap="round"/>
+</svg>

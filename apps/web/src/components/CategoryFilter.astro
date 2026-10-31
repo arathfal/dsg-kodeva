@@ -1,0 +1,48 @@
+---
+// D-034: filter chips are plain server-rendered links; the catalog list is
+// re-rendered by Astro on navigation. No client JavaScript here.
+import { catalogCategories } from "../../../../shared/catalog.ts";
+import { CATALOG_PATH } from "../../../../shared/content.ts";
+
+interface Props {
+  active?: string;
+}
+
+const { active } = Astro.props;
+const chip = (href: string, label: string, isActive: boolean) => ({
+  href,
+  label,
+  isActive,
+});
+const chips = [
+  chip(CATALOG_PATH, "Semua", !active),
+  ...catalogCategories.map((category) =>
+    chip(
+      `${CATALOG_PATH}?kategori=${category.id}`,
+      category.name,
+      active === category.id,
+    ),
+  ),
+];
+---
+
+<nav aria-label="Filter kategori produk">
+  <ul class="flex flex-wrap gap-3">
+    {chips.map((item) => (
+      <li>
+        <a
+          class:list={[
+            "inline-flex min-h-11 items-center rounded-button border px-4 font-semibold",
+            item.isActive
+              ? "border-primary bg-primary text-canvas hover:text-canvas"
+              : "border-border bg-canvas text-ink hover:text-primary",
+          ]}
+          href={item.href}
+          aria-current={item.isActive ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

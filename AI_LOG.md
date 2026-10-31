@@ -1,6 +1,6 @@
 # AI usage log
 
-Filled incrementally under the owner-approval and verification rules in [AGENTS.md](AGENTS.md). T01 was reviewed and accepted by the owner on 2026-10-30 with the documented Studio authentication limitation. T03 was accepted on 2026-11-01.
+Filled incrementally under the owner-approval and verification rules in [AGENTS.md](AGENTS.md). T01 was reviewed and accepted by the owner on 2026-10-30 with the documented Studio authentication limitation. T03, T04 and T05 were accepted on 2026-11-01.
 
 ## Tools used
 
@@ -8,6 +8,7 @@ Filled incrementally under the owner-approval and verification rules in [AGENTS.
 | --- | --- |
 | Codex | Assist with assessment planning, project documentation and Git/ignore setup. |
 | OpenCode agent (DeepSeek V4.1 Flash) | Takeover implementation, verification and documentation for T03. |
+| OpenCode agent (GLM 5.3 Flash) | Implementation, verification and documentation for T05. |
 | Shell/Git | Inspect repository files, run checks and manage local repository state. |
 | Node / Sanity HTTP API | Run unit tests and verify lead storage, anonymous-read denial and CMS freshness. |
 | Web tool | Consult the design reference and official tooling documentation. |
@@ -25,6 +26,8 @@ T02 — CMS contracts and public reads. Codex assisted with approved Sanity sche
 T03 — Campaign landing and stored leads. The OpenCode agent continued the implementation with CMS-driven hero, featured products, testimonials and FAQ sections, a server-validated lead endpoint writing to the private dataset, and an accessible cart icon in the shared header. Edge cases implemented and checked included name/contact combinations, malformed and oversized payloads, non-JSON content types, spam fields, anonymous private-dataset reads, SVG social images rasterized for `og:image`, and CMS edit/publish freshness without redeploy. Checks covered format/lint/typecheck, 14 CMS/contract tests, 7 lead tests, both production builds, and Playwright flows at 320/360/768/1280. The owner accepted T03 on 2026-11-01; Lighthouse, the `/cart` flow, and catalog/blog routes remain deferred to their assigned tasks.
 
 T04 — Blog listing, article detail and publication. The OpenCode agent implemented the `/blog` listing, `/blog/halaman/N` pagination, `/blog/[slug]` detail with a typed server-side Portable Text renderer, related-product links and route-level SEO/canonical/social metadata. Edge cases exercised with temporary CMS records (all later deleted): six-per-page splits, out-of-range/malformed/decimal/zero-padded pages → 404, publish→refresh freshness without redeploy, unpublish and slug-change 404s, draft isolation, no-store headers, uniform card heights and inert disabled hover after owner corrections (D-031/D-032). The owner accepted T04 after a parallel review.
+
+T05 — Katalog dan detail produk. The OpenCode agent implemented the approved commerce fixtures (D-033: annual IDR prices, struck promotional prices, one shared per-product quota field so no per-package quota can bypass shared limits, per outlet/per pengguna unit labels) with 8 Node tests asserting the approved values, shared-quota shape, category filtering/empty state and fixture-failure behavior. A server-rendered catalog with plain category filter links (D-034), a reachable empty-result state (D-035) and unknown-category 404 responses, and a product detail page with original SVG screenshot illustrations, struck promo prices, "Kuota promo habis"/sisa-kuota display and an accessible Basic/Pro/Business radio island updating the displayed price immediately; no add-to-cart control yet (D-036). Checked edge cases: zero horizontal overflow at 360/320px on all routes, immediate click and keyboard radio price updates with an `aria-live` price region, SSR initial price, unknown-category/unknown-product 404s, zero-quota and non-promo display, catalog/detail metadata (title/description/canonical/og:image), and landing-CTA and blog-to-product journeys; the cart href is present while its destination stays deferred to T06. AI-detected correction: package radio rows overflowed at 360px and were made wrappable before the handoff. The owner accepted T05 on 2026-11-01; add-to-cart (T06), `view_item` instrumentation (T08) and Lighthouse (T09) remain deferred.
 
 ## AI errors detected and corrected (owner-reported)
 

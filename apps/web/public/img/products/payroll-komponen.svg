@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi antarmuka assessment Kodeva</title>
+  <desc id="desc">Ilustrasi layar aplikasi contoh; seluruh data fiktif.</desc>
+  <rect width="960" height="640" fill="#f6f9fc"/>
+  <rect x="64" y="64" width="832" height="512" rx="12" fill="#fff" stroke="#a8c3de"/>
+  <path d="M64 144h832" stroke="#a8c3de"/>
+  <g fill="#0d253d" font-family="system-ui,sans-serif">
+    <text x="96" y="116" font-size="26" font-weight="600">Kodeva Payroll · Komponen pendapatan</text>
+    <text x="96" y="540" font-size="15" fill="#273951">Ilustrasi assessment · seluruh data fiktif</text>
+  </g>
+<text x="96" y="196" font-size="20" font-weight="600" fill="#0d253d">Komponen pendapatan</text>
+  <text x="96" y="224" font-size="16" font-weight="400" fill="#273951">Perbandingan komponen contoh</text>
+  <g fill="#533afd">
+    <rect x="96" y="260" width="360" height="40" rx="6"/>
+    <rect x="96" y="320" width="240" height="40" rx="6"/>
+    <rect x="96" y="380" width="160" height="40" rx="6"/>
+  </g>
+  <text x="96" y="452" font-size="16" font-weight="400" fill="#0d253d">Gaji pokok</text>
+  <text x="96" y="476" font-size="16" font-weight="400" fill="#0d253d">Tunjangan</text>
+  <text x="96" y="500" font-size="16" font-weight="400" fill="#0d253d">Lembur</text>
+  <text x="480" y="285" font-size="16" font-weight="400" fill="#0d253d">Rp3.200.000</text>
+  <text x="360" y="345" font-size="16" font-weight="400" fill="#0d253d">Rp400.000</text>
+  <text x="280" y="405" font-size="16" font-weight="400" fill="#0d253d">Rp180.000</text>
+</svg>

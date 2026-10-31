@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi antarmuka assessment Kodeva</title>
+  <desc id="desc">Ilustrasi layar aplikasi contoh; seluruh data fiktif.</desc>
+  <rect width="960" height="640" fill="#f6f9fc"/>
+  <rect x="64" y="64" width="832" height="512" rx="12" fill="#fff" stroke="#a8c3de"/>
+  <path d="M64 144h832" stroke="#a8c3de"/>
+  <g fill="#0d253d" font-family="system-ui,sans-serif">
+    <text x="96" y="116" font-size="26" font-weight="600">Kodeva Akuntansi · Jurnal keuangan</text>
+    <text x="96" y="540" font-size="15" fill="#273951">Ilustrasi assessment · seluruh data fiktif</text>
+  </g>
+<text x="96" y="196" font-size="20" font-weight="600" fill="#0d253d">Jurnal keuangan</text>
+  <g>
+    <rect x="96" y="224" width="700" height="44" rx="6" fill="#f6f9fc" stroke="#a8c3de"/><text x="120" y="252" font-size="16" font-weight="400" fill="#273951">Penjualan toko</text> <text x="700" y="252" font-size="16" font-weight="400" fill="#533afd">+Rp1.240.000</text>
+    <rect x="96" y="276" width="700" height="44" rx="6" fill="#f6f9fc" stroke="#a8c3de"/><text x="120" y="304" font-size="16" font-weight="400" fill="#273951">Pembelian bahan</text> <text x="700" y="304" font-size="16" font-weight="400" fill="#b42318">-Rp560.000</text>
+    <rect x="96" y="328" width="700" height="44" rx="6" fill="#f6f9fc" stroke="#a8c3de"/><text x="120" y="356" font-size="16" font-weight="400" fill="#273951">Biaya listrik</text> <text x="700" y="356" font-size="16" font-weight="400" fill="#b42318">-Rp320.000</text>
+    <rect x="96" y="380" width="700" height="44" rx="6" fill="#f6f9fc" stroke="#a8c3de"/><text x="120" y="408" font-size="16" font-weight="400" fill="#273951">Pendapatan lain</text> <text x="700" y="408" font-size="16" font-weight="400" fill="#533afd">+Rp90.000</text>
+  </g>
+  <text x="96" y="476" font-size="16" font-weight="600" fill="#0d253d">Saldo bersih contoh: Rp450.000</text>
+</svg>

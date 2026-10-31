@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi antarmuka assessment Kodeva</title>
+  <desc id="desc">Ilustrasi layar aplikasi contoh; seluruh data fiktif.</desc>
+  <rect width="960" height="640" fill="#f6f9fc"/>
+  <rect x="64" y="64" width="832" height="512" rx="12" fill="#fff" stroke="#a8c3de"/>
+  <path d="M64 144h832" stroke="#a8c3de"/>
+  <g fill="#0d253d" font-family="system-ui,sans-serif">
+    <text x="96" y="116" font-size="26" font-weight="600">Kodeva Inventori · Pergerakan persediaan</text>
+    <text x="96" y="540" font-size="15" fill="#273951">Ilustrasi assessment · seluruh data fiktif</text>
+  </g>
+<text x="96" y="196" font-size="20" font-weight="600" fill="#0d253d">Pergerakan persediaan</text>
+  <text x="96" y="224" font-size="16" font-weight="400" fill="#273951">Masuk dan keluar barang, contoh satu minggu</text>
+  <path d="M96 300v180h768v-180" fill="none" stroke="#a8c3de"/>
+  <g fill="#533afd">
+    <rect x="140" y="392" width="56" height="88" rx="6"/>
+    <rect x="240" y="348" width="56" height="132" rx="6"/>
+    <rect x="340" y="416" width="56" height="64" rx="6"/>
+  </g>
+  <g fill="#a8c3de">
+    <rect x="390" y="376" width="56" height="104" rx="6"/>
+    <rect x="490" y="336" width="56" height="144" rx="6"/>
+  </g>
+  <g fill="#533afd">
+    <rect x="590" y="404" width="56" height="76" rx="6"/>
+    <rect x="690" y="356" width="56" height="124" rx="6"/>
+  </g>
+  <text x="96" y="520" font-size="16" font-weight="400" fill="#533afd">Bar masuk</text> <text x="190" y="520" font-size="16" font-weight="400" fill="#a8c3de">Bar keluar</text>
+</svg>

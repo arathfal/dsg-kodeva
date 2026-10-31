@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi antarmuka assessment Kodeva</title>
+  <desc id="desc">Ilustrasi layar aplikasi contoh; seluruh data fiktif.</desc>
+  <rect width="960" height="640" fill="#f6f9fc"/>
+  <rect x="64" y="64" width="832" height="512" rx="12" fill="#fff" stroke="#a8c3de"/>
+  <path d="M64 144h832" stroke="#a8c3de"/>
+  <g fill="#0d253d" font-family="system-ui,sans-serif">
+    <text x="96" y="116" font-size="26" font-weight="600">Kodeva HR · Kehadiran tim</text>
+    <text x="96" y="540" font-size="15" fill="#273951">Ilustrasi assessment · seluruh data fiktif</text>
+  </g>
+<text x="96" y="196" font-size="20" font-weight="600" fill="#0d253d">Kehadiran tim</text>
+  <text x="96" y="224" font-size="16" font-weight="400" fill="#273951">Rekap contoh bulan ini</text>
+  <rect x="100" y="252" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="216" y="252" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="332" y="252" width="96" height="64" rx="6" fill="#533afd"/>
+    <rect x="448" y="252" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="564" y="252" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="680" y="252" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="796" y="252" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="100" y="336" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="216" y="336" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="332" y="336" width="96" height="64" rx="6" fill="#533afd"/>
+    <rect x="448" y="336" width="96" height="64" rx="6" fill="#533afd"/>
+    <rect x="564" y="336" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="680" y="336" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="796" y="336" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="100" y="420" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="216" y="420" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="332" y="420" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="448" y="420" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="564" y="420" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="680" y="420" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="796" y="420" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="100" y="504" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="216" y="504" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="332" y="504" width="96" height="64" rx="6" fill="#533afd"/>
+    <rect x="448" y="504" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="564" y="504" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="680" y="504" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+    <rect x="796" y="504" width="96" height="64" rx="6" fill="#f6f9fc" stroke="#a8c3de"/>
+  <text x="96" y="560" font-size="16" font-weight="400" fill="#273951">Hadir ditandai · contoh data</text>
+</svg>

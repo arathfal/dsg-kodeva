@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi antarmuka assessment Kodeva</title>
+  <desc id="desc">Ilustrasi layar aplikasi contoh; seluruh data fiktif.</desc>
+  <rect width="960" height="640" fill="#f6f9fc"/>
+  <rect x="64" y="64" width="832" height="512" rx="12" fill="#fff" stroke="#a8c3de"/>
+  <path d="M64 144h832" stroke="#a8c3de"/>
+  <g fill="#0d253d" font-family="system-ui,sans-serif">
+    <text x="96" y="116" font-size="26" font-weight="600">Kodeva Laporan · Ekspor laporan</text>
+    <text x="96" y="540" font-size="15" fill="#273951">Ilustrasi assessment · seluruh data fiktif</text>
+  </g>
+<text x="96" y="196" font-size="20" font-weight="600" fill="#0d253d">Ekspor laporan</text>
+  <text x="96" y="224" font-size="16" font-weight="400" fill="#273951">Unduh ringkasan contoh</text>
+  <g>
+    <rect x="96" y="256" width="280" height="128" rx="8" fill="#f6f9fc" stroke="#a8c3de"/>
+    <text x="120" y="300" font-size="16" font-weight="600" fill="#0d253d">Ringkasan bulan ini</text><rect x="120" y="320" width="88" height="24" rx="12" fill="#533afd"/>
+    <rect x="396" y="256" width="280" height="128" rx="8" fill="#f6f9fc" stroke="#a8c3de"/>
+    <text x="420" y="300" font-size="16" font-weight="600" fill="#0d253d">Rekap persediaan</text><rect x="420" y="320" width="88" height="24" rx="12" fill="#a8c3de"/>
+    <rect x="696" y="256" width="176" height="128" rx="8" fill="#f6f9fc" stroke="#a8c3de"/>
+    <text x="720" y="300" font-size="16" font-weight="600" fill="#533afd">+ Tambah</text>
+  </g>
+  <rect x="96" y="424" width="200" height="40" rx="20" fill="#533afd"/>
+  <text x="124" y="450" font-size="16" font-weight="600" fill="#fff">Unduh PDF</text>
+</svg>

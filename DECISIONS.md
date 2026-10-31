@@ -39,7 +39,18 @@ Owner explicitly approved the proposed T02 contribution paragraph for AI_LOG: �
 
 Core/runtime pins are in D-008 above. Supporting packages: @astrojs/react 7.1.2, @astrojs/check 0.9.12, @tailwindcss/vite 4.3.3, react-dom 19.3.1, styled-components 6.6.0 (Studio peer), @types/node 24.19.2, @types/react and @types/react-dom 19.3.0; eslint 10.14.0, @eslint/js 10.0.1, typescript-eslint 8.72.1, eslint-plugin-astro 3.2.1, eslint-plugin-react-hooks 7.1.1, eslint-config-prettier 10.1.8; prettier 3.9.10, prettier-plugin-astro 1.1.2, prettier-plugin-tailwindcss 0.8.1. The TypeScript 6 pin follows the checkers' supported peer ranges. Registry metadata checks preceded installation; install/build results are separate evidence.
 
-## Pending proposals
+### T05 approvals — 2026-11-01
+
+Interactive Q&A (D-007 interactive rule) for T05. Explicit owner selections:
+
+- **D-033 / P-007 commerce fixtures:** Owner selected “Approve option A” after being offered two complete alternative pricing tables. Approved: annual IDR billing period displayed “Rp… / tahun”, integer rupiah, no taxes/vouchers; Basic < Pro < Business per product; shared per-product promo quota (never per package). Kasir #Penjualan & Kasir 1.8jt/2.7jt/3.9jt (coret 2.4/3.6/5.2jt), kuota 10; Inventori #Inventaris 1.2/1.9/2.9jt non-promo, kuota 5; HR #SDM & Payroll 1.5/2.4/3.5jt (coret 2.0/3.2/4.6jt), kuota 8; Payroll #SDM & Payroll 2.2/3.3/4.9jt non-promo, kuota 12; Akuntansi #Keuangan & Laporan 1.6/2.5/3.8jt (coret 2.1/3.3/5.0jt), kuota 15; Laporan #Keuangan & Laporan 0.9/1.4/2.2jt non-promo, kuota 0 (habis). Unit labels: kasir/inventori “per outlet”, hr/payroll/akuntansi/laporan “per pengguna”. Screenshots: 2–3 original simple SVG demo illustrations per product in the approved T02 seed-illustration style; no third-party imagery.
+- **D-034 / Catalog filter interaction:** Owner selected “Approve A: no-JS links (Recommended)”. Filter chips are plain links to `/products?kategori=slug`; Astro re-renders the filtered list on the server with no client JavaScript. Plain hrefs only — no designed shareable-filter-URL feature; unknown category slugs return 404.
+- **D-035 / Empty-result demonstration:** Owner selected “Approve B: add-on chip (Recommended)”. The catalog includes a fifth chip “Tambahan” (planned add-ons, no products) so a real empty-result state is visible in normal browsing.
+- **D-036 / Add-to-cart control in T05:** Owner selected “Approve A: omit button (Recommended)”. The T05 detail page renders packages/price/quota without any add-to-cart control; T06 introduces the working control. No placeholder or disabled buy button.
+
+### T04 approvals — 2026-11-01
+
+Interactive Q&A (D-007 interactive rule) for T04. Explicit owner selections:
 
 ### T04 approvals — 2026-11-01
 

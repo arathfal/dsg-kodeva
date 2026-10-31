@@ -13,6 +13,7 @@
     "dev:studio": "pnpm --filter @kodeva/studio dev",
     "lint": "eslint apps shared eslint.config.mjs prettier.config.mjs",
     "test:cms": "node --test shared/*.test.ts apps/web/src/lib/cms/*.test.ts",
+    "test:catalog": "node --test shared/catalog.test.ts",
     "test:leads": "node --test shared/leads.test.ts apps/web/src/lib/leads/*.test.ts",
     "typecheck": "pnpm -r typecheck",
     "build": "pnpm -r build",
