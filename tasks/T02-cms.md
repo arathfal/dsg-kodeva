@@ -41,7 +41,7 @@ Owner also verified native article duplication: the original showed “18 menit 
 
 Open checks: individually reported category-change edge cases, scoped lead submission credential availability and deployed Vercel behavior. Full authenticated browser automation remains unavailable. T03 owns the submission endpoint and credential integration; reviewer access for submission is deferred at the owner’s instruction. Available checks and owner reports do not establish every remaining edge case.
 
-Actual time: see TIME_LOG.md; observed work window includes unseparated approval waits, so active time needs owner confirmation. Commit: owner authorized a Conventional Commit with a nonempty body on 2026-10-31 (“Iya commit pakai body”); the hash is to be recorded after commit without silently amending it. The owner separately approved the T02 contribution entry in AI_LOG.md, which has now been added.
+Actual time: see TIME_LOG.md; observed work window includes unseparated approval waits, so active time needs owner confirmation. Owner-authorized implementation commit: `20e8dd3de7e8343af8ebea8b8ddeedf2da13d3de` (`feat(cms): add content contracts and published reads`), with a nonempty body. The owner separately authorized this documentation-only commit to record its reference without amending the implementation commit. The owner separately approved the T02 contribution entry in AI_LOG.md, which has now been added.
 
 ## Approved content contract
 
