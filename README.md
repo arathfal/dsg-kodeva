@@ -14,7 +14,9 @@ A scoped T02 amendment (D-025) makes the featured-product cards fully CMS-editab
 
 T04 implements the blog: `/blog` listing and `/blog/halaman/N` pagination with approved six-per-page size and 404 policy, `/blog/[slug]` article detail with validated safe rich text rendering (headings, lists, emphasis, http(s) links), related-product links to `/products/[id]`, and per-route SEO/canonical/social metadata including `og:type article` and rasterized sharing images. Blog URL policy, rich text approach, page compositions, and temporary QA records were approved through interactive Q&A (DECISIONS.md D-026–D-030). Runtime owner corrections (D-031, D-032) made listing cards uniformly tall with ellipsized title/excerpt truncation, and kept the pagination indicator centered with always-rendered disabled controls whose hover state is inert. Available checks passed: format, lint, typecheck, 14 CMS/contract tests, and both production builds. Live temporary QA records exercised pagination splits, out-of-range/malformed pages, publish→refresh freshness, unpublish, slug changes, and draft isolation; all QA records were deleted and zero leftovers were verified. Deployed Vercel behavior and Lighthouse remain T09; product destinations remain verified after T05.
 
-T05 implements the marketplace catalog and product details from the approved commerce fixtures (D-033: annual IDR prices, struck promotional prices, shared per-product promo quota, per outlet/per pengguna unit labels). The catalog renders server-side with no-JS category filter links (D-034), a reachable empty-result state (D-035), and 404 handling for unknown categories; `/products/[id]` shows original SVG screenshot illustrations, current and struck prices, shared quota ("Sisa kuota promo…" or "Kuota promo habis") and an accessible Basic/Pro/Business radio island that updates the displayed price immediately; no add-to-cart control yet (D-036). Eight Node tests assert the fixture values, shared-quota shape and filter results. Browser checks covered zero horizontal overflow at 360/320px, immediate click and keyboard price updates, unknown-category/unknown-product 404s, initial metadata (title/description/canonical/og:image), and landing-CTA/blog-to-product journeys. The owner accepted T05 on 2026-11-01. Add-to-cart (T06), `view_item`/`add_to_cart` instrumentation (T08) and Lighthouse (T09) remain deferred.
+T05 implements the marketplace catalog and product details from the approved commerce fixtures (D-033: annual IDR prices, struck promotional prices, shared per-product promo quota, per outlet/per pengguna unit labels). The catalog renders server-side with no-JS category filter links (D-034), a reachable empty-result state (D-035), and 404 handling for unknown categories; `/products/[id]` shows original SVG screenshot illustrations, current and struck prices, shared quota ("Sisa kuota promo…" or "Kuota promo habis") and an accessible Basic/Pro/Business radio island that updates the displayed price immediately; an add-to-cart button adds the selected package with quantity 1 (D-036). Eight Node tests assert the fixture values, shared-quota shape and filter results. Browser checks covered zero horizontal overflow at 360/320px, immediate click and keyboard price updates, unknown-category/unknown-product 404s, initial metadata (title/description/canonical/og:image), and landing-CTA/blog-to-product journeys. The owner accepted T05 on 2026-11-01. `view_item`/`add_to_cart` instrumentation (T08) and Lighthouse (T09) remain deferred.
+
+T06 implements the persistent cart behind approved D-037–D-040: a Zustand `persist` store (`kodeva-cart`, versioned) whose every mutation and restore is validated by pure logic in `shared/cart.ts` against the approved fixtures — line identity is product+package, repeated adds grow one line, the per-product promo quota is shared across all packages, quantities are positive safe integers to 9999, and amounts are always integer rupiah recomputed from fixtures so persisted totals are never trusted. Restore drops invalid/unknown lines, clamps over-limit quantities to the current shared quota, reports recovery/corrupt/version/denied-storage outcomes visibly in `/cart`, and never overwrites in-session changes made before restore. After two agent implementation rounds the owner finalized the `/cart` layout by hand in `CartView.tsx` (item-list panel with divided rows and an accessible quantity stepper plus a sticky subtotal aside, stacking on phones); the agent later split that file verbatim into `CartView.tsx` + `CartRow.tsx` with no layout change, verified by block diffs and 1280/360px screenshots. The header cart icon gains a hydrated count badge on every public page. Eleven new Node tests (`test:cart`) plus carried-over suites pass; browser checks covered add→change→refresh→remove, quota boundaries across packages (Basic 6 + Pro 4 at the shared limit), forged/corrupt/old-version storage, blocked localStorage (session-only cart), keyboard use, and layouts without overflow at 320/360px. Cross-tab sync is a documented limitation (no storage-event synchronization). Checkout, payments, analytics and Lighthouse remain T07–T09.
 
 Requirements and implementation scope are documented in [PRD.md](PRD.md) and [TASKS.md](TASKS.md).
 
@@ -33,7 +35,7 @@ The selected architecture uses:
 
 Astro supports content rendering and SEO while keeping browser JavaScript focused on interactive features. pnpm workspaces keep the web application and Studio in one repository.
 
-T02 configures request-time Astro rendering with the Vercel adapter. The existing foundation route still has no CMS content; its title/description and optional canonical/social image props render in the initial HTML. One small React island demonstrates controls; the shell stays rendered by Astro. Zustand will be added with cart implementation.
+T02 configures request-time Astro rendering with the Vercel adapter. The existing foundation route still has no CMS content; its title/description and optional canonical/social image props render in the initial HTML. One small React island demonstrates controls; the shell stays rendered by Astro. Zustand 5.0.16 was added in T06 (already present in the lockfile as a Studio dependency and explicitly part of the approved D-001 architecture) with a versioned `persist` store and validated rehydration.
 
 Approved decisions and implementation proposals are tracked in [DECISIONS.md](DECISIONS.md). The design specification is in [DESIGN.md](DESIGN.md).
 
@@ -90,6 +92,9 @@ pnpm lint
 pnpm typecheck
 pnpm format:check
 pnpm test:cms
+pnpm test:catalog
+pnpm test:leads
+pnpm test:cart
 pnpm build
 ```
 
@@ -103,7 +108,7 @@ The blog uses the D-026 URL policy: `/blog` (page 1), `/blog/halaman/N` (pages 2
 
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG sessions S-023B and S-024:
+Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024 and S-025:
 
 | Scope | Recorded time |
 | --- | --- |
@@ -122,7 +127,8 @@ Recorded-interval snapshot through TIME_LOG sessions S-023B and S-024:
 | T04 combined | **32m 20s** |
 | T05 implementation, verification and documentation (S-024, owner-confirmed) | 19m 58s |
 | T05 combined | **19m 58s** |
-| **Whole project combined (recorded)** | **2h 59m 52s** |
+| T06 implementation, verification and documentation (S-025, observed) | ~22m 25s |
+| **Whole project combined (recorded)** | **~3h 22m 17s** |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
 

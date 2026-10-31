@@ -83,6 +83,8 @@ const quota =
         </h2>
         <div class="panel space-y-5">
           <PackageSelector
+            productId={entry.id}
+            productName={product.name}
             offers={entry.packages}
             priceId="selected-price"
             client:load

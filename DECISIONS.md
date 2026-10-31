@@ -48,9 +48,14 @@ Interactive Q&A (D-007 interactive rule) for T05. Explicit owner selections:
 - **D-035 / Empty-result demonstration:** Owner selected “Approve B: add-on chip (Recommended)”. The catalog includes a fifth chip “Tambahan” (planned add-ons, no products) so a real empty-result state is visible in normal browsing.
 - **D-036 / Add-to-cart control in T05:** Owner selected “Approve A: omit button (Recommended)”. The T05 detail page renders packages/price/quota without any add-to-cart control; T06 introduces the working control. No placeholder or disabled buy button.
 
-### T04 approvals — 2026-11-01
+### T06 approvals — 2026-11-01
 
-Interactive Q&A (D-007 interactive rule) for T04. Explicit owner selections:
+Interactive Q&A (D-007 interactive rule) before T06 implementation. Explicit owner selections:
+
+- **D-037 / P-009 test runner for T06:** Owner selected "Node built-in (Recommended)": cart/quota/money logic tests run with `node --test` (type-stripped TS), matching the T02–T05 precedent of D-018; no new test dependency and no Vitest.
+- **D-038 / P-007 restore policy:** Owner selected "Drop invalid, keep valid (Recommended)". Hydration validates persisted lines: quantity must be a positive safe integer; product/package must exist; per-product quantity total must not exceed the current shared quota. Invalid lines are dropped, over-limit valid quantities clamped to the remaining quota (quota 0 drops the line), valid lines stay; totals are always recomputed from the approved fixtures and never read from storage; a visible notice explains any recovery. Corrupt/old payloads under the versioned key restore as an empty cart with a notice. Unknown storage fields (e.g. forged totals) are ignored.
+- **D-039 / P-007 line identity and add-to-cart interaction:** Owner selected "product+package lines, add qty 1 (Recommended)". Cart identity is `productId` + `packageId`; repeated adds of the same product+package increment one line. The product-detail "Tambah ke keranjang" control adds the currently selected package with quantity 1; quantity steppers live in the cart only.
+- **D-040 / header cart count:** Owner selected "Small header island (Recommended)". A small React island hydrated on every public page renders the cart count badge from the store; initial HTML shows the existing icon-only link without a count (no false data), the count appears after hydration, and it is absent when storage is unavailable.
 
 ### T04 approvals — 2026-11-01
 

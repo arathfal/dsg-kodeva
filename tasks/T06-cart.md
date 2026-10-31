@@ -20,13 +20,25 @@ Run unit tests for exact quota boundary, boundary+1, Basic+Pro shared total, rep
 
 ## Manual review and boundaries
 
-- [ ] Cross-package quota test demonstrated at limit and over limit.
-- [ ] Persistence/hydration and stale-data outcomes evidenced.
-- [ ] Pricing/subtotal and mobile controls reviewed.
-- [ ] Errors preserve valid state; no stored total trusted.
+- [x] Cross-package quota test demonstrated at limit and over limit (`pnpm test:cart` 11/11; browser: Basic 6 + Pro 4 fills kasir quota 10, further +/typed increases rejected with per-line messages, Pro stepper disabled at the boundary).
+- [x] Persistence/hydration and stale-data outcomes evidenced (refresh restores 3×Basic incl. computed totals; forged `total`/price fields ignored, subtotal recomputed Rp18.000.000 from fixtures; over-quota persisted line clamped to 10 with a recovery notice; unknown product dropped; corrupt JSON → empty cart + storage notice; `version:99` → empty cart + notice and storage rewritten to version 1; blocked localStorage → session-only cart with notice, still addable, reloaded cart is empty).
+- [x] Pricing/subtotal and mobile controls reviewed (integer rupiah math asserted in tests and browser: 2×Rp1.800.000 = Rp3.600.000, cross-package Rp37.300.000 case in tests; 320/360px no horizontal overflow with 44px steppers).
+- [x] Errors preserve valid state; no stored total trusted (rejected over-quota/invalid quantities leave the cart unchanged; input draft snaps back with `aria-invalid` + `role="alert"`; quoted amounts always come from `quoteCart`, never storage).
+
+## Verification record (2026-11-01)
+
+- **Owner UI acceptance and manual revision (S-026/S-027):** the owner accepted the refined cart direction ("Oke done") and hand-revised `CartView.tsx` because the agent's layout was not exactly right. The owner's revision became the final layout: item list panel ("Ringkasan keranjang", package chip + unit line, compact unit-price/subtotal columns, integrated − / typed-input / + stepper with hidden spin buttons, quota/removal footer row) plus a sticky "Subtotal" aside with per-item counts and the recomputed total, stacking on small screens, and line-quantity logic factored into a `useQuantityEditor` hook. Agent task afterwards: split that file without any layout change. The row view (hook + `CartRow`) moved verbatim to `apps/web/src/components/CartRow.tsx` (252 lines) leaving `CartView.tsx` at 183/435 lines; moved blocks were diff-verified identical and rendering is unchanged.
+- `pnpm format:check` clean; `pnpm lint` 0 errors; `pnpm typecheck` 0 errors (astro check);
+  `pnpm build` web + studio passed.
+- `pnpm test:cart` 11/11 new Node tests (`shared/cart.test.ts`): repeated adds on one product+package identity; unknown product/package; exact boundary (Basic 6 + Pro 4 = quota 10), boundary+1 rejection with per-line `maxAllowed`; changing a line while another variant exists; independent quotas across products incl. zero-quota laporan; zero/negative/fractional/NaN/±Infinity/oversized (>9999, >MAX_SAFE_INTEGER) rejected both at mutation and recovery; change/remove/re-add; integer-rupiah subtotal exactness (Rp37.300.000 case); forged persisted totals/price fields ignored with amounts recomputed from fixtures; recovery dropping unknown identities/corrupt entries; quota clamping and duplicate-line merging on restore; version/key policy including legacy-version empty restore. Existing suites still pass: `test:catalog` 8/8, `test:leads` 7/7, `test:cms` 33/33.
+- Browser (Playwright, dev server): /cart direct navigation shows restoring state clearly ("Memuat keranjang…" only until the island hydrates, then empty state); add→change(+, typed Enter)→refresh(3×Basic restored incl. totals)→remove(Pro line removed, Basic kept; last line removal → empty state and empty storage `{lines:[],version:1}`); header badge appears only after hydration and clears at 0; add-to-cart on detail adds 1 license of the selected package with a success line and "Lihat keranjang" link; disabled add button on quota-full kasir (10/10 restored) and zero-quota laporan; recovery/forged/corrupt/version/denied-storage scenarios above all visible in the UI.
+- Mobile/keyboard: 320px and 360px cart and detail without horizontal overflow; stepper buttons 44×44px; typed-quantity edit + Enter via keyboard updates line and subtotal; screen-reader labels for steppers/input/removal; `role="status"` restore notices and `role="alert"` rejections.
+- Cross-tab limitation (documented, no guarantees): a second tab opened after a change shows the previous state until reload, because the persisted store is re-read at island mount and no storage-event sync is implemented.
+- Console clean apart from an Astro dev-toolbar "Outdated Optimize Dep" 504 artifact of the running dev server; initial `/cart` HTML server-renders the loading state and `Cache-Control: no-store` still applies from middleware.
+- Screenshots retained locally only (/tmp), not committed.
 
 Out of scope: checkout/payment, global reservations, vouchers, taxes/currencies not approved, production backend.
 
 ## Status
 
-Completion: proposed, not started. Verification: not run. Acceptance: pending. Actual time: not measured; update TIME_LOG.md including debugging. Commit: none; separate authorization required.
+Completion: **accepted by owner on 2026-11-01**. The owner approved the refined cart direction and authorized the commit in the same message ("Oke done … setelah itu kamu boleh commit"), delivering their own manual `CartView.tsx` layout revision that becomes the final UI; the agent's follow-up task was splitting that file without any layout change (done, S-027). Verification: available checks passed (see Verification record; behavior preserved by the owner's own `useQuantityEditor` logic and `test:cart`). Acceptance: recorded. Actual time: see TIME_LOG.md S-025–S-027; observed windows, tails and S-025 confirmation untimed. Commit: authorized; see tracker for the hash. Out-of-scope items remain checkout/payment (T07), analytics (T08), Lighthouse/deployment (T09), backend. Cross-tab sync is a documented limitation, not a guarantee.

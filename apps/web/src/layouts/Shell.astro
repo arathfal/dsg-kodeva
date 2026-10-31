@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import CartIcon from "../components/icons/CartIcon.astro";
+import { CartCount } from "../components/CartCount";
 
 interface Props {
   title: string;
@@ -57,11 +58,12 @@ const {
           Katalog
         </a>
         <a
-          class="inline-flex min-h-11 min-w-11 items-center justify-center font-semibold"
+          class="relative inline-flex min-h-11 min-w-11 items-center justify-center font-semibold"
           href="/cart"
           aria-label="Keranjang"
         >
           <CartIcon />
+          <CartCount client:idle />
         </a>
       </nav>
     </header>

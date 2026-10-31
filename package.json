@@ -15,6 +15,7 @@
     "test:cms": "node --test shared/*.test.ts apps/web/src/lib/cms/*.test.ts",
     "test:catalog": "node --test shared/catalog.test.ts",
     "test:leads": "node --test shared/leads.test.ts apps/web/src/lib/leads/*.test.ts",
+    "test:cart": "node --test shared/cart.test.ts",
     "typecheck": "pnpm -r typecheck",
     "build": "pnpm -r build",
     "format": "prettier --write apps shared package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs",

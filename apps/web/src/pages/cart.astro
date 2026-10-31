@@ -1,0 +1,32 @@
+---
+import Shell from "../layouts/Shell.astro";
+import { CartView } from "../components/CartView";
+import { CART_PATH } from "../../../../shared/content.ts";
+
+// T06 cart page (R-014/R-015/R-017/R-018): the static shell is server
+// rendered; contents, notices and totals come from the validated cart island.
+const title = "Keranjang | Kodeva";
+const description =
+  "Keranjang langganan tahunan Kodeva dengan jatuh/menaik jumlah lisensi, kuota promo antar paket, dan subtotal otomatis. Simulasi assessment tanpa pembelian nyata.";
+let canonical: URL | undefined;
+try {
+  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
+  if (["https:", "http:"].includes(origin.protocol))
+    canonical = new URL(CART_PATH, origin.origin);
+} catch {
+  /* Missing configuration must not use an untrusted request origin. */
+}
+---
+
+<Shell title={title} description={description} canonical={canonical}>
+  <div class="space-y-8">
+    <header class="max-w-prose space-y-3">
+      <h1 class="text-hero font-semibold tracking-tight">Keranjang</h1>
+      <p class="text-secondary">
+        Semua paket satu produk memakai kuota promo yang sama; jumlah total
+        lisensi produk tidak boleh melebihi sisa kuota.
+      </p>
+    </header>
+    <CartView client:load />
+  </div>
+</Shell>
