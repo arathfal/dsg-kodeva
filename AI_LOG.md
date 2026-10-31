@@ -1,6 +1,6 @@
 # AI usage log
 
-Filled incrementally under the owner-approval and verification rules in [AGENTS.md](AGENTS.md). T01 was reviewed and accepted by the owner on 2026-10-30 with the documented Studio authentication limitation. T03, T04 and T05 were accepted on 2026-11-01.
+Filled incrementally under the owner-approval and verification rules in [AGENTS.md](AGENTS.md). T01 was reviewed and accepted by the owner on 2026-10-30 with the documented Studio authentication limitation. T03, T04, T05 and T06 were accepted on 2026-11-01.
 
 ## Tools used
 
@@ -29,6 +29,8 @@ T04 — Blog listing, article detail and publication. The OpenCode agent impleme
 
 T05 — Katalog dan detail produk. The OpenCode agent implemented the approved commerce fixtures (D-033: annual IDR prices, struck promotional prices, one shared per-product quota field so no per-package quota can bypass shared limits, per outlet/per pengguna unit labels) with 8 Node tests asserting the approved values, shared-quota shape, category filtering/empty state and fixture-failure behavior. A server-rendered catalog with plain category filter links (D-034), a reachable empty-result state (D-035) and unknown-category 404 responses, and a product detail page with original SVG screenshot illustrations, struck promo prices, "Kuota promo habis"/sisa-kuota display and an accessible Basic/Pro/Business radio island updating the displayed price immediately; no add-to-cart control yet (D-036). Checked edge cases: zero horizontal overflow at 360/320px on all routes, immediate click and keyboard radio price updates with an `aria-live` price region, SSR initial price, unknown-category/unknown-product 404s, zero-quota and non-promo display, catalog/detail metadata (title/description/canonical/og:image), and landing-CTA and blog-to-product journeys; the cart href is present while its destination stays deferred to T06. AI-detected correction: package radio rows overflowed at 360px and were made wrappable before the handoff. The owner accepted T05 on 2026-11-01; add-to-cart (T06), `view_item` instrumentation (T08) and Lighthouse (T09) remain deferred.
 
+T06 — Persistent cart, pricing and shared quota. The OpenCode agent implemented the approved cart contracts (D-037–D-040): pure validated cart/quota/money logic in `shared/cart.ts` with 11 Node tests, a Zustand persist store whose mutations and rehydration revalidate against the approved fixtures, a `/cart` island with distinct restoring/empty/recovery states, a quota-aware add-to-cart control on the product detail page, and a hydrated header count badge. Checked edge cases: shared-quota boundaries across packages, invalid/oversized quantities, refresh restores, forged persisted totals ignored, over-quota clamping with notices, corrupt/old-version storage, blocked local storage (session-only cart), keyboard and 320/360/1280px layouts. After the owner rejected the agent's cart-page composition, the owner hand-revised the layout (see "Work done without AI") and the agent then executed the owner-requested verbatim file split (`CartView.tsx` + `CartRow.tsx`) with zero layout/behavior change, re-running format/lint/typecheck/test:cart/build and 1280/360px browser checks before the authorized commit. `CART_PATH` was added to `shared/content.ts` for the approved `/cart` destination. Checkout, payment simulation (T07), analytics (T08), and Lighthouse (T09) remain deferred.
+
 ## AI errors detected and corrected (owner-reported)
 
 - The first landing page presented "Pilihan Aplikasi" as a plain list of product links without visual hierarchy. The owner rejected it during visual review. The agent replaced it with product cards (icon, description, features, CTA) and proposed the scoped T02 amendment recorded in D-025 so marketing could edit card content. Browser checks then confirmed CMS-driven card content rendered correctly.
@@ -38,6 +40,7 @@ T05 — Katalog dan detail produk. The OpenCode agent implemented the approved c
 
 - The owner manually revised `apps/web/src/components/TestimonialCard.astro` after rejecting the agent's design.
 - The owner performed the visual reviews that identified both UI shortcomings and accepted T03.
+- The owner hand-revised `apps/web/src/components/CartView.tsx` into the final T06 cart layout (divided item rows with the integrated quantity stepper, a sticky subtotal aside, package chip and `useQuantityEditor` split) after rejecting the agent's layout composition, reviewed the delivered cart behavior, and authorized the T06 commit; the agent then only executed the requested file split without any layout change.
 
 ## Pending owner review
 

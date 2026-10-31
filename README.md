@@ -108,7 +108,7 @@ The blog uses the D-026 URL policy: `/blog` (page 1), `/blog/halaman/N` (pages 2
 
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024 and S-025:
+Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024, S-025, S-026 and S-028 (S-027 remains unquantified):
 
 | Scope | Recorded time |
 | --- | --- |
@@ -128,7 +128,9 @@ Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024 and S-025:
 | T05 implementation, verification and documentation (S-024, owner-confirmed) | 19m 58s |
 | T05 combined | **19m 58s** |
 | T06 implementation, verification and documentation (S-025, observed) | ~22m 25s |
-| **Whole project combined (recorded)** | **~3h 22m 17s** |
+| T06 owner-directed UI refinement (S-026, observed) | ~3m |
+| T06 acceptance round: owner manual revision, verbatim file split, authorized commit (S-027) and approved log/hash reconciliation (S-028) | observed windows of minutes, not individually quantified |
+| **Whole project combined (recorded)** | **~3h 25m 17s** |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
 
