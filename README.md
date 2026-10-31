@@ -93,11 +93,18 @@ Tailwind v4 uses the Vite plugin and `apps/web/src/styles/global.css`. Prettier 
 
 ## Recorded working time
 
-Separately measured intervals through S-009 total **20m 37s**, including **16m 59s** of planning intervals and **3m 38s** of T01 prerequisite review and follow-up documentation. T01's main implementation/review work window was an additional **24m 17s**, including permission waits that were not separately timed.
+Recorded-interval snapshot through TIME_LOG session S-018:
 
-These figures are partial records, not the full actual active project total. Earlier unmeasured planning, discussion/handoff tails and unseparated permission waits prevent a reliable cumulative active total. The owner authorized proceeding without supplying durations. Session records, including failed checks and recovery, are maintained in [TIME_LOG.md](TIME_LOG.md).
+| Scope | Recorded time |
+| --- | --- |
+| T02 — Codex/agent intervals | 32m 38s |
+| T02 — owner editing review, confirmed not overlapping | 6m |
+| **T02 combined** | **38m 38s** |
+| **Whole project combined** | **1h 23m 32s** |
 
-T02 adds prerequisite review and an observed implementation/check window recorded in S-010/S-011. That window contains unseparated tool-approval waits; it is not a confirmed active duration and is not included in the older S-009 partial figures above. Owner reconciliation is required for the cumulative actual total. The owner separately reported six minutes spent trying content edits; this confirms that review interval only, not total T02 active time. Agent work is recorded separately in TIME_LOG.md. Parallel review/checks are counted within the parent session once; owner/agent overlaps must also count once, not as summed person-time. Unknown overlap and unseparated waiting prevent a reliable full cumulative active total.
+The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
+
+These figures are sums of recorded intervals, **not complete actual active working-time totals**. Main agent windows still include unseparated approval waits, while some intake, discussion, staging/commit, handoff and later time-reconciliation work was not continuously timed. Unknown time is not assumed to be zero. [TIME_LOG.md](TIME_LOG.md) preserves session details, arithmetic and these limitations.
 
 ## Project documentation
 
