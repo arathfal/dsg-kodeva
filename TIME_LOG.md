@@ -16,7 +16,8 @@ Work began on **October 30, 2026**. The assessment deadline was **November 1, 20
 | T08 — marketing attribution | ~5m 17s | S-033 stamped portion; earlier reading/approval and tail untimed |
 | T09 — integrated QA and deployment checks | ~56m | S-034, S-034B, S-034C, S-034D |
 | T10 — submission documentation | ~23m | S-035; owner-confirmed 2026-11-01 (window 10:30–10:53 WIB); acceptance/commit tail untimed |
-| **Total of the recorded windows above, including T10** | **~5h 29m 18s** | Partial total, not final actual-active total |
+| Bonus — shareable catalog state (sort, search, filter in URL) | S-036 rounds: observed windows, **owner confirmation pending** | S-036, S-036A, S-036B, S-036C, S-036D |
+| **Total of the recorded windows above, including T10, excluding S-036** | **~5h 29m 18s** | Partial total, not final actual-active total |
 
 **Important:** this total intentionally excludes unknown/untimed portions and **does not mean those portions took zero time**. Some observed agent work windows also contained short approval/tool waits that were not separately measurable. It would therefore be misleading to present `5h 06m 18s` as the complete actual active work duration required in the assessment README without developer reconciliation.
 

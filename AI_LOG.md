@@ -100,6 +100,26 @@ The following are **shortcomings I identified during visual and functional revie
 
 **How it was verified:** Checkout tests, builds, and browser checks passed. A recovered-cart scenario verified that notices remained on the applicable screens but were absent on payment success; checks also covered header visibility, cart clearing, and responsive layout. I accepted the corrected result. See [T07](tasks/T07-checkout.md) and [TIME_LOG.md](TIME_LOG.md) (S-030–S-032).
 
+### Failure 5 — Catalog filter bar did not match the intended design and interaction (Bonus)
+
+**What went wrong:** The first optional-bonus implementation of the catalog's shareable search/filter/sort state worked functionally (URL-reflected `kategori`, `q`, and a price-sort parameter), but its layout — a plain search form with a visible "Cari" button and separate chip rows plus a stack of sort links — did not match the intended design, and search required a manual submit instead of behaving in real time. The industry-standard parameter naming (`urutan=harga-naik|harga-turun`) was also not what I wanted; the price-sort parameter should read `harga` with values `termahal|termurah`.
+
+**How I found it:** I reviewed the rendered catalog against my reference layout ("Modern Kodeva Product Filter Bar.png") after the agent completed and self-verified the first version.
+
+**How it was corrected:** The agent was instructed to follow the reference layout with no icons on category chips, make search real-time (no button, debounced), and rename the price-sort parameter to `harga=termahal|termurah`. The agent rebuilt the region as a full-width rounded search input with a magnifier icon, one row of category chips plus an `Urutkan:` picker and a "Menampilkan N produk" count line, added a ~300 ms debounced script that navigates typed searches (and submits picker changes) by GET — so the URL remains the source of truth — with a `noscript` fallback button, and updated the fixtures/tests to the new parameter values. Two implementation slips caught by checks along the way: a nested JSX ternary was rejected by the Astro/eslint parsers and restructured to flat conditionals, and an initial change also silently reordered the default catalog view until a browser snapshot caught it; both were fixed and re-verified before handoff.
+
+**How it was verified:** Format/lint/typecheck stayed clean; the catalog suite passed 15/15 with all other suites unchanged; production builds passed. Browser checks confirmed that typing navigated after the debounce to the expected URLs, that the picker appended `harga=termahal`, that chips preserved `q`/`harga`, that unknown category values still returned 404 and unknown sort values fell back to the default order, and that desktop and 320 px renderings of the new bar had no horizontal overflow. Owner acceptance of the bonus task remains separate. See [TIME_LOG.md](TIME_LOG.md) (S-036–S-036A) and [DECISIONS.md](DECISIONS.md) (D-048–D-049).
+
+### Failure 6 — Text inputs were reimplemented repeatedly instead of extracted into a reusable component (Bonus)
+
+**What went wrong:** While building the catalog filter bar, the AI duplicated the text-input markup (styling class, size/spacing variants) instead of wrapping it behind a reusable component — the same pattern already existed in `CheckoutForm.tsx` and `LeadForm.tsx` before it.
+
+**How I found it:** I flagged it while reviewing the catalog filter-bar changes and directed that inputs become a shared component (2026-11-01).
+
+**How it was corrected:** The agent extracted a reusable `Input` — `apps/web/src/components/Input.astro` for the server-rendered search bar and `apps/web/src/components/Input.tsx` (one shared class contract) for the checkout and lead forms — and left deliberately bespoke inputs raw: the checkout simulation radios (custom layout) and the honeypot field (deliberately unstyled). Rounded corner tokens were also unified at the same time so buttons and inputs read 8px while pill-shaped controls (category chips, badges, the sort trigger) stay fully rounded; the radius/border restyling itself is not itemized in this log.
+
+**How it was verified:** Format/lint/typecheck stayed clean (one real `astro check` error in the new component — an over-wide `type` attribute union — was caught by the check and narrowed to the HTML input kinds it serves); catalog suite 15/15 and all other suites unchanged; build clean; browser checks read computed radius values on the catalog search input, the lead-form input, chips and the sort trigger to confirm the intended mixing of the 8px controls and pills. See [TIME_LOG.md](TIME_LOG.md) (S-036D) and [DECISIONS.md](DECISIONS.md) (D-052).
+
 ## 5. What I implemented myself, without AI-generated layout code
 
 I chose to take direct control of these UI details because iterating manually was faster than further prompting and let me make precise visual decisions:

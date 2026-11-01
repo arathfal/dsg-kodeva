@@ -39,6 +39,20 @@ For editor field details and publishing rules, see the [CMS content contract](ta
 - **UTM attribution:** captures valid `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, and `utm_content` as the first touch within a browser tab session. Attribution survives page navigation and is included in stored leads and mock checkout-order payloads; buyer personal data is excluded from analytics events.
 - **Mobile performance:** **Lighthouse Performance 100** on the deployed landing page (final submitted evidence; QA-era runs 97–99), above the assessment target of 80.
 
+### Bonus: shareable catalog state (search, filter, price sort)
+
+Optional brief item, implemented on top of the required catalog:
+
+- **Everything lives in the URL.** The catalog defaults are unchanged; three composeable parameters describe any catalog view: `kategori` (existing), `q` (search text), and `harga=termahal|termurah` (price ordering). Sharing `/products?kategori=sdm-payroll&q=gaji&harga=termahal` re-renders the same filtered, on-order view on a fresh load. The controls are plain links and one GET form; a small owner-directed debounce script (300 ms) submits typed searches in real time and submits sort changes immediately, trimmed so shared URLs carry no empty-parameter noise. Without JavaScript a visible fallback submit button appears, and the server-rendered result is identical.
+- **Search and sort in one filter bar** (owner-directed reference layout with follow-up corrections): a full-width rounded search input with a magnifier icon; category chips scroll horizontally in one line with the scrollbar hidden, and a vertical divider sits exactly between the chip row and the `Urutkan` popup (disclosure with "Harga Terendah"/"Harga Tertinggi" options; the trigger shows the chosen option with a ✕ clear action, defaulting to just "Urutkan"); on mobile the category row and the sort control stack vertically. A "Menampilkan N produk" result count is shown. Categories use a **light-purple tint of the primary color** for the active chip, so filters stay visually distinct from filled primary buttons; category chips carry no icons.
+- **Sorting** uses each product's Basic starting price (the price the cards and detail page introduce). Without `?harga`, the catalog keeps the approved fixture order — the default view is not reordered, and the picker's **Bawaan** option returns to it.
+- **Search** matches a product's name, summary description, and features (the text its card shows); case-insensitive, trimmed, and capped at 100 characters so request URLs stay reasonable. A blank search means "no filter".
+- **State preservation between controls.** Category chips keep the active `q`/`harga`; the shared GET form submits `q` and `harga` together with `kategori` via a hidden input. The no-results state offers a "Hapus pencarian" link that removes only the search term.
+- **Unknown inputs fail soft where the original contract says so.** Unknown `kategori` values still return 404 as approved; unknown `harga` values and blank/oversized searches fall back to the default view instead of erroring, and are dropped from regenerated shareable links. Interpolated search text is HTML-escaped by Astro.
+- **Canonical URLs intentionally stay at `/products`** so a filtered view is shareable without one indexed URL per state; no tracking events fire from filter/search/sort usage, matching the catalog's event contract.
+- **Verification:** 7 new tests in `shared/catalog.test.ts` (ordering, search matching, composition, argument-validation and URL-building edge cases); all six suites still pass; format/lint/typecheck/build clean; browser checks confirmed each parameter composes in the URL, debounced real-time search and sort changes, state preservation between controls, the empty-search state, unknown-value fallbacks, 404 behaviour and 320/360px layouts without horizontal overflow.
+
+
 ## Architecture and technical decisions
 
 | Area | Implementation | Reason |
@@ -130,7 +144,7 @@ The recorded final QA passed **109 Node tests across six suites**, lint, formatt
 
 **Recorded active-work intervals: approximately 5 hours 29 minutes 18 seconds**, covering planning, implementation, review, QA, deployed verification, and the developer-confirmed submission-documentation session on 1 November 2026. This is **not claimed as the complete actual active-work total**: the submission-documentation window was developer-confirmed (~23 minutes), but earlier owner review/handoff intervals, owner-side UI editing, and the final commit/submission tails were not continuously timed. Unknown intervals have not been counted as zero.
 
-The detailed session ledger and its timing caveats are in [TIME_LOG.md](TIME_LOG.md). The remaining unknown intervals stay disclosed rather than silently added to or removed from this figure.
+The detailed session ledger and its timing caveats are in [TIME_LOG.md](TIME_LOG.md). The remaining unknown intervals stay disclosed rather than silently added to or removed from this figure. A later owner-assigned bonus session on 1 November 2026 (shareable catalog state, session S-036) ran an additional observed window that is recorded in the ledger but **not developer-confirmed and not included in the total above**.
 
 ## Assumptions, limitations, and next steps
 

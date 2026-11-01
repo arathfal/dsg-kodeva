@@ -84,6 +84,21 @@ Approved technical and workflow decisions for the **Kodeva — Promo Akhir Tahun
 | **D-046** | First valid nonempty set of UTM fields wins, even when partial; later campaigns do not overwrite it. | Unknown `utm_*` query keys are ignored during capture; payload contract remains strict (D-020). |
 | **D-047** | Emit GA4-style `view_item`, `add_to_cart`, `begin_checkout`, `landing_cta_click` on genuine page loads/actions. | Never on rerenders or rejected adds; checkout retry does not re-emit `begin_checkout`. Include campaign/items/value, exclude buyer PII. |
 
+## Bonus: shareable catalog state (D-048–D-049)
+
+| ID | Decision | Notes |
+| --- | --- | --- |
+| **D-048** | Catalog search, category filter and price sort compose entirely in the URL: `kategori`, `q`, `harga=termahal|termurah`; sorting uses the Basic starting price; unknown `kategori` still 404s while unknown `harga`/blank searches fail soft to the default fixture order; canonical stays `/products`. | Owner-assigned optional brief item. Extends D-034's URL-state pattern; no tracking events from catalog state usage. |
+
+## Owner-directed catalog corrections (S-036A, recorded together)
+
+| ID | Decision | Notes |
+| --- | --- | --- |
+| **D-049** | Catalog filter bar follows the owner's reference layout ("Modern Kodeva Product Filter Bar.png") without category icons; category active color uses a light-purple tint of the primary color (`bg-primary/10` + `text-primary`), not filled primary or dark ink; search becomes real-time with a ~300 ms debounce and no submit button; the price-sort parameter is `harga` with values `termahal`/`termurah`; the sort control is a picker and a "Menampilkan N produk" count line is shown. | Entirely owner-directed (2026-11-01) corrections to the first bonus implementation; typed searches and picker changes navigate by GET so the URL stays the source of truth; a `noscript` fallback button preserves non-JavaScript use, while chips remain plain links. |
+| **D-050** | The sort control becomes a disclosure popup (`details`/`summary`) instead of a native select: trigger shows "Urutkan" by default, or the chosen "Harga Terendah"/"Harga Tertinggi" with a ✕ clear action; options navigate by GET preserving `kategori`/`q`. | Owner directive (2026-11-01, S-036B). Popup options are plain links; close-on-outside-click is a small enhancement; no frameworks added. |
+| **D-051** | Category chips scroll horizontally (hidden scrollbar) instead of wrapping; the vertical divider sits exactly centered between the chip row and the sort popup; on mobile the category row and sort control stack vertically. | Owner directive (2026-11-01, S-036C); measured 16px on each side of the divider at desktop width; `.no-scrollbar` utility added to `global.css`. |
+| **D-052** | Buttons and text inputs share an 8px corner radius (`--radius-button`/`--radius-input` = 8px); pill-shaped family members (category chips, the Promo badge, the sort trigger — later owner-hand-edited to the 8px `rounded-input`) stay as directed per element. A reusable `Input` component (`.astro` + React `.tsx`) replaces the repeated input markup; shared tokens are recorded in DESIGN.md. | Owner directives (2026-11-01, S-036D). Chips specifically kept as pills per the follow-up ("biarkan dia kan jenisnya pills bukan button"); a real `astro check` finding (over-wide attribute unions) was fixed during the work. |
+
 ## Historical proposals and precedence
 
 The original alternatives P-001–P-009 were planning inputs, **not pending implementation work at submission**. Their resolved decisions are:
