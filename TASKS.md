@@ -16,7 +16,7 @@ Kodeva assessment work was organized into ten reviewable tasks. **T01–T10 were
 | **T07** | [Mock checkout](tasks/T07-checkout.md) | Accepted · Nov 1 | Form validation, simulation, duplicate-submit guard and success/failure states; developer finalized success UI | `745a6f5` |
 | **T08** | [UTM and GA4-style events](tasks/T08-tracking.md) | Accepted · Nov 1 | First-touch attribution, four dataLayer events, event semantics, payload boundaries and browser journeys | `f73af5e` |
 | **T09** | [Integrated QA and deployment](tasks/T09-quality-release.md) | Accepted · Nov 1 | Full journeys, CMS/data privacy, responsive checks, deployed website and Studio, Lighthouse mobile **99** | `3a49748`, `cc278e8`, `f047677`, `157f57e` |
-| **T10** | [Submission documentation](tasks/T10-submission.md) | **Accepted · Nov 1** | Clean-checkout setup, secret scan, 109 tests, demo Editor Studio login and documentation audit reported; submission handoff prepared (kept local, not committed); S-035 ~23m owner-confirmed (untimed tail); final Lighthouse evidence re-verified as Performance 100 | — |
+| **T10** | [Submission documentation](tasks/T10-submission.md) | **Accepted · Nov 1** | Clean-checkout setup, secret scan, 109 tests, demo Editor Studio login and documentation audit reported; submission handoff prepared (kept local, not committed); S-035 ~23m owner-confirmed (untimed tail); final Lighthouse evidence re-verified as Performance 100 | `6551a0b` |
 
 ## Cross-feature verification
 
