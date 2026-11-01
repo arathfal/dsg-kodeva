@@ -142,14 +142,14 @@ export const catalogFixture: ProductCatalog[] = [
     screenshots: [
       {
         src: "/img/products/kasir-transaksi.svg",
-        alt: "Ilustrasi layar pencatatan transaksi aplikasi Kodeva Kasir",
+        alt: "layar pencatatan transaksi aplikasi Kodeva Kasir",
         caption: "Pencatatan transaksi",
         width: 960,
         height: 640,
       },
       {
         src: "/img/products/kasir-item.svg",
-        alt: "Ilustrasi layar manajemen item penjualan aplikasi Kodeva Kasir",
+        alt: "layar manajemen item penjualan aplikasi Kodeva Kasir",
         caption: "Manajemen item penjualan",
         width: 960,
         height: 640,
@@ -169,14 +169,14 @@ export const catalogFixture: ProductCatalog[] = [
     screenshots: [
       {
         src: "/img/products/inventori-stok.svg",
-        alt: "Ilustrasi layar pemantauan stok aplikasi Kodeva Inventori",
+        alt: "layar pemantauan stok aplikasi Kodeva Inventori",
         caption: "Pemantauan stok barang",
         width: 960,
         height: 640,
       },
       {
         src: "/img/products/inventori-pergerakan.svg",
-        alt: "Ilustrasi grafik pergerakan persediaan aplikasi Kodeva Inventori",
+        alt: "grafik pergerakan persediaan aplikasi Kodeva Inventori",
         caption: "Masuk dan keluar persediaan",
         width: 960,
         height: 640,
@@ -196,14 +196,14 @@ export const catalogFixture: ProductCatalog[] = [
     screenshots: [
       {
         src: "/img/products/hr-karyawan.svg",
-        alt: "Ilustrasi daftar karyawan aplikasi Kodeva HR",
+        alt: "daftar karyawan aplikasi Kodeva HR",
         caption: "Data karyawan terpusat",
         width: 960,
         height: 640,
       },
       {
         src: "/img/products/hr-kehadiran.svg",
-        alt: "Ilustrasi kalender kehadiran aplikasi Kodeva HR",
+        alt: "kalender kehadiran aplikasi Kodeva HR",
         caption: "Pencatatan kehadiran",
         width: 960,
         height: 640,
@@ -223,14 +223,14 @@ export const catalogFixture: ProductCatalog[] = [
     screenshots: [
       {
         src: "/img/products/payroll-gaji.svg",
-        alt: "Ilustrasi rincian gaji aplikasi Kodeva Payroll",
+        alt: "rincian gaji aplikasi Kodeva Payroll",
         caption: "Perhitungan gaji dasar",
         width: 960,
         height: 640,
       },
       {
         src: "/img/products/payroll-komponen.svg",
-        alt: "Ilustrasi komponen pendapatan aplikasi Kodeva Payroll",
+        alt: "komponen pendapatan aplikasi Kodeva Payroll",
         caption: "Komponen pendapatan",
         width: 960,
         height: 640,
@@ -250,14 +250,14 @@ export const catalogFixture: ProductCatalog[] = [
     screenshots: [
       {
         src: "/img/products/akuntansi-jurnal.svg",
-        alt: "Ilustrasi jurnal pemasukan dan pengeluaran aplikasi Kodeva Akuntansi",
+        alt: "jurnal pemasukan dan pengeluaran aplikasi Kodeva Akuntansi",
         caption: "Pencatatan pemasukan dan pengeluaran",
         width: 960,
         height: 640,
       },
       {
         src: "/img/products/akuntansi-laba.svg",
-        alt: "Ilustrasi grafik laba aplikasi Kodeva Akuntansi",
+        alt: "grafik laba aplikasi Kodeva Akuntansi",
         caption: "Laporan laba/rugi dasar",
         width: 960,
         height: 640,
@@ -277,14 +277,14 @@ export const catalogFixture: ProductCatalog[] = [
     screenshots: [
       {
         src: "/img/products/laporan-ringkasan.svg",
-        alt: "Ilustrasi dasbor ringkasan aplikasi Kodeva Laporan",
+        alt: "dasbor ringkasan aplikasi Kodeva Laporan",
         caption: "Ringkasan data terpadu",
         width: 960,
         height: 640,
       },
       {
         src: "/img/products/laporan-ekspor.svg",
-        alt: "Ilustrasi ekspor laporan aplikasi Kodeva Laporan",
+        alt: "ekspor laporan aplikasi Kodeva Laporan",
         caption: "Ekspor laporan dasar",
         width: 960,
         height: 640,

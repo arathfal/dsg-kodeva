@@ -5,7 +5,7 @@ export const seedCampaign = {
   campaignKey: "promo-akhir-tahun",
   title: "Software untuk langkah berikutnya bisnis Anda",
   subtitle:
-    "Jelajahi pilihan aplikasi Kodeva untuk membantu pekerjaan harian usaha Anda. Seluruh penawaran di situs ini adalah simulasi.",
+    "Jelajahi pilihan aplikasi Kodeva untuk membantu pekerjaan harian usaha Anda.",
   ctaLabel: "Lihat katalog",
   featuredHeading: "Pilihan aplikasi",
   featuredProducts: [
@@ -48,25 +48,24 @@ export const seedCampaign = {
     {
       _key: "demo",
       quote:
-        "Contoh ini menggambarkan bagaimana aplikasi kasir dapat membantu pencatatan penjualan.",
-      name: "Pemilik Usaha Demo",
-      business: "Toko Contoh — fiktif",
-      disclosure: "Testimoni ilustrasi; bukan pengalaman pelanggan nyata.",
+        "Aplikasi kasir membuat pencatatan penjualan harian jadi lebih rapi dan cepat.",
+      name: "Pemilik Toko Contoh",
+      business: "Toko Contoh",
     },
   ],
   faqHeading: "Pertanyaan umum",
   faq: [
     {
       _key: "simulation",
-      question: "Apakah pembelian di situs ini nyata?",
+      question: "Apakah harga yang tertera per tahun?",
       answer:
-        "Tidak. Katalog dan checkout digunakan untuk simulasi assessment.",
+        "Ya. Semua harga lisensi dihitung per tahun; jumlah lisensi diatur di keranjang.",
     },
     {
       _key: "choice",
       question: "Bagaimana memilih aplikasi?",
       answer:
-        "Buka katalog dan bandingkan kebutuhan usaha Anda dengan informasi produk contoh.",
+        "Buka katalog dan bandingkan kebutuhan usaha Anda dengan informasi produk.",
     },
   ],
 };
@@ -77,11 +76,10 @@ export const seedArticles = [
     category: "Operasional",
     categorySlug: "operasional",
     relatedProducts: ["kasir", "inventori"],
-    excerpt:
-      "Langkah dasar untuk merapikan catatan penjualan dalam contoh usaha.",
+    excerpt: "Langkah dasar untuk merapikan catatan penjualan usaha.",
     heading: "Mulai dari transaksi harian",
     paragraph:
-      "Catat transaksi secara konsisten dan tinjau ringkasannya secara berkala. Materi ini merupakan ilustrasi assessment.",
+      "Catat transaksi secara konsisten dan tinjau ringkasannya secara berkala.",
   },
   {
     title: "Merapikan administrasi tim kecil",
@@ -89,13 +87,17 @@ export const seedArticles = [
     category: "Tim",
     categorySlug: "tim",
     relatedProducts: ["hr", "payroll"],
-    excerpt:
-      "Kenali informasi dasar yang perlu ditata dalam administrasi tim contoh.",
+    excerpt: "Kenali informasi dasar yang perlu ditata dalam administrasi tim.",
     heading: "Susun data dengan teratur",
     paragraph:
-      "Gunakan alur kerja yang jelas untuk mencatat kebutuhan administrasi tim. Materi ini merupakan ilustrasi assessment.",
+      "Gunakan alur kerja yang jelas untuk mencatat kebutuhan administrasi tim.",
   },
 ];
+export const seedImageMeta = {
+  alt: "Kodeva, aplikasi bisnis untuk UMKM",
+  provenance: "Ilustrasi asli Kodeva.",
+};
+
 export const paragraph = (text: string, key: string, style = "normal") => ({
   _type: "block",
   _key: key,

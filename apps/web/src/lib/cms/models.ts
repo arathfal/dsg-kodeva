@@ -37,7 +37,7 @@ export interface Campaign {
     quote: string;
     name: string;
     business: string;
-    disclosure: string;
+    disclosure?: string;
     portrait?: Image | null;
   }[];
   faqHeading: string;
@@ -164,7 +164,7 @@ export function isCampaign(value: unknown): value is Campaign {
         isText(v.quote, 500) &&
         isText(v.name, 100) &&
         isText(v.business, 100) &&
-        isText(v.disclosure, 160) &&
+        optional(v.disclosure, (v) => isText(v, 160)) &&
         optional(v.portrait, isImage),
     ) &&
     isText(value.faqHeading, 100) &&

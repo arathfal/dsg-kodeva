@@ -1,7 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { getCliClient } from "sanity/cli";
 import { API_VERSION } from "../../../shared/content.ts";
-import { paragraph, seedArticles, seedCampaign } from "../seed/content.ts";
+import {
+  paragraph,
+  seedArticles,
+  seedCampaign,
+  seedImageMeta,
+} from "../seed/content.ts";
 
 async function main() {
   if (!process.argv.includes("--write")) {
@@ -28,9 +33,8 @@ async function main() {
   const image = {
     _type: "contentImage",
     asset: { _type: "reference", _ref: asset._id },
-    alt: "Ilustrasi aplikasi Kodeva dengan data usaha fiktif",
-    provenance:
-      "Ilustrasi SVG asli untuk assessment Kodeva; bukan tangkapan layar produk nyata.",
+    alt: seedImageMeta.alt,
+    provenance: seedImageMeta.provenance,
   };
   await client.createIfNotExists({ ...seedCampaign, image });
   for (const sample of seedArticles) {

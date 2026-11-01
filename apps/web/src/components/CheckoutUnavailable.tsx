@@ -17,7 +17,7 @@ export function CheckoutUnavailable({ broken }: { broken: boolean }) {
       <p className="text-secondary">
         {broken
           ? "Isi keranjang tidak cocok dengan data saat ini, sehingga tidak dapat dibayar. Segarkan halaman untuk memuat ulang keranjang."
-          : "Keranjang masih kosong, sehingga tidak ada yang bisa dibayar. Ini juga normal setelah pembayaran simulasi berhasil karena keranjang dikosongkan."}
+          : "Keranjang masih kosong, sehingga tidak ada yang bisa dibayar. Ini normal setelah pembayaran berhasil, karena keranjang dikosongkan."}
       </p>
       <div className="flex flex-wrap gap-3">
         <a className="button" href={CATALOG_PATH}>

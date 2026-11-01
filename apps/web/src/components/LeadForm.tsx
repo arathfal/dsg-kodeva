@@ -66,7 +66,7 @@ export function LeadForm({ campaignKey }: { campaignKey: string }) {
       const result: unknown = await response.json();
       if (response.status === 201 && isRecord(result) && result.ok === true) {
         form.reset();
-        setStatus("Data contoh berhasil disimpan. Terima kasih!");
+        setStatus("Terima kasih! Data berhasil dikirim.");
       } else {
         const next: LeadErrors = {};
         if (isRecord(result) && isRecord(result.errors)) {
@@ -100,11 +100,11 @@ export function LeadForm({ campaignKey }: { campaignKey: string }) {
       className="space-y-6"
     >
       <p id="lead-help" className="text-secondary">
-        Nama dan setidaknya email atau WhatsApp wajib diisi. Gunakan data fiktif
-        untuk demo ini.
+        Nama wajib diisi, serta email atau WhatsApp agar kami dapat menghubungi
+        Anda.
       </p>
       <fieldset disabled={sending} className="min-w-0 space-y-6">
-        <legend className="sr-only">Data kontak contoh</legend>
+        <legend className="sr-only">Data kontak</legend>
         {(
           [
             ["name", "Nama", "text", "name", 100],
@@ -154,7 +154,7 @@ export function LeadForm({ campaignKey }: { campaignKey: string }) {
         disabled={!ready || sending}
         className="w-full md:w-auto"
       >
-        {sending ? "Mengirim…" : "Kirim data contoh"}
+        {sending ? "Mengirim…" : "Kirim"}
       </Button>
       <p role="status" aria-live="polite" className="min-h-6 text-success">
         {status}

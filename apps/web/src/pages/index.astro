@@ -86,14 +86,10 @@ const social = campaign?.seo?.image || campaign?.image;
         </div>
       </section>
       <section aria-labelledby="testimonials-heading" class="space-y-8">
-        <div class="max-w-2xl space-y-3">
+        <div class="max-w-2xl">
           <h2 id="testimonials-heading" class="text-section font-semibold">
             {campaign.testimonialsHeading}
           </h2>
-          <p class="text-secondary">
-            Cerita ilustrasi dari usaha fiktif untuk memberi gambaran penggunaan
-            aplikasi Kodeva.
-          </p>
         </div>
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {campaign.testimonials.map((item) => (
@@ -131,15 +127,14 @@ const social = campaign?.seo?.image || campaign?.image;
             Bicarakan kebutuhan usaha Anda
           </h2>
           <p class="text-secondary">
-            Tinggalkan kontak contoh untuk mencoba formulir Kodeva. Formulir ini
-            merupakan simulasi assessment.
+            Ceritakan kebutuhan usaha Anda dan tim Kodeva akan menghubungi Anda
+            kembali.
           </p>
         </div>
         <LeadForm campaignKey={campaign.campaignKey} client:load />
       </section>
       <footer class="border-t border-border pt-8 text-sm text-secondary">
-        Kodeva — demo software bisnis untuk UMKM. Seluruh konten dan penawaran
-        merupakan ilustrasi assessment.
+        Kodeva — software bisnis untuk UMKM.
       </footer>
     </div>
   ) : (

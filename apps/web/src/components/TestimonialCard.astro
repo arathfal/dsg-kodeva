@@ -7,7 +7,7 @@ interface Props {
   quote: string;
   name: string;
   business: string;
-  disclosure: string;
+  disclosure?: string;
   portrait?: Image | null;
 }
 
@@ -60,7 +60,7 @@ const initials = name
     </figcaption>
   </div>
 
-  <!-- Transparent demo disclosure -->
+  <!-- Optional disclosure line -->
   {disclosure && (
     <div class="border-t border-slate-100 bg-slate-50/70 px-6 py-3.5 sm:px-9">
       <p class="text-xs leading-relaxed text-slate-500">{disclosure}</p>

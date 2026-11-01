@@ -204,8 +204,8 @@ export function CheckoutView() {
       {notices.length > 0 && <NoticeList notices={notices} />}
       {result?.outcome === "failure" && (
         <p role="alert" className="panel border-error text-sm">
-          Pembayaran simulasi gagal untuk pesanan {result.order.orderId}.
-          Keranjang masih tersimpan utuh; periksa isian lalu coba lagi.
+          Pembayaran (simulasi) gagal untuk pesanan {result.order.orderId}.
+          Keranjang tetap tersimpan; periksa isian lalu coba lagi.
         </p>
       )}
       <FormFeedback sending={sending} status={status} formError={formError} />
@@ -228,8 +228,8 @@ export function CheckoutView() {
             {formatRupiah(quote.total)}
           </p>
           <p className="text-xs text-secondary">
-            Harga mengikuti katalog terbaru dan divalidasi ulang sebelum
-            pembayaran simulasi dibuat.
+            Harga mengikuti katalog terbaru dan divalidasi ulang sebelum pesanan
+            dibuat.
           </p>
         </aside>
       </div>

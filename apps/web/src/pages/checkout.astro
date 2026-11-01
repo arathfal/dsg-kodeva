@@ -8,7 +8,7 @@ import { CHECKOUT_PATH } from "../../../../shared/content.ts";
 // validated checkout island. No real payment backend exists anywhere.
 const title = "Checkout | Kodeva";
 const description =
-  "Formulir pembeli dan simulasi pembayaran pesanan langganan Kodeva: ringkasan pesanan tervalidasi, hasil sukses/gagal yang jelas, tanpa gateway pembayaran nyata.";
+  "Selesaikan pesanan langganan Kodeva untuk aplikasi bisnis usaha Anda.";
 let canonical: URL | undefined;
 try {
   const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
@@ -24,9 +24,8 @@ try {
     <header class="max-w-prose space-y-3">
       <h1 class="text-hero font-semibold tracking-tight">Checkout</h1>
       <p class="text-secondary">
-        Isi data pembeli, periksa ringkasan pesanan, lalu pilih hasil simulasi.
-        Simulasi ini tidak memakai gateway pembayaran nyata dan tidak ada uang
-        yang ditransfer.
+        Isi data pembeli, periksa ringkasan pesanan, lalu pilih hasil
+        pembayaran.
       </p>
     </header>
     <CheckoutView client:load />

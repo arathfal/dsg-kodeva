@@ -36,7 +36,7 @@ const title = unknownCategory
     ? "Katalog sedang tidak dapat dimuat | Kodeva"
     : "Katalog produk Kodeva";
 const description =
-  "Enam aplikasi Kodeva untuk usaha kecil: harga langganan tahunan, paket Basic/Pro/Business, dan kuota promo. Simulasi assessment, tanpa pembelian nyata.";
+  "Enam aplikasi Kodeva untuk usaha kecil: harga langganan tahunan, paket Basic/Pro/Business, dan kuota promo.";
 let canonical: URL | undefined;
 try {
   const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
@@ -91,7 +91,7 @@ const visible = priceSort ? sortCatalogByPrice(filtered, priceSort) : filtered;
         <h1 class="text-hero font-semibold tracking-tight">Katalog produk</h1>
         <p class="max-w-prose text-secondary">
           Harga langganan tahunan dalam rupiah. Pilih kategori untuk menyaring
-          pilihan aplikasi; seluruh penawaran merupakan simulasi assessment.
+          pilihan aplikasi.
         </p>
       </header>
       <CatalogSearch

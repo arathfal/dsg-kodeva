@@ -26,7 +26,7 @@ export function FormFeedback({
         <p className="sr-only">Pembayaran simulasi sedang diproses.</p>
       )}
       <noscript>
-        <p>Aktifkan JavaScript untuk checkout simulasi ini.</p>
+        <p>Aktifkan JavaScript untuk melanjutkan checkout ini.</p>
       </noscript>
     </div>
   );
@@ -49,7 +49,7 @@ export function BuyerForm({
       className="panel min-w-0 space-y-6"
     >
       <fieldset disabled={sending} className="min-w-0 space-y-6">
-        <legend className="sr-only">Data pembeli simulasi</legend>
+        <legend className="sr-only">Data pembeli</legend>
         <div className="space-y-2">
           <label htmlFor="checkout-name" className="block font-semibold">
             Nama
@@ -91,10 +91,9 @@ export function BuyerForm({
           )}
         </div>
         <fieldset className="min-w-0 space-y-3">
-          <legend className="font-semibold">Hasil simulasi pembayaran</legend>
+          <legend className="font-semibold">Hasil pembayaran</legend>
           <p id="simulation-help" className="text-sm text-secondary">
-            Hasil simulasi: sukses mengosongkan keranjang, gagal
-            mempertahankannya. Tidak ada pembayaran nyata.
+            Sukses mengosongkan keranjang, gagal mempertahankannya.
           </p>
           <div className="grid gap-3 md:grid-cols-2">
             {(
@@ -124,10 +123,6 @@ export function BuyerForm({
         <Button type="submit" disabled={sending} className="w-full md:w-auto">
           {sending ? "Memproses pembayaran (simulasi)…" : "Bayar (simulasi)"}
         </Button>
-        <p className="text-xs text-secondary">
-          Simulasi bebas biaya: gateway pembayaran, data server, dan faktur
-          lisensi tidak melalui tahap ini.
-        </p>
       </div>
     </form>
   );

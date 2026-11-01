@@ -9,7 +9,7 @@ const page = result.status === "ok" ? result.data : undefined;
 if (!page) Astro.response.status = result.status === "not-found" ? 404 : 503;
 const title = "Blog Kodeva: artikel dan informasi aplikasi";
 const description =
-  "Kumpulan artikel ilustrasi assessment dari Kodeva tentang pencatatan penjualan, administrasi tim, dan penggunaan aplikasi bisnis.";
+  "Artikel Kodeva tentang pencatatan penjualan, administrasi tim, dan penggunaan aplikasi bisnis.";
 let canonical: URL | undefined;
 try {
   const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
@@ -27,8 +27,8 @@ const lastPage = page ? Math.ceil(page.total / page.pageSize) : 0;
       <header class="max-w-2xl space-y-3 pt-4">
         <h1 class="text-section font-semibold tracking-tight">Blog</h1>
         <p class="text-secondary">
-          Artikel ilustrasi assessment: contoh cara merapikan catatan usaha dan
-          administrasi tim dengan aplikasi Kodeva.
+          Contoh cara merapikan catatan usaha dan administrasi tim dengan
+          aplikasi Kodeva.
         </p>
       </header>
       {page.items.length === 0 ? (

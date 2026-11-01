@@ -24,8 +24,7 @@ const title = data
   : unavailable
     ? "Daftar artikel tidak dapat dimuat | Kodeva"
     : "Halaman artikel tidak ditemukan | Kodeva";
-const description =
-  "Daftar artikel ilustrasi assessment dari Kodeva, maksimal enam artikel per halaman.";
+const description = "Daftar artikel Kodeva, maksimal enam artikel per halaman.";
 let canonical: URL | undefined;
 if (data) {
   try {
@@ -44,7 +43,7 @@ if (data) {
       <header class="max-w-2xl space-y-3 pt-4">
         <h1 class="text-section font-semibold tracking-tight">Blog</h1>
         <p class="text-secondary">
-          Artikel ilustrasi assessment, halaman {data.page} dari {lastPage}.
+          Halaman {data.page} dari {lastPage}.
         </p>
       </header>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
