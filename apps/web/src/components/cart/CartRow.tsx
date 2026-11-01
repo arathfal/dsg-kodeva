@@ -1,13 +1,13 @@
 import { useState, type KeyboardEvent } from "react";
 
-import { formatRupiah } from "../lib/format";
-import { useCartStore } from "../lib/cart-store";
-import { getCatalogEntry } from "../../../../shared/catalog.ts";
+import { formatRupiah } from "../../lib/format";
+import { useCartStore } from "../../stores/cart-store";
+import { getCatalogEntry } from "../../../../../shared/catalog.ts";
 import {
   MAX_LINE_QTY,
   quantityInCart,
   type CartLineView,
-} from "../../../../shared/cart.ts";
+} from "../../../../../shared/cart.ts";
 
 // Logika edit jumlah dipisah dari tampilan agar CartRow hanya mengurus layout.
 // Draft tetap bisa diedit sampai blur/Enter; store adalah sumber kebenaran.

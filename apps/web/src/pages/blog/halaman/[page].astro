@@ -1,7 +1,8 @@
 ---
 import Shell from "../../../layouts/Shell.astro";
-import ArticleCard from "../../../components/ArticleCard.astro";
-import Pagination from "../../../components/Pagination.astro";
+import ArticleCard from "../../../components/blog/ArticleCard.astro";
+import Pagination from "../../../components/blog/Pagination.astro";
+import { siteUrl } from "../../../lib/seo";
 import { cms } from "../../../lib/cms/server";
 import type { ArticlePage } from "../../../lib/cms/models";
 
@@ -25,16 +26,7 @@ const title = data
     ? "Daftar artikel tidak dapat dimuat | Kodeva"
     : "Halaman artikel tidak ditemukan | Kodeva";
 const description = "Daftar artikel Kodeva, maksimal enam artikel per halaman.";
-let canonical: URL | undefined;
-if (data) {
-  try {
-    const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-    if (["https:", "http:"].includes(origin.protocol))
-      canonical = new URL(`/blog/halaman/${data.page}`, origin.origin);
-  } catch {
-    /* Missing configuration must not use an untrusted request origin. */
-  }
-}
+const canonical = data ? siteUrl(`/blog/halaman/${data.page}`) : undefined;
 ---
 
 <Shell title={title} description={description} canonical={canonical}>

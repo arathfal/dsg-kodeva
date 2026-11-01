@@ -1,8 +1,9 @@
 ---
 import Shell from "../../layouts/Shell.astro";
-import { PackageSelector } from "../../components/PackageSelector";
-import { QuotaLabel } from "../../components/QuotaLabel";
-import ScreenshotFigure from "../../components/ScreenshotFigure.astro";
+import { siteUrl } from "../../lib/seo";
+import { PackageSelector } from "../../components/catalog/PackageSelector";
+import { QuotaLabel } from "../../components/catalog/QuotaLabel";
+import ScreenshotFigure from "../../components/catalog/ScreenshotFigure.astro";
 import {
   BILLING_PERIOD,
   catalogResult,
@@ -27,21 +28,14 @@ const title = entry
 const description = summary
   ? `${summary.description} Harga langganan tahunan dengan paket Basic, Pro, dan Business.`
   : "Produk Kodeva tidak ditemukan.";
-let canonical: URL | undefined;
+// Absolute canonical and og:image URLs are built from the configured site
+// origin only; without it both stay undefined (see the siteUrl helper in lib/seo.ts).
+const canonical = entry ? siteUrl(`/products/${entry.id}`) : undefined;
 let socialUrl: URL | undefined;
-try {
-  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-  if (["https:", "http:"].includes(origin.protocol)) {
-    if (entry) canonical = new URL(`/products/${entry.id}`, origin.origin);
-    // R-022: sharing previews rasterize the approved first screenshot via the
-    // committed PNG derivative (WhatsApp does not render SVG og:image).
-    if (entry) {
-      const source = entry.screenshots[0].src.replace(/\.svg$/, ".png");
-      socialUrl = new URL(source, origin.origin);
-    }
-  }
-} catch {
-  /* Missing configuration must not use an untrusted request origin. */
+if (entry) {
+  // R-022: sharing previews rasterize the approved first screenshot via the
+  // committed PNG derivative (WhatsApp does not render SVG og:image).
+  socialUrl = siteUrl(entry.screenshots[0].src.replace(/\.svg$/, ".png"));
 }
 
 // T08 (R-020, D-047): the view_item payload reflects the page as rendered —

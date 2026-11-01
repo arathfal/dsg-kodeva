@@ -1,6 +1,6 @@
 // Direct /checkout with an empty or broken cart cannot submit anything (D-041):
 // this state explains why and offers the katalog/keranjang exits.
-import { CATALOG_PATH, CART_PATH } from "../../../../shared/content.ts";
+import { CATALOG_PATH, CART_PATH } from "../../../../../shared/content.ts";
 
 export function CheckoutUnavailable({ broken }: { broken: boolean }) {
   return (

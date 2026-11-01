@@ -1,9 +1,10 @@
 ---
 import Shell from "../layouts/Shell.astro";
-import { LeadForm } from "../components/LeadForm";
+import { LeadForm } from "../components/leads/LeadForm";
 import CmsImage from "../components/CmsImage.astro";
 import ProductCard from "../components/ProductCard.astro";
 import TestimonialCard from "../components/TestimonialCard.astro";
+import { siteUrl } from "../lib/seo";
 import { cms } from "../lib/cms/server";
 import { socialImageUrl } from "../lib/cms/image";
 import { CATALOG_PATH, products } from "../../../../shared/content";
@@ -19,14 +20,7 @@ const title = campaign
 const description = campaign
   ? campaign.seo?.description || campaign.subtitle
   : "Kampanye Kodeva belum dapat ditampilkan. Silakan coba lagi nanti.";
-let canonical: URL | undefined;
-try {
-  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-  if (["https:", "http:"].includes(origin.protocol))
-    canonical = new URL("/", origin.origin);
-} catch {
-  /* Missing configuration must not use an untrusted request origin. */
-}
+const canonical = siteUrl("/");
 const social = campaign?.seo?.image || campaign?.image;
 ---
 

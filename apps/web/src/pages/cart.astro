@@ -1,6 +1,7 @@
 ---
 import Shell from "../layouts/Shell.astro";
-import { CartView } from "../components/CartView";
+import { siteUrl } from "../lib/seo";
+import { CartView } from "../components/cart/CartView";
 import { CART_PATH } from "../../../../shared/content.ts";
 
 // T06 cart page (R-014/R-015/R-017/R-018): the static shell is server
@@ -8,14 +9,7 @@ import { CART_PATH } from "../../../../shared/content.ts";
 const title = "Keranjang | Kodeva";
 const description =
   "Keranjang langganan tahunan Kodeva dengan penambahan dan pengurangan jumlah lisensi, kuota promo antar paket, dan subtotal otomatis.";
-let canonical: URL | undefined;
-try {
-  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-  if (["https:", "http:"].includes(origin.protocol))
-    canonical = new URL(CART_PATH, origin.origin);
-} catch {
-  /* Missing configuration must not use an untrusted request origin. */
-}
+const canonical = siteUrl(CART_PATH);
 ---
 
 <Shell title={title} description={description} canonical={canonical}>

@@ -1,4 +1,4 @@
-import type { CartRecovery } from "../../../../shared/cart.ts";
+import type { CartRecovery } from "../../../../../shared/cart.ts";
 
 // Recovery/restore messaging shared by the cart and checkout pages (D-038):
 // both pages describe the same recovery policy with the same wording.

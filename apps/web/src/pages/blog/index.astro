@@ -1,7 +1,8 @@
 ---
 import Shell from "../../layouts/Shell.astro";
-import ArticleCard from "../../components/ArticleCard.astro";
-import Pagination from "../../components/Pagination.astro";
+import ArticleCard from "../../components/blog/ArticleCard.astro";
+import Pagination from "../../components/blog/Pagination.astro";
+import { siteUrl } from "../../lib/seo";
 import { cms } from "../../lib/cms/server";
 
 const result = await cms.articles(1);
@@ -10,14 +11,7 @@ if (!page) Astro.response.status = result.status === "not-found" ? 404 : 503;
 const title = "Blog Kodeva: artikel dan informasi aplikasi";
 const description =
   "Artikel Kodeva tentang pencatatan penjualan, administrasi tim, dan penggunaan aplikasi bisnis.";
-let canonical: URL | undefined;
-try {
-  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-  if (["https:", "http:"].includes(origin.protocol))
-    canonical = new URL("/blog", origin.origin);
-} catch {
-  /* Missing configuration must not use an untrusted request origin. */
-}
+const canonical = siteUrl("/blog");
 const lastPage = page ? Math.ceil(page.total / page.pageSize) : 0;
 ---
 

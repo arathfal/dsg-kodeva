@@ -1,8 +1,8 @@
 // Owner-revised success panel; the only content visible after a successful
 // simulation (the page headers are hidden by body[data-checkout-success]).
-import { CATALOG_PATH } from "../../../../shared/content.ts";
-import type { MockOrderPayload } from "../../../../shared/checkout.ts";
-import { CheckIcon } from "./icons/CheckIcon";
+import { CATALOG_PATH } from "../../../../../shared/content.ts";
+import type { MockOrderPayload } from "../../../../../shared/checkout.ts";
+import { CheckIcon } from "../icons/CheckIcon";
 
 export function CheckoutSuccess({ order }: { order: MockOrderPayload }) {
   return (

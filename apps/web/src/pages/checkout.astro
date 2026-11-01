@@ -1,6 +1,7 @@
 ---
 import Shell from "../layouts/Shell.astro";
-import { CheckoutView } from "../components/CheckoutView";
+import { siteUrl } from "../lib/seo";
+import { CheckoutView } from "../components/checkout/CheckoutView";
 import { CHECKOUT_PATH } from "../../../../shared/content.ts";
 
 // T07 checkout page (R-016/R-017/R-021/R-023; D-041–D-044): the static shell is
@@ -9,14 +10,7 @@ import { CHECKOUT_PATH } from "../../../../shared/content.ts";
 const title = "Checkout | Kodeva";
 const description =
   "Selesaikan pesanan langganan Kodeva untuk aplikasi bisnis usaha Anda.";
-let canonical: URL | undefined;
-try {
-  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-  if (["https:", "http:"].includes(origin.protocol))
-    canonical = new URL(CHECKOUT_PATH, origin.origin);
-} catch {
-  /* Missing configuration must not use an untrusted request origin. */
-}
+const canonical = siteUrl(CHECKOUT_PATH);
 ---
 
 <Shell title={title} description={description} canonical={canonical}>

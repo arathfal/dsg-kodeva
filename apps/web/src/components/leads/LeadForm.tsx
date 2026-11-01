@@ -4,11 +4,11 @@ import {
   useSyncExternalStore,
   type SubmitEvent,
 } from "react";
-import { Button } from "./Button";
-import { Input } from "./Input";
-import { isRecord } from "../../../../shared/content";
-import { validateLead, type LeadErrors } from "../../../../shared/leads";
-import { readTouch } from "../lib/analytics";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
+import { isRecord } from "../../../../../shared/content";
+import { validateLead, type LeadErrors } from "../../../../../shared/leads";
+import { readTouch } from "../../lib/analytics";
 
 const subscribe = () => () => {};
 

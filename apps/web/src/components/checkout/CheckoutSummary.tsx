@@ -1,7 +1,7 @@
 // Read-only order summary shared by the checkout form view (R-016): amounts
 // always come from a validated quote, never from persisted storage.
-import { formatRupiah } from "../lib/format";
-import type { CartLineView } from "../../../../shared/cart.ts";
+import { formatRupiah } from "../../lib/format";
+import type { CartLineView } from "../../../../../shared/cart.ts";
 
 export interface SummaryLine {
   productId: string;

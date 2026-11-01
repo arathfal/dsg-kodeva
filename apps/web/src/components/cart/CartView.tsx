@@ -1,7 +1,7 @@
-import { formatRupiah } from "../lib/format";
-import { useCartHydration, useCartStore } from "../lib/cart-store";
-import { quoteCart } from "../../../../shared/cart.ts";
-import { CATALOG_PATH, CHECKOUT_PATH } from "../../../../shared/content.ts";
+import { formatRupiah } from "../../lib/format";
+import { useCartHydration, useCartStore } from "../../stores/cart-store";
+import { quoteCart } from "../../../../../shared/cart.ts";
+import { CATALOG_PATH, CHECKOUT_PATH } from "../../../../../shared/content.ts";
 import { CartRow } from "./CartRow";
 import { NoticeList, cartRecoveryNotices } from "./CartNotices";
 

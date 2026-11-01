@@ -1,8 +1,9 @@
 ---
 import Shell from "../../layouts/Shell.astro";
-import RichText from "../../components/RichText.astro";
+import RichText from "../../components/blog/RichText.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import CmsImage from "../../components/CmsImage.astro";
+import { siteUrl } from "../../lib/seo";
 import { cms } from "../../lib/cms/server";
 import { socialImageUrl } from "../../lib/cms/image";
 import { formatDate } from "../../lib/format";
@@ -21,16 +22,7 @@ const description = article
   ? article.seo?.description || article.excerpt
   : "Artikel blog Kodeva tidak ditemukan.";
 const social = article?.seo?.image || article?.cover;
-let canonical: URL | undefined;
-if (article) {
-  try {
-    const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-    if (["https:", "http:"].includes(origin.protocol))
-      canonical = new URL(`/blog/${article.slug}`, origin.origin);
-  } catch {
-    /* Missing configuration must not use an untrusted request origin. */
-  }
-}
+const canonical = article ? siteUrl(`/blog/${article.slug}`) : undefined;
 ---
 
 <Shell

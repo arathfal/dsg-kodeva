@@ -1,9 +1,9 @@
 // Buyer form (D-042): the radio group selects the simulated result; validation
 // state comes from shared/checkout.ts and rendering stays layout-only here.
 import type { SubmitEvent } from "react";
-import { type BuyerErrors } from "../../../../shared/checkout.ts";
-import { Button } from "./Button";
-import { Input } from "./Input";
+import { type BuyerErrors } from "../../../../../shared/checkout.ts";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
 
 export function FormFeedback({
   sending,

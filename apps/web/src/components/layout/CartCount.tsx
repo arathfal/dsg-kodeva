@@ -2,7 +2,7 @@ import {
   useCartHydration,
   useCartQuantity,
   useCartStore,
-} from "../lib/cart-store";
+} from "../../stores/cart-store";
 
 // D-040: tiny header island; the server render keeps the icon-only link and
 // the count appears after hydration (or not at all when storage is denied).

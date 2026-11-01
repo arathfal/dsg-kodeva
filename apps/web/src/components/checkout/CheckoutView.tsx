@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
-import { formatRupiah } from "../lib/format";
-import { useCartHydration, useCartStore } from "../lib/cart-store";
-import { pushAnalyticsEvent, readTouch } from "../lib/analytics";
-import { quoteCart } from "../../../../shared/cart.ts";
-import { BILLING_PERIOD } from "../../../../shared/catalog.ts";
+import { formatRupiah } from "../../lib/format";
+import { useCartHydration, useCartStore } from "../../stores/cart-store";
+import { pushAnalyticsEvent, readTouch } from "../../lib/analytics";
+import { quoteCart } from "../../../../../shared/cart.ts";
+import { BILLING_PERIOD } from "../../../../../shared/catalog.ts";
 import {
   buildMockOrder,
   validateBuyer,
   type BuyerErrors,
   type MockOrderPayload,
   type SimulationResult,
-} from "../../../../shared/checkout.ts";
-import { NoticeList, cartRecoveryNotices } from "./CartNotices";
+} from "../../../../../shared/checkout.ts";
+import { NoticeList, cartRecoveryNotices } from "../cart/CartNotices";
 import { OrderSummaryLines, lineToSummary } from "./CheckoutSummary";
 import { BuyerForm, FormFeedback } from "./CheckoutForm";
 import { CheckoutSuccess } from "./CheckoutSuccess";

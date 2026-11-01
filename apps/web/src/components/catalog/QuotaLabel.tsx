@@ -1,5 +1,5 @@
-import type { ProductId } from "../../../../shared/content.ts";
-import { useRemainingQuota } from "../lib/cart-store";
+import type { ProductId } from "../../../../../shared/content.ts";
+import { useRemainingQuota } from "../../stores/cart-store";
 
 // R-023 shared-quota display on product pages: the reported remaining promo
 // quota is the same value the add button validates against. SSR renders the

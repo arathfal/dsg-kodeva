@@ -1,6 +1,7 @@
 ---
 import Shell from "../../layouts/Shell.astro";
-import CatalogSearch from "../../components/CatalogSearch.astro";
+import { siteUrl } from "../../lib/seo";
+import CatalogSearch from "../../components/catalog/CatalogSearch.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import { CATALOG_PATH, products } from "../../../../../shared/content.ts";
 import {
@@ -37,14 +38,7 @@ const title = unknownCategory
     : "Katalog produk Kodeva";
 const description =
   "Enam aplikasi Kodeva untuk usaha kecil: harga langganan tahunan, paket Basic/Pro/Business, dan kuota promo.";
-let canonical: URL | undefined;
-try {
-  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
-  if (["https:", "http:"].includes(origin.protocol))
-    canonical = new URL("/products", origin.origin);
-} catch {
-  /* Missing configuration must not use an untrusted request origin. */
-}
+const canonical = siteUrl("/products");
 
 const base =
   result.status === "ok"

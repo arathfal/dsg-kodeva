@@ -3,16 +3,16 @@ import {
   BILLING_PERIOD,
   packageNames,
   type PackageOffer,
-} from "../../../../shared/catalog.ts";
-import { Button } from "./Button";
-import { formatRupiah } from "../lib/format";
-import { pushAnalyticsEvent, readTouch } from "../lib/analytics";
+} from "../../../../../shared/catalog.ts";
+import { Button } from "../ui/Button";
+import { formatRupiah } from "../../lib/format";
+import { pushAnalyticsEvent, readTouch } from "../../lib/analytics";
 import {
   ensureHydrated,
   useRemainingQuota,
   useCartStore,
-} from "../lib/cart-store";
-import { CART_PATH, type ProductId } from "../../../../shared/content.ts";
+} from "../../stores/cart-store";
+import { CART_PATH, type ProductId } from "../../../../../shared/content.ts";
 
 // Small hydration-only island: package selection updates the displayed price
 // immediately (R-013) and "Tambah ke keranjang" adds the selected package with
