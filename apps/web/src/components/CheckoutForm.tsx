@@ -3,6 +3,7 @@
 import type { SubmitEvent } from "react";
 import { type BuyerErrors } from "../../../../shared/checkout.ts";
 import { Button } from "./Button";
+import { Input } from "./Input";
 
 export function FormFeedback({
   sending,
@@ -53,7 +54,7 @@ export function BuyerForm({
           <label htmlFor="checkout-name" className="block font-semibold">
             Nama
           </label>
-          <input
+          <Input
             id="checkout-name"
             name="name"
             type="text"
@@ -62,7 +63,6 @@ export function BuyerForm({
             required
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "checkout-name-error" : undefined}
-            className="input w-full"
           />
           {errors.name && (
             <p id="checkout-name-error" className="text-sm text-error">
@@ -74,7 +74,7 @@ export function BuyerForm({
           <label htmlFor="checkout-email" className="block font-semibold">
             Email
           </label>
-          <input
+          <Input
             id="checkout-email"
             name="email"
             type="email"
@@ -83,7 +83,6 @@ export function BuyerForm({
             required
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "checkout-email-error" : undefined}
-            className="input w-full"
           />
           {errors.email && (
             <p id="checkout-email-error" className="text-sm text-error">

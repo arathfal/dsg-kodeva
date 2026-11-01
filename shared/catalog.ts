@@ -1,7 +1,13 @@
 // Approved commerce fixtures for T05–T07 (D-033 / P-007): one annual IDR billing
 // period, integer rupiah amounts, no taxes or vouchers. Promotional quota is
 // shared per product across all package variants; no per-package quota exists.
-import { isProductId, type ProductId } from "./content.ts";
+import {
+  CATALOG_PATH,
+  isProductId,
+  products,
+  type ProductId,
+} from "./content.ts";
+import { productSummaries } from "./products.ts";
 
 export const PACKAGE_ORDER = ["basic", "pro", "business"] as const;
 export type PackageId = (typeof PACKAGE_ORDER)[number];
@@ -325,4 +331,98 @@ export function packageOffer(
   packageId: PackageId,
 ): PackageOffer {
   return entry.packages.find((offer) => offer.id === packageId)!;
+}
+
+// --- Bonus: URL-reflected search, category filter and price sort ---
+// Same interaction contract as D-034: server-rendered links and forms only,
+// no client framework, so the catalog state (kategori + q + harga) lives
+// entirely in the URL and every combination can be shared as a link. A small
+// progressive-enhancement script debounces submitted searches (owner-directed
+// correction S-036A); links keep working without client JavaScript.
+
+export const CATEGORY_PARAM = "kategori";
+export const SEARCH_PARAM = "q";
+export const PRICE_SORT_PARAM = "harga";
+
+export const priceSortOptions = [
+  { id: "termurah", label: "Harga Terendah" },
+  { id: "termahal", label: "Harga Tertinggi" },
+] as const;
+export type PriceSortId = (typeof priceSortOptions)[number]["id"];
+
+/** Search input and matching are bounded so request URLs stay reasonable. */
+export const SEARCH_LIMIT = 100;
+
+export function getPriceSortId(value: unknown): PriceSortId | undefined {
+  return (
+    value === "termurah" || value === "termahal" ? value : undefined
+  ) satisfies PriceSortId | undefined;
+}
+
+/** Blank input means "no search"; trimmed input is capped at SEARCH_LIMIT. */
+export function getCatalogSearch(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const query = value.trim().slice(0, SEARCH_LIMIT);
+  return query ? query : undefined;
+}
+
+/**
+ * Filters cards by substrings of their visible text — product name, summary
+ * description and features, since those are exactly what a card shows.
+ */
+export function catalogSearchHits(
+  entries: ProductCatalog[],
+  query: string,
+): ProductCatalog[] {
+  const needle = query.trim().slice(0, SEARCH_LIMIT).toLowerCase();
+  if (!needle) return entries;
+  return entries.filter((entry) => {
+    const name = products.find((product) => product.id === entry.id)?.name;
+    const summary = productSummaries[entry.id];
+    const haystack = [name ?? "", summary.description, ...summary.features]
+      .join(" ")
+      .toLowerCase();
+    return haystack.includes(needle);
+  });
+}
+
+/**
+ * Non-mutating stable sort on the Basic starting price; ties keep their
+ * incoming order in both directions because Array.sort is stable.
+ */
+export function sortCatalogByPrice(
+  entries: ProductCatalog[],
+  sort: PriceSortId,
+): ProductCatalog[] {
+  return [...entries].sort((a, b) =>
+    sort === "termahal"
+      ? startingPrice(b) - startingPrice(a)
+      : startingPrice(a) - startingPrice(b),
+  );
+}
+
+export interface CatalogHrefInput {
+  category?: string;
+  search?: string;
+  priceSort?: string;
+}
+
+/**
+ * Builds the shareable catalog URL state. Unknown category/sort values and
+ * blank searches are omitted so broken inputs never appear inside shared links.
+ */
+export function catalogParamsHref({
+  category,
+  search,
+  priceSort,
+}: CatalogHrefInput): string {
+  const params = new URLSearchParams();
+  const knownCategory = getCatalogCategory(category);
+  if (knownCategory) params.set(CATEGORY_PARAM, knownCategory.id);
+  const query = getCatalogSearch(search);
+  if (query) params.set(SEARCH_PARAM, query);
+  const sort = getPriceSortId(priceSort);
+  if (sort) params.set(PRICE_SORT_PARAM, sort);
+  const queryString = params.toString();
+  return queryString ? `${CATALOG_PATH}?${queryString}` : CATALOG_PATH;
 }

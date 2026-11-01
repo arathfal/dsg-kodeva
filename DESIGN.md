@@ -31,7 +31,7 @@ Approved P-003 option A uses system fonts without extra downloads. A custom font
 | Focus | #533afd | Outline with separation from surrounding surface |
 | Type | Body 16px/1.6; small 14px/1.5; section 28–40px/1.15; hero 36–56px/1.08 | Body 400, headings 600; final fit checked in browser |
 | Space | 4, 8, 12, 16, 24, 32, 48, 64, 96px | Shared spacing relationships |
-| Radius | Inputs 6px; cards 12px; buttons 9999px | Shared treatments |
+| Radius | Inputs 8px; cards 12px; buttons 8px; pill chips/badges/trigger stay fully rounded | Shared treatments; owner-directed unification of buttons/inputs to 8px with pills kept round (2026-11-01, D-052) |
 | Container | Up to 1200px; gutters 16px phone, 24px tablet, 32px desktop | Equal outer margins and aligned content |
 
 Check actual foreground/background contrast before implemented UI approval. Do not copy thin reference body type or accessibility claims untested. Approved minimum control size is 44×44px for comfortable tapping; this alone does not establish WCAG conformance.

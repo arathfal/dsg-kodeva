@@ -1,19 +1,31 @@
 ---
 import Shell from "../../layouts/Shell.astro";
-import CategoryFilter from "../../components/CategoryFilter.astro";
+import CatalogSearch from "../../components/CatalogSearch.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import { CATALOG_PATH, products } from "../../../../../shared/content.ts";
 import {
+  catalogParamsHref,
   catalogResult,
+  catalogSearchHits,
   getCatalogCategory,
+  getCatalogSearch,
+  getPriceSortId,
   productsInCategory,
+  sortCatalogByPrice,
 } from "../../../../../shared/catalog.ts";
 import { productSummaries } from "../../../../../shared/products.ts";
 
+// Bonus: kategori, q and harga live entirely in the URL (D-034 style:
+// server-rendered links and a GET form, with a small owner-directed debounce
+// script as progressive enhancement), so any combination can be shared as a
+// link. Unknown categories still return 404; unknown sort values and
+// blank/redundant searches fall back to the default view instead of failing.
 const query = Astro.url.searchParams.get("kategori");
 const selected =
   query !== null && query !== "" ? getCatalogCategory(query) : undefined;
 const unknownCategory = query !== null && query !== "" && !selected;
+const search = getCatalogSearch(Astro.url.searchParams.get("q"));
+const priceSort = getPriceSortId(Astro.url.searchParams.get("harga"));
 const result = catalogResult();
 if (unknownCategory) Astro.response.status = 404;
 if (result.status === "unavailable") Astro.response.status = 503;
@@ -34,12 +46,16 @@ try {
   /* Missing configuration must not use an untrusted request origin. */
 }
 
-const visible =
+const base =
   result.status === "ok"
     ? selected
       ? productsInCategory(selected.id)
       : result.data
     : [];
+// Sorting only applies when ?urutan is present; the default view keeps the
+// approved fixture order.
+const filtered = search ? catalogSearchHits(base, search) : base;
+const visible = priceSort ? sortCatalogByPrice(filtered, priceSort) : filtered;
 ---
 
 <Shell title={title} description={description} canonical={canonical}>
@@ -78,24 +94,18 @@ const visible =
           pilihan aplikasi; seluruh penawaran merupakan simulasi assessment.
         </p>
       </header>
-      <CategoryFilter active={selected?.id} />
-      {visible.length === 0 ? (
-        <section
-          class="panel max-w-prose space-y-4"
-          aria-labelledby="empty-title"
-        >
-          <h2 id="empty-title" class="text-xl font-semibold">
-            Belum ada produk di kategori ini
-          </h2>
-          <p>
-            Kategori “{selected?.name}” masih kosong untuk kampanye ini. Lihat
-            pilihan aplikasi yang tersedia di katalog.
-          </p>
-          <a class="button" href="/products">
-            Lihat semua produk
-          </a>
-        </section>
-      ) : (
+      <CatalogSearch
+        search={search}
+        priceSort={priceSort}
+        category={selected?.id}
+        active={selected?.id}
+      />
+      {visible.length > 0 && (
+        <p class="text-sm text-secondary">
+          Menampilkan {visible.length} produk
+        </p>
+      )}
+      {visible.length > 0 && (
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {visible.map((entry) => {
             const product = products.find((p) => p.id === entry.id)!;
@@ -111,6 +121,45 @@ const visible =
           })}
         </div>
       )}
+      {search && visible.length === 0 ? (
+        <section
+          class="panel max-w-prose space-y-4"
+          aria-labelledby="empty-search-title"
+        >
+          <h2 id="empty-search-title" class="text-xl font-semibold">
+            Tidak ada produk yang cocok
+          </h2>
+          <p>
+            Tidak ada aplikasi dengan pencarian “{search}”
+            {selected ? ` di kategori ${selected.name}` : " di katalog"}. Coba
+            kata kunci lain, atau hapus pencarian untuk melihat kembali seluruh
+            produk.
+          </p>
+          <a
+            class="button"
+            href={catalogParamsHref({ category: selected?.id, priceSort })}
+          >
+            Hapus pencarian
+          </a>
+        </section>
+      ) : null}
+      {search === undefined && visible.length === 0 ? (
+        <section
+          class="panel max-w-prose space-y-4"
+          aria-labelledby="empty-title"
+        >
+          <h2 id="empty-title" class="text-xl font-semibold">
+            Belum ada produk di kategori ini
+          </h2>
+          <p>
+            Kategori “{selected?.name}” masih kosong untuk kampanye ini. Lihat
+            pilihan aplikasi yang tersedia di katalog.
+          </p>
+          <a class="button" href="/products">
+            Lihat semua produk
+          </a>
+        </section>
+      ) : null}
     </div>
   )}
 </Shell>

@@ -1,40 +1,44 @@
 ---
-// D-034: filter chips are plain server-rendered links; the catalog list is
-// re-rendered by Astro on navigation. No client JavaScript here.
-import { catalogCategories } from "../../../../shared/catalog.ts";
-import { CATALOG_PATH } from "../../../../shared/content.ts";
-
+// Owner-directed catalog filter bar (S-036A): a full-width search input and a
+// single row of category chips plus a price-sort picker, following the owner's
+// reference layout. The chips are plain server-rendered links (D-034 state
+// pattern); the form submits the trimmed search text and chosen sort order so
+// state (kategori + q + harga) stays reflected in the URL. A small
+// progressive-enhancement script debounces typed searches and submits the
+// sort change; a visible fallback button only appears without JavaScript.
+import {
+  catalogCategories,
+  catalogParamsHref,
+  type CatalogHrefInput,
+} from "../../../../shared/catalog.ts";
 interface Props {
   active?: string;
+  /** Query/state that must survive a category change. */
+  preserved?: CatalogHrefInput;
 }
 
-const { active } = Astro.props;
-const chip = (href: string, label: string, isActive: boolean) => ({
-  href,
-  label,
-  isActive,
-});
+const { active, preserved } = Astro.props;
+const href = (categoryId?: string) =>
+  catalogParamsHref({ category: categoryId, ...preserved });
 const chips = [
-  chip(CATALOG_PATH, "Semua", !active),
-  ...catalogCategories.map((category) =>
-    chip(
-      `${CATALOG_PATH}?kategori=${category.id}`,
-      category.name,
-      active === category.id,
-    ),
-  ),
+  { href: href(undefined), label: "Semua", isActive: !active },
+  ...catalogCategories.map((category) => ({
+    href: href(category.id),
+    label: category.name,
+    isActive: active === category.id,
+  })),
 ];
 ---
 
-<nav aria-label="Filter kategori produk">
-  <ul class="flex flex-wrap gap-3">
+<nav aria-label="Filter kategori produk" class="md:min-w-0 md:flex-1">
+  <ul class="no-scrollbar flex flex-nowrap gap-3 overflow-x-auto">
     {chips.map((item) => (
       <li>
         <a
           class:list={[
-            "inline-flex min-h-11 items-center rounded-button border px-4 font-semibold",
+            "inline-flex min-h-11 shrink-0 items-center rounded-full border px-4 font-semibold whitespace-nowrap",
             item.isActive
-              ? "border-primary bg-primary text-canvas hover:text-canvas"
+              ? "border-primary/40 bg-primary/10 text-primary hover:text-primary"
               : "border-border bg-canvas text-ink hover:text-primary",
           ]}
           href={item.href}

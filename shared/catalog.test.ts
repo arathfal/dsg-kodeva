@@ -5,11 +5,16 @@ import {
   catalogCategories,
   catalogFixture,
   catalogResult,
+  catalogParamsHref,
+  catalogSearchHits,
   getCatalogCategory,
   getCatalogEntry,
+  getCatalogSearch,
+  getPriceSortId,
   isProductCatalog,
   packageOffer,
   productsInCategory,
+  sortCatalogByPrice,
   startingPrice,
 } from "./catalog.ts";
 
@@ -201,4 +206,129 @@ test("fixtures carry exactly one validated entry per registry product", () => {
       ),
     true,
   );
+});
+
+// --- Bonus: URL-reflected search, filter and price sort ---
+
+test("price sort identifiers validate strictly like the category contract", () => {
+  assert.equal(getPriceSortId("termurah"), "termurah");
+  assert.equal(getPriceSortId("termahal"), "termahal");
+  assert.equal(getPriceSortId("TERMURAH"), undefined);
+  assert.equal(getPriceSortId(" termurah"), undefined);
+  assert.equal(getPriceSortId("harga-naik"), undefined);
+  assert.equal(getPriceSortId(""), undefined);
+  assert.equal(getPriceSortId("urutkan-ngawur"), undefined);
+  assert.equal(getPriceSortId(null), undefined);
+  assert.equal(getPriceSortId(undefined), undefined);
+  assert.equal(getPriceSortId(42), undefined);
+});
+
+test("price sort orders by the Basic starting price and never mutates input", () => {
+  const originalOrder = catalogFixture.map((entry) => entry.id);
+  const ascending = sortCatalogByPrice(catalogFixture, "termurah");
+  assert.deepEqual(
+    ascending.map((entry) => entry.id),
+    ["laporan", "inventori", "hr", "akuntansi", "kasir", "payroll"],
+  );
+  const descending = sortCatalogByPrice(catalogFixture, "termahal");
+  assert.deepEqual(
+    descending.map((entry) => entry.id),
+    [...ascending].reverse().map((entry) => entry.id),
+  );
+  for (const entries of [ascending, descending])
+    assert.deepEqual(
+      [...new Set(entries.map((entry) => entry.id))].sort(),
+      [...originalOrder].sort(),
+    );
+  assert.deepEqual(
+    catalogFixture.map((entry) => entry.id),
+    originalOrder,
+  );
+});
+
+test("search barely matches card text: name, description, features", () => {
+  assert.equal(catalogSearchHits(catalogFixture, "   "), catalogFixture);
+  assert.deepEqual(
+    catalogSearchHits(catalogFixture, "Kasir").map((entry) => entry.id),
+    ["kasir"],
+  );
+  // “stok” lives in the summary description and a feature line of Inventori.
+  assert.deepEqual(
+    catalogSearchHits(catalogFixture, "stok").map((entry) => entry.id),
+    ["inventori"],
+  );
+  // Feature-only text: “pantau” appears in a feature of Inventori.
+  assert.deepEqual(
+    catalogSearchHits(catalogFixture, "pantau").map((entry) => entry.id),
+    ["inventori"],
+  );
+  assert.deepEqual(
+    catalogSearchHits(catalogFixture, "gaji").map((entry) => entry.id),
+    ["payroll"],
+  );
+  assert.deepEqual(
+    catalogSearchHits(catalogFixture, "tidak-ada-sungguhan"),
+    [],
+  );
+});
+
+test("search composes with category filtering and price sorting", () => {
+  const inCategory = productsInCategory("sdm-payroll");
+  const hits = catalogSearchHits(inCategory, "gaji");
+  assert.deepEqual(
+    hits.map((entry) => entry.id),
+    ["payroll"],
+  );
+  assert.deepEqual(
+    sortCatalogByPrice(hits, "termahal").map((entry) => entry.id),
+    ["payroll"],
+  );
+  // Searching inside an empty category also yields nothing, like Tambahan.
+  assert.deepEqual(
+    catalogSearchHits(productsInCategory("tambahan"), "kasir"),
+    [],
+  );
+});
+
+test("queries beyond the limit stay bounded instead of throwing", () => {
+  for (const length of [150, 1_000]) {
+    assert.deepEqual(catalogSearchHits(catalogFixture, "a".repeat(length)), []);
+    const longQuery = `${"kod".repeat(length / 3)} kasir`;
+    // Tokens past the 100-character cap are ignored, so “kasir” is dropped.
+    assert.deepEqual(catalogSearchHits(catalogFixture, longQuery), []);
+  }
+});
+
+test("search input normalizes blank noise and overlong values", () => {
+  assert.equal(getCatalogSearch("  stok  "), "stok");
+  assert.equal(getCatalogSearch(""), undefined);
+  assert.equal(getCatalogSearch("   "), undefined);
+  assert.equal(getCatalogSearch(null), undefined);
+  assert.equal(getCatalogSearch(undefined), undefined);
+  assert.equal(getCatalogSearch(42), undefined);
+  assert.equal(getCatalogSearch("a".repeat(150))?.length, 100);
+});
+
+test("shareable catalog hrefs keep only valid state and encode safely", () => {
+  assert.equal(catalogParamsHref({}), "/products");
+  assert.equal(
+    catalogParamsHref({ category: "sdm-payroll" }),
+    "/products?kategori=sdm-payroll",
+  );
+  assert.equal(
+    catalogParamsHref({
+      category: "sdm-payroll",
+      search: "stok gaji",
+      priceSort: "termahal",
+    }),
+    "/products?kategori=sdm-payroll&q=stok+gaji&harga=termahal",
+  );
+  // Unknown category/sort values and blank searches never reach a shared link.
+  assert.equal(
+    catalogParamsHref({ category: "hacker", search: "x", priceSort: "ngawur" }),
+    "/products?q=x",
+  );
+  assert.equal(catalogParamsHref({ search: "   " }), "/products");
+  // Reserved characters round-trip through the page's searchParams parsing.
+  assert.equal(catalogParamsHref({ search: "a&b" }), "/products?q=a%26b");
 });

@@ -1,0 +1,195 @@
+---
+// Owner-directed catalog filter bar (S-036A/S-036B): a full-width search input
+// followed by one row of category chips and a price-sort popup, following the
+// owner's reference layout and later corrections. The entire region is a plain
+// GET form, so catalog state (kategori + q + harga) is reflected in the URL
+// and every combination is shareable. Typed searches are debounced (300 ms,
+// owner-directed realtime behaviour); the sort picker is a details/summary
+// popup whose options are plain links, and a visible fallback submit button
+// appears only without JavaScript. Every submission re-renders server-side, so
+// the URL remains the source of truth.
+import {
+  catalogParamsHref,
+  PRICE_SORT_PARAM,
+  priceSortOptions,
+  SEARCH_LIMIT,
+  type PriceSortId,
+} from "../../../../shared/catalog.ts";
+import { CATALOG_PATH } from "../../../../shared/content.ts";
+import { Input } from "./Input";
+import CategoryFilter from "./CategoryFilter.astro";
+import ChevronDownIcon from "./icons/ChevronDownIcon.astro";
+import SearchIcon from "./icons/SearchIcon.astro";
+import XIcon from "./icons/XIcon.astro";
+
+interface Props {
+  search?: string;
+  priceSort?: string;
+  category?: string;
+  active?: string;
+}
+
+const { search, priceSort, category, active } = Astro.props;
+const activeSort =
+  priceSort === "termurah" || priceSort === "termahal"
+    ? { id: priceSort }
+    : undefined;
+const activeSortLabel =
+  activeSort?.id === "termurah"
+    ? "Harga Terendah"
+    : activeSort?.id === "termahal"
+      ? "Harga Tertinggi"
+      : "Urutkan";
+const optionHref = (sortId: PriceSortId) =>
+  catalogParamsHref({ category, search, priceSort: sortId });
+const clearHref = catalogParamsHref({ category, search });
+---
+
+<section class="space-y-6" aria-label="Cari, filter, dan urutkan katalog">
+  <form
+    id="katalog-form"
+    method="get"
+    action={CATALOG_PATH}
+    class="space-y-5"
+    role="search"
+    aria-label="Cari dan urutkan produk katalog"
+  >
+    {category && <input type="hidden" name="kategori" value={category} />}
+    {activeSort && (
+      <input type="hidden" name={PRICE_SORT_PARAM} value={activeSort.id} />
+    )}
+    <div class="relative">
+      <span
+        class="pointer-events-none absolute top-1/2 left-5 -translate-y-1/2 text-secondary [&>svg]:h-5 [&>svg]:w-5"
+        aria-hidden="true"
+      >
+        <SearchIcon />
+      </span>
+      <Input
+        id="katalog-cari"
+        name="q"
+        type="search"
+        className="min-h-12 rounded-lg pr-5 pl-12 text-secondary placeholder:text-secondary"
+        maxLength={SEARCH_LIMIT}
+        defaultValue={search ?? ""}
+        placeholder="Cari aplikasi kasir, HR, inventori..."
+        autoComplete="off"
+        enterKeyHint="search"
+      />
+    </div>
+    <div class="flex flex-col gap-4 md:flex-row md:flex-nowrap md:items-center">
+      <CategoryFilter active={active} preserved={{ search, priceSort }} />
+      <span
+        class="hidden shrink-0 items-center px-3 md:flex"
+        aria-hidden="true"
+      >
+        <span class="h-8 w-px bg-border"></span>
+      </span>
+      <details
+        id="katalog-urut"
+        class="relative shrink-0 self-start md:self-auto"
+      >
+        <summary class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-input border border-border bg-canvas px-4 font-semibold text-ink select-none">
+          {activeSortLabel}
+          {activeSort ? (
+            <a
+              href={clearHref}
+              class="rounded-input p-1 text-secondary hover:text-primary"
+              aria-label="Hapus urutan harga"
+            >
+              <span class="block [&>svg]:h-4 [&>svg]:w-4">
+                <XIcon />
+              </span>
+            </a>
+          ) : (
+            <span
+              class="text-secondary [&>svg]:h-4 [&>svg]:w-4"
+              aria-hidden="true"
+            >
+              <ChevronDownIcon />
+            </span>
+          )}
+        </summary>
+        <div class="absolute top-[calc(100%+8px)] right-0 z-10 w-56 rounded-card border border-border bg-canvas p-2 shadow-md">
+          <ul>
+            {priceSortOptions.map((option) => (
+              <li>
+                <a
+                  class:list={[
+                    "block rounded-input px-3 py-2 text-sm font-semibold",
+                    activeSort?.id === option.id
+                      ? "bg-primary/10 text-primary"
+                      : "text-ink hover:bg-soft hover:text-primary",
+                  ]}
+                  href={optionHref(option.id)}
+                  aria-current={
+                    activeSort?.id === option.id ? "true" : undefined
+                  }
+                >
+                  {option.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+    </div>
+    <noscript>
+      <button type="submit" class="button">
+        Terapkan pencarian
+      </button>
+    </noscript>
+  </form>
+</section>
+
+<script>
+  const form = document.getElementById(
+    "katalog-form",
+  ) as HTMLFormElement | null;
+  const searchInput = document.getElementById(
+    "katalog-cari",
+  ) as HTMLInputElement | null;
+  const sortPopup = document.getElementById(
+    "katalog-urut",
+  ) as HTMLDetailsElement | null;
+  const DEBOUNCE_MS = 300;
+  let pending: ReturnType<typeof setTimeout> | undefined;
+
+  const navigate = () => {
+    if (!form) return;
+    // Mirror the form's GET submission while dropping empty values so shared
+    // URLs stay clean (no `q=`/`harga=` noise); identical to form.submit()
+    // except for the cosmetic trimming.
+    const params = new URLSearchParams();
+    for (const [key, value] of new FormData(form).entries())
+      // Only string fields are possible here (no file inputs on the page),
+      // but the narrowing keeps the check honest for future edits.
+      if (typeof value === "string" && value.trim()) params.set(key, value);
+    const query = params.toString();
+    window.location.href = `${form.action}${query ? `?${query}` : ""}`;
+  };
+
+  searchInput?.addEventListener("input", () => {
+    clearTimeout(pending);
+    pending = setTimeout(() => {
+      // defaultValue is the server-rendered search text; skipping identical
+      // values avoids navigation spam for no-op edits.
+      if (searchInput.value === searchInput.defaultValue) return;
+      navigate();
+    }, DEBOUNCE_MS);
+  });
+
+  sortPopup?.addEventListener("toggle", () => {
+    if (sortPopup.open) clearTimeout(pending);
+  });
+
+  // Close the sort popup when clicking anywhere outside it.
+  document.addEventListener("click", (event) => {
+    if (
+      sortPopup?.open &&
+      event.target instanceof Node &&
+      !sortPopup.contains(event.target)
+    )
+      sortPopup.open = false;
+  });
+</script>

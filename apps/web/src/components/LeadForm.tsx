@@ -5,6 +5,7 @@ import {
   type SubmitEvent,
 } from "react";
 import { Button } from "./Button";
+import { Input } from "./Input";
 import { isRecord } from "../../../../shared/content";
 import { validateLead, type LeadErrors } from "../../../../shared/leads";
 import { readTouch } from "../lib/analytics";
@@ -116,7 +117,7 @@ export function LeadForm({ campaignKey }: { campaignKey: string }) {
               {label}
               {name === "name" ? " (wajib)" : ""}
             </label>
-            <input
+            <Input
               id={`lead-${name}`}
               name={name}
               type={type}
@@ -125,7 +126,6 @@ export function LeadForm({ campaignKey }: { campaignKey: string }) {
               required={name === "name"}
               aria-invalid={Boolean(errors[name])}
               aria-describedby={`lead-help${errors[name] ? ` lead-${name}-error` : ""}`}
-              className="input w-full"
             />
             {errors[name] && (
               <p id={`lead-${name}-error`} className="text-sm text-error">
