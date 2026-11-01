@@ -1,160 +1,103 @@
 # Decision register
 
-Status recorded from developer instructions on 2026-10-30. A proposal is not authorization. Do not infer approval from documentation review, a skill, or an ordinary default. Record the developer's explicit response and context before implementing any pending option.
+Approved technical and workflow decisions for the **Kodeva — Promo Akhir Tahun** assessment. This is a reference for the implemented project, not a list of unresolved proposals. The assessment requirements are in [ASSESSMENT_BRIEF.md](ASSESSMENT_BRIEF.md); detailed implementation records are in [TASKS.md](TASKS.md) and the linked task briefs.
 
-## Approved decisions
+**Decision rule:** a proposed alternative is not permission to implement it. The developer approves scope, reviews the result, and separately authorizes commits, pushes, and deployments. Earlier decisions remain historically recorded when later decisions explicitly supersede them.
 
-| ID | Context and options considered | Approved decision and rationale | Authorization evidence | Tasks |
-| --- | --- | --- | --- | --- |
-| D-001 | Assessment architecture; alternative stacks were not evaluated in this session. | pnpm workspaces; apps/web: Astro, @astrojs/react, TypeScript, Tailwind, Zustand persistence; apps/studio: Sanity Studio/Content Lake; Vercel web and Sanity-hosted Studio. Content rendered with Astro, interactive islands with React. No orchestration layer or marketplace backend/payments. Fits previously approved scope. | Attached planning brief's “Previously approved architecture” and AGENTS.md. No new stack approval inferred. | T01–T10 |
-| D-002 | Earlier attachment demanded the original PDF; a Markdown transcript already exists. Options: obtain PDF or use existing brief. | Use ASSESSMENT_BRIEF.md permanently as authoritative requirements. Future agents must not require or search for the PDF; do not edit the brief. | Explicit user: “Use ASSESSMENT_BRIEF.md and change instructions permanently to check ASSESSMENT_BRIEF.md instead of PDF”. | Planning, T01–T10 |
-| D-003 | Package management and code quality tooling. Exact linter/plugins/versions not selected yet. | Use pnpm, latest compatible Tailwind with minimum v4, a linter, and Prettier with Tailwind class sorting. | Explicit user tooling request. Package-specific proposal is P-002. | T01 |
-| D-004 | Git and task execution lifecycle. | Initialize Git and add .gitignore (performed). Implement one assigned task; verify, stop for human acceptance, confirm actual time, reconcile documentation, then request separate commit permission. Never auto-commit/push/merge/deploy/squash. | Explicit Git setup request and attached workflow/AGENTS.md. | Planning, T01–T10 |
-| D-005 | Visual direction; exact reference tokens were present but no token approval evidence supplied. | Stripe-inspired modern SaaS adapted to Kodeva. Exact colors, type, spacing, component treatments remain proposals. Use DESIGN.md as the single design specification, linking the external Stripe source without a duplicate local reference. | Approved direction in attachment/AGENTS.md; owner subsequently requested deletion of the duplicate local reference. | T01, T03–T07, T09 |
-| D-006 | AI_LOG previously included planning/tooling errors and checks before owner verification. Options: immediate AI-authored entries or incremental owner-verified entries. | Use incremental owner-verified logging: tools and explicitly approved prompt references now; task contributions/results only after owner verification/acceptance; failed work when identified/reported by owner, with recovery evidence after owner verifies the fix. Link the approved long initial prompt from prompts/MASTER_PROMPT.md rather than duplicating it. | Explicit owner correction: “AI_LOG ini di isi bertahap, hanya jika saya berhasil memverifikasi”; “ketika saya (owner) berhasil menemukan failed work maka catat”; approval to include the initial prompt by file reference. | Planning, T01–T10 |
-| D-007 | P-001: ten reviewable tasks versus eight combined tasks. | Approve option A, the ten tasks in TASKS.md; T01 is explicitly assigned. | Owner: “Approve all, next use interactive QnA”, responding to the three-option approval request. Future decision questions use interactive Q&A. | T01–T10 |
-| D-008 | P-002: ESLint flat config + Prettier with a newer project runtime versus older tooling on installed Node. | Approve option A: Node 24.22.2, pnpm 10.13.1, Astro 7.4.4, React 19.3.1, Tailwind 4.3.3, Sanity 6.21.0, TypeScript 6.0.3; the proposed Astro/TS/React Hooks lint and Astro/Tailwind formatter plugins. Pin compatible dependencies; defer a business-logic test runner. Use an isolated temporary Node runtime for agent verification without replacing installed Node. | Owner: “Approve all, next use interactive QnA”, in response to P-002 A with concrete core versions. Package pins are recorded below. | T01 |
-| D-009 | P-003: system fonts versus a self-hosted display font. | Approve option A: all tokens and shared component treatments in DESIGN.md, system typography, responsive gutters and control states. No marketing layout or product features in T01. | Owner: “Approve all, next use interactive QnA”, in response to P-003 A. Browser evidence and human task acceptance remain separate. | T01, T03–T07, T09 |
-| D-010 | Tailwind formatter 0.8.1 silently fails to sort Astro formatter v1 ASTs. Options: downgrade the Astro formatter to 0.14.1 or retain 1.1.2 with the reviewed upstream patch. | Keep Astro formatter 1.1.2 and apply upstream Tailwind PR #473 via a versioned pnpm patch to 0.8.1. Verify static/dynamic Astro classes, TSX and stable repeated formatting. Remove after a verified published upstream fix. | Owner interactive answer: “Keep Astro formatter 1.1.2 and apply the reviewed upstream Tailwind patch.” | T01 |
-| D-011 | Owner questioned why 24.22.2 was enforced when the Astro ESLint plugin supports Node 24 from 24.16.0. Options: allow compatible Node 24 versions or enforce the exact tested patch. | Set package.json engines to >=24.16.0 <25; keep .nvmrc at tested 24.22.2. Supersedes the exact Node requirement in D-008. Owner installed Node 24.22.2 through existing nvm; remaining verification uses it. | Owner interactive answer: “Allow compatible Node 24 versions; keep the tested .nvmrc pin (Recommended).” | T01 |
-| D-012 | Agent prepared a routine technical report and four screenshots for a future T01 commit and linked them from project documents. Owner rejected archiving these artifacts. | Keep routine verification artifacts local and ignored; remove repository links to them. Report checks in the review handoff and retain concise task verification status. Record owner-reported AI failures in AI_LOG; add correction/recovery evidence only after owner verifies the fix. Required final Lighthouse submission evidence remains governed by the assessment brief. | Owner: “We don't need to record the evidence. We only need record the verification that AI failed and I verified it”. | T01–T10 |
-| D-013 | Agent added the owner's archive-policy finding to AI_LOG without separately asking. Owner instructed its removal and required prior approval for future additions. | Remove that entry. Ask for explicit approval of proposed text before every AI_LOG addition or expansion, including tool/prompt/failure/result entries. Owner reporting or verification alone is not authorization. This additional gate supersedes automatic logging language in D-006/D-012 and applies to task/document update instructions. | Owner: “No, don't recorded in AI_LOG.md. Next ask me before add in AI_LOG.md”. | T01–T10 |
-| D-014 | Owner specified the Git message format before T01 commit authorization. | Use a Conventional Commits title and a nonempty body. Format approval does not replace the separate permission to commit. | Owner: “Commit must be conventional and”, completed by “and add body wkwk”. | T01–T10 |
+## Project foundation and working agreements (D-001–D-014)
 
-### T02 approvals — 2026-10-31
+| ID | Final decision | Important qualification |
+| --- | --- | --- |
+| **D-001** | pnpm monorepo with `apps/web` (Astro, React islands, TypeScript, Tailwind, Zustand) and `apps/studio` (Sanity). Host web on Vercel and Studio on Sanity. | Marketplace and payment backend are out of scope for the demo. |
+| **D-002** | Treat [ASSESSMENT_BRIEF.md](ASSESSMENT_BRIEF.md) as the authoritative transcription of the assessment brief. | Do not require agents to find the original PDF or alter the brief. |
+| **D-003** | Use pnpm, Tailwind v4+, ESLint and Prettier with Tailwind class sorting. | Specific compatible versions follow D-008/D-011. |
+| **D-004** | Execute **one assigned task at a time**. Verify, request developer acceptance, reconcile documentation, then seek separate commit/push/deploy permission. | No autonomous next task, commit, push, merge, deployment, or squash. |
+| **D-005** | Stripe-inspired SaaS design adapted to Kodeva, with [DESIGN.md](DESIGN.md) as the single visual specification. | Original reference is linked by DESIGN.md, not copied locally. |
+| **D-006** | Record AI contributions after developer review; record owner-identified shortcomings with evidence. | **D-013 adds the stricter rule**: obtain explicit approval before any addition to AI_LOG. |
+| **D-007** | Use ten reviewable implementation tasks (T01–T10). | Interactive questions are preferred for choices requiring approval. |
+| **D-008** | Approve compatible pinned tooling: Node 24, pnpm 10.13.1, Astro 7, React 19, Tailwind 4, Sanity 6 and TypeScript 6. | Actual exact versions belong in `package.json` and the lockfile; Node range amended by D-011. |
+| **D-009** | Use system typography and approved responsive design tokens/components. | T01 is foundation only, not the finished landing page. |
+| **D-010** | Retain Astro Prettier plugin 1.1.2 and use the reviewed pnpm patch for Tailwind formatter 0.8.1. | Patch is documented in [patches/README.md](patches/README.md). |
+| **D-011** | Allow Node `>=24.16.0 <25`, with `.nvmrc` pinned to the verified 24.22.2. | Supersedes the unnecessarily strict exact-version requirement in D-008. |
+| **D-012** | Keep routine QA screenshots/reports local and ignored. | Required final Lighthouse submission evidence is an exception. |
+| **D-013** | Require explicit developer approval **before every addition to AI_LOG**, including failures and contributions. | A private failure candidate is not an automatically approved AI_LOG entry. |
+| **D-014** | Authorized Git commits must use a Conventional Commits subject and a nonempty descriptive body. | Commit formatting does not constitute commit authorization. |
 
-- **D-015 / P-004:** Owner selected “Approve request-time reads (recommended)”: request-time CMS reads, Sanity CDN disabled, published-only queries, `Cache-Control: no-store`, compatible pinned Vercel adapter. Missing content returns not-found; CMS failures return an explicit unavailable result without draft exposure or silent demo fallback. Actual freshness remains subject to measurement.
-- **D-016 / P-005 direction:** Owner selected “Approve fixture-linked content direction (recommended)”: singleton campaign, articles/categories, shared six-product TypeScript identity registry, fixed catalog CTA destination, optional SEO overrides, image alt/provenance, Indonesian fictional demo content, six articles per page, invalid pages and old changed slugs return 404. Exact field limits and seed content still require approval before implementation.
-- **D-017 / P-006 boundary:** Owner selected “Separate private leads dataset (recommended)”: public marketing content and separate private leads, authenticated marketing access, server-only write credential. Project access, dataset creation/privacy changes, detailed lead contract and credential permissions remain unapproved/unconfirmed. This does not authorize external mutations.
+## CMS, landing page and leads (D-015–D-025)
 
-These selections were received through interactive Q&A for T02. They supersede the corresponding pending directions below only to the extent explicitly approved; remaining details are still pending.
+| ID | Approved choice | Scope / caveat |
+| --- | --- | --- |
+| **D-015** | Read published Sanity content on request, using the origin API (`useCdn: false`), `published` perspective and no-store response/cache policy. | Drafts never enter public responses. Missing content returns not-found; CMS outage returns unavailable. Freshness trades caching for latency/API dependency. |
+| **D-016** | Use one editable campaign, articles/categories and a shared TypeScript registry of six product identities. | Content can reference products; pricing and commerce rules remain code-owned. Six articles per blog listing page. |
+| **D-017** | Separate public marketing content from a **private `leads` dataset**. | Server-only writes and authenticated marketing read access; never expose leads via anonymous content queries. |
+| **D-018** | Approve [CMS content contract](tasks/T02-cms.md#approved-content-contract), seed content and Node built-in contract tests. | Earlier scoped-token preference is **superseded for the demo by D-023**. Vercel adapter pinned compatibly with Astro. |
+| **D-019** | Log the approved T02 AI contribution and record the developer's six-minute content review. | Count overlapping work only once; unknown intervals are not zero. Developer explicitly approved that log entry. |
+| **D-020** | Use `utm: {source, medium, campaign, term, content}` in lead/order payloads. | Trim strings, max 200 characters; omit empties and reject unknown payload fields/types. This supersedes the earlier `attribution` proposal. |
+| **D-021** | Landing with Kodeva/Blog/Katalog/cart navigation, mobile-stacked hero, CMS products/testimonials/FAQ and lead form. | Approved in T03 scope; no additional animation dependency. |
+| **D-022** | `POST /api/leads` accepts bounded same-origin JSON, validates data and uses a hidden `website` honeypot. | Max body 8 KiB; errors include 400/403/413/415/503. Confirm storage before displaying success; no silent retry. |
+| **D-023** | **Demo-only exception:** use a server-side Sanity Editor token for the lead-writing endpoint. | Explicit owner approval: “Oke saya Approve A untuk token.” It has broader project permissions than ideal; never expose it client-side or commit it. Production would require least-privilege credentials. |
+| **D-024** | Replace the header's text “Keranjang” with an accessible cart icon linking to `/cart`. | T03 decision; **T06 later adds** the hydrated quantity badge. |
+| **D-025** | Make featured-product *marketing fields* CMS-editable: description (≤200 chars), 1–6 short features (≤100 chars each), optional image. | Product ID/name, packages, prices, URLs and quota remain defined in the registry. Duplicate featured-product selections are invalid. |
 
-- **D-018 / T02 detailed contract:** Owner selected “Approve the detailed contract (recommended)” for [the T02 contract](tasks/T02-cms.md#approved-content-contract), including field limits, seed content, lead policy and Node built-in checks without a new test dependency. Owner then said “I have add project ID to env, but the project still empty. Just continue”. Continue local implementation and inspect the configured project; do not infer authenticated access, successful dataset creation or scoped-token availability. The compatible Vercel adapter is pinned to 11.0.17 (registry peer range Astro ^7.0.0, matching installed Astro 7.4.4).
+## Blog and SEO (D-026–D-032)
 
-### D-019 — T02 reporting follow-up (2026-10-31)
+| ID | Approved choice | Scope / caveat |
+| --- | --- | --- |
+| **D-026** | Blog listing `/blog`, pagination `/blog/halaman/N` (from page 2), article detail `/blog/[slug]`. | Malformed/out-of-range pages, including `/blog/halaman/1`, return 404; changed old slugs do not redirect in this demo. |
+| **D-027** | Render validated rich text with a small typed server-side Astro renderer. | Support paragraphs, h2/h3, emphasis, lists and safe HTTP(S) links; no extra Portable Text library. |
+| **D-028** | Responsive article cards, accessible pagination, article details and related product links. | Use shared visual tokens and `/products/[id]` destinations. |
+| **D-029** | Create explicitly labeled temporary CMS QA articles using approved server-only access, then delete and verify cleanup. | Testing data is not permanent marketing content. |
+| **D-030** | Extend the shared page shell's `og:type` property. | Default `website`; article pages use `article`. |
+| **D-031** | Enforce consistent article-card height with fixed cover ratios and clamped title/excerpt text. | Owner-requested visual correction. |
+| **D-032** | Keep pagination's page indicator centered, with both controls present and an inert disabled state. | Disabled controls must not respond visually to hover. |
 
-Owner explicitly approved the proposed T02 contribution paragraph for AI_LOG: “Setujui enti AI log”. Only that proposed paragraph is added; no failed-work or independent-authorship claims are authorized. Owner confirmed their editing review was six minutes and instructed: “Catat bagianmum bagianku tadi 6 menit. Kalau ada yang di kerjakan paralel jangan di sum, tapi catat 1 waktu karena paralel”. Record owner and agent contributions separately, use the union of overlapping active intervals for project totals, and do not add parallel reviewer/tool durations to the parent session. Unseparated waiting and untimed intervals remain unknown rather than fabricated active time.
+## Products and pricing (D-033–D-036)
 
-### D-008 — Concrete tooling pins
+**D-033 — Demo pricing contract.** All prices are annual, in whole Indonesian rupiah, with Basic / Pro / Business packages. Each product has **one shared remaining promo quota across all packages**; no taxes or vouchers are implemented. Product images are original illustrations.
 
-Core/runtime pins are in D-008 above. Supporting packages: @astrojs/react 7.1.2, @astrojs/check 0.9.12, @tailwindcss/vite 4.3.3, react-dom 19.3.1, styled-components 6.6.0 (Studio peer), @types/node 24.19.2, @types/react and @types/react-dom 19.3.0; eslint 10.14.0, @eslint/js 10.0.1, typescript-eslint 8.72.1, eslint-plugin-astro 3.2.1, eslint-plugin-react-hooks 7.1.1, eslint-config-prettier 10.1.8; prettier 3.9.10, prettier-plugin-astro 1.1.2, prettier-plugin-tailwindcss 0.8.1. The TypeScript 6 pin follows the checkers' supported peer ranges. Registry metadata checks preceded installation; install/build results are separate evidence.
+| Product | Basic / Pro / Business (IDR million) | Struck-through promo comparison (IDR million) | Shared quota | Unit |
+| --- | --- | --- | ---: | --- |
+| Kasir | 1.8 / 2.7 / 3.9 | 2.4 / 3.6 / 5.2 | 10 | Outlet |
+| Inventori | 1.2 / 1.9 / 2.9 | — | 5 | Outlet |
+| HR | 1.5 / 2.4 / 3.5 | 2.0 / 3.2 / 4.6 | 8 | Pengguna |
+| Payroll | 2.2 / 3.3 / 4.9 | — | 12 | Pengguna |
+| Akuntansi | 1.6 / 2.5 / 3.8 | 2.1 / 3.3 / 5.0 | 15 | Pengguna |
+| Laporan | 0.9 / 1.4 / 2.2 | — | 0 | Pengguna |
 
-### T05 approvals — 2026-11-01
+- **D-034:** Category filtering uses server-rendered links such as `/products?kategori=slug`, without JavaScript; unknown categories return 404.
+- **D-035:** An empty “Tambahan” category intentionally demonstrates the catalogue's valid empty state.
+- **D-036:** T05 delivered package and price selection **without** a placeholder add-to-cart button. The working button was added in **T06**; D-036 is a task-sequencing decision, not a final-feature limitation.
 
-Interactive Q&A (D-007 interactive rule) for T05. Explicit owner selections:
+## Cart, checkout and analytics (D-037–D-047)
 
-- **D-033 / P-007 commerce fixtures:** Owner selected “Approve option A” after being offered two complete alternative pricing tables. Approved: annual IDR billing period displayed “Rp… / tahun”, integer rupiah, no taxes/vouchers; Basic < Pro < Business per product; shared per-product promo quota (never per package). Kasir #Penjualan & Kasir 1.8jt/2.7jt/3.9jt (coret 2.4/3.6/5.2jt), kuota 10; Inventori #Inventaris 1.2/1.9/2.9jt non-promo, kuota 5; HR #SDM & Payroll 1.5/2.4/3.5jt (coret 2.0/3.2/4.6jt), kuota 8; Payroll #SDM & Payroll 2.2/3.3/4.9jt non-promo, kuota 12; Akuntansi #Keuangan & Laporan 1.6/2.5/3.8jt (coret 2.1/3.3/5.0jt), kuota 15; Laporan #Keuangan & Laporan 0.9/1.4/2.2jt non-promo, kuota 0 (habis). Unit labels: kasir/inventori “per outlet”, hr/payroll/akuntansi/laporan “per pengguna”. Screenshots: 2–3 original simple SVG demo illustrations per product in the approved T02 seed-illustration style; no third-party imagery.
-- **D-034 / Catalog filter interaction:** Owner selected “Approve A: no-JS links (Recommended)”. Filter chips are plain links to `/products?kategori=slug`; Astro re-renders the filtered list on the server with no client JavaScript. Plain hrefs only — no designed shareable-filter-URL feature; unknown category slugs return 404.
-- **D-035 / Empty-result demonstration:** Owner selected “Approve B: add-on chip (Recommended)”. The catalog includes a fifth chip “Tambahan” (planned add-ons, no products) so a real empty-result state is visible in normal browsing.
-- **D-036 / Add-to-cart control in T05:** Owner selected “Approve A: omit button (Recommended)”. The T05 detail page renders packages/price/quota without any add-to-cart control; T06 introduces the working control. No placeholder or disabled buy button.
+| ID | Approved choice | Scope / caveat |
+| --- | --- | --- |
+| **D-037** | Test cart/quota/price logic using Node's built-in `node --test` runner. | No Vitest dependency. |
+| **D-038** | Persist and validate cart contents with Zustand; drop invalid lines and clamp lines exceeding the shared product quota. | Ignore stored totals, recalculate prices, and show recovery notices; invalid-version/corrupt storage resets to an empty cart with feedback. |
+| **D-039** | Cart line identity = product + package; each successful add increments quantity by 1. | Quantity changes happen in cart, with one quota shared among a product's packages. |
+| **D-040** | Hydrate a small React cart-count badge in the shared header. | Avoid showing an incorrect SSR count before hydration; handle storage denial gracefully. |
+| **D-041** | Checkout has its own `/checkout` page. | Empty or invalid cart shows cannot-checkout state; cart remains the editing/review page. |
+| **D-042** | Simulate payment results with an explicit Sukses/Gagal radio selection. | Reproducible demonstration, clearly not a real payment transaction. |
+| **D-043** | Validate and build the mock order **only on the client**. | No order endpoint, database persistence, real gateway or lead/PII leakage to analytics. |
+| **D-044** | Disable double submission while pending; retain cart on failure and clear it on success. | Show confirmation only on success; no shared-quota decrement across users in the demo. Owner later finalized the success-only presentation. |
+| **D-045** | Capture first-touch UTM in per-tab `sessionStorage`. | When denied, use only a current-document in-memory fallback. |
+| **D-046** | First valid nonempty set of UTM fields wins, even when partial; later campaigns do not overwrite it. | Unknown `utm_*` query keys are ignored during capture; payload contract remains strict (D-020). |
+| **D-047** | Emit GA4-style `view_item`, `add_to_cart`, `begin_checkout`, `landing_cta_click` on genuine page loads/actions. | Never on rerenders or rejected adds; checkout retry does not re-emit `begin_checkout`. Include campaign/items/value, exclude buyer PII. |
 
-### T06 approvals — 2026-11-01
+## Historical proposals and precedence
 
-Interactive Q&A (D-007 interactive rule) before T06 implementation. Explicit owner selections:
+The original alternatives P-001–P-009 were planning inputs, **not pending implementation work at submission**. Their resolved decisions are:
 
-- **D-037 / P-009 test runner for T06:** Owner selected "Node built-in (Recommended)": cart/quota/money logic tests run with `node --test` (type-stripped TS), matching the T02–T05 precedent of D-018; no new test dependency and no Vitest.
-- **D-038 / P-007 restore policy:** Owner selected "Drop invalid, keep valid (Recommended)". Hydration validates persisted lines: quantity must be a positive safe integer; product/package must exist; per-product quantity total must not exceed the current shared quota. Invalid lines are dropped, over-limit valid quantities clamped to the remaining quota (quota 0 drops the line), valid lines stay; totals are always recomputed from the approved fixtures and never read from storage; a visible notice explains any recovery. Corrupt/old payloads under the versioned key restore as an empty cart with a notice. Unknown storage fields (e.g. forged totals) are ignored.
-- **D-039 / P-007 line identity and add-to-cart interaction:** Owner selected "product+package lines, add qty 1 (Recommended)". Cart identity is `productId` + `packageId`; repeated adds of the same product+package increment one line. The product-detail "Tambah ke keranjang" control adds the currently selected package with quantity 1; quantity steppers live in the cart only.
-- **D-040 / header cart count:** Owner selected "Small header island (Recommended)". A small React island hydrated on every public page renders the cart count badge from the store; initial HTML shows the existing icon-only link without a count (no false data), the count appears after hydration, and it is absent when storage is unavailable.
+| Proposal | Resolution |
+| --- | --- |
+| P-001 — Task breakdown | D-007 |
+| P-002 — Tooling/runtime | D-008, D-010, D-011 |
+| P-003 — Design foundation | D-005, D-009 |
+| P-004 — CMS freshness | D-015 |
+| P-005 — Content/product ownership | D-016, D-018, D-025 |
+| P-006 — Lead storage/security | D-017, D-018, D-022, D-023 |
+| P-007 — Marketplace and checkout | D-033–D-044 |
+| P-008 — UTM and tracking | D-020, D-045–D-047 |
+| P-009 — Testing, deployment assumptions | D-001, D-011, D-037 and [T09](tasks/T09-quality-release.md) |
 
-### T08 approvals — 2026-11-01
-
-Interactive Q&A (D-007 interactive rule) before T08 implementation. Explicit owner selections:
-
-- **D-045 / P-008 touch policy, lifetime and storage:** Owner selected "A: first-touch per tab (Recommended)". The first valid UTM set is captured per browser tab session in `sessionStorage`; it survives in-tab navigation and reloads and disappears when the tab closes. Denied/unavailable storage falls back to in-memory capture for the current page only (attribution attaches if the lead/order is submitted from that same page); the degradation is documented rather than faked. Last-touch with cross-session expiry was rejected.
-- **D-046 / P-008 partial parameters and second campaign:** Owner selected "A: first set wins (Recommended)". The first valid non-empty UTM set is stored as-is even if partial (e.g. only source+medium); later UTM links in the same session, including a second campaign, never change it. Pages without parameters never erase a stored touch; a set whose known values are all invalid/oversized is treated as no new touch and never erases an existing one. Unknown `utm_*` keys are ignored at capture (not stored) without invalidating the known keys; the D-020 payload contract continues to reject unknown keys in lead/order payloads.
-- **D-047 / P-008 event contract:** Owner selected "A: page-load semantics (Recommended)". `view_item` fires once per real product-detail page load (reload fires again; back/forward restore does not; rerenders never); `add_to_cart` only after the store accepts the addition (every accepted add fires; rejected/over-quota never); `begin_checkout` once per `/checkout` page load with a valid nonempty cart after hydration (failed-payment retry does not re-fire; a later real /checkout load does); the approved landing CTA event is named `landing_cta_click` and fires on each genuine click. Events carry GA4-style `ecommerce` items plus currency/value and the captured `utm` campaign data; no buyer PII. Session-deduplicated views were rejected.
-
-### T07 approvals — 2026-11-01
-
-Interactive Q&A (D-007 interactive rule) before T07 implementation. Explicit owner selections:
-
-- **D-041 / checkout placement:** Owner selected "Separate /checkout page (Recommended)". A new `/checkout` page, reached from a cart-page primary button; the cart remains the review/edit page. Direct checkout with an empty or broken cart gets an explicit cannot-checkout state. Cart/checkout stack on phones per D-005.
-- **D-042 / payment simulation trigger:** Owner selected "Explicit radio in the form (Recommended)". A clearly labelled mock radio group in the buyer form selects the simulated result: "Sukses" default, or "Gagal" actively chosen. Both outcomes deterministic and reproducible; the simulation is visually obvious.
-- **D-043 / mock order destination:** Owner selected "Client-side mock only (Recommended)". A shared typed module builds and validates the order object (buyer, items, totals, currency, bounded attribution per D-020, simulation result); the payload is inspected through Node tests and DevTools. No `/api/orders` endpoint, no persistence, no Sanity write — R-023 frontend-only boundary.
-- **D-044 / results and cart semantics:** Owner selected "Confirm proposed P-007 semantics (Recommended)". Pending state disables submission (no duplicate simulation); failure retains the cart with a distinct error and retry; success clears the cart and shows a confirmation state with order number/total/items; refresh/back after success leaves checkout unusable with the empty-cart state; no quota decrement in the local demo (no cross-user guarantee).
-
-### T04 approvals — 2026-11-01
-
-Interactive Q&A (D-007 interactive rule) for T04. Explicit owner selections:
-
-- **D-026 / Blog URL routing:** Owner selected “Dedicated pagination segment (Recommended)”: `/blog` is listing page 1; pages 2+ use `/blog/halaman/N`; detail is `/blog/[slug]`. Out-of-range, malformed (`/blog/halaman/abc`) and `/blog/halaman/1` return 404 so page 1 keeps a single URL with no duplicate content. No collision with digit-only slugs because no numeric path segment is a route. These URL-shape details are scoped to T04.
-- **D-027 / Rich text rendering:** Owner selected “Small typed renderer (Recommended)”: a small server-rendered Astro component keyed to the validated `TextBlock` contract (paragraphs, h2/h3, strong/em, bullet/number lists, http(s) links). No `@portabletext/react` or other new dependency.
-- **D-028 / Blog page compositions:** Owner approved proposal A: listing with “Blog” heading, intro copy, responsive article-card grid (cover, category, title, excerpt, date) at 1/2/3 columns, accessible Sebelumnya/Berikutnya pagination with a page indicator; detail with category/date, title, cover, validated rich text, then a “Produk terkait” section reusing the existing ProductCard with registry descriptions linking to `/products/[id]`. Uses D-009 tokens; product destinations remain verified after T05.
-- **D-029 / QA records:** Owner approved “Temporary articles via token (Recommended)”: the agent creates clearly labeled temporary QA articles through the previously approved server-only Editor token (D-023), runs pagination/unpublish/freshness checks, then deletes the records and verifies deletion.
-
-### D-030 — T04 rendering follow-up
-
-Owner explicitly approved extending the shared Shell with an `og:type` prop only (default `website`; article detail uses `article`) so initial-HTML social metadata on blog pages matches R-022 without other Shell changes.
-
-### D-031 — T04 listing card consistency
-
-Owner instruction during T04 (2026-11-01): blog listing cards truncate long content with an ellipsis so card heights stay consistent. Implemented as fixed-aspect covers, a single truncated category/date line and line-clamped/fixed-slot titles (2 lines) and excerpts (3 lines). Scoped to the T04 article card.
-
-### D-032 — Pagination control geometry
-
-Owner correction during T04 (2026-11-01): the “Halaman X dari Y” indicator must stay visually centered even when one of the Sebelumnya/Berikutnya controls does not apply. Owner’s own options were a disabled control or an in-DOM hidden control. Implemented as the owner’s first option: both controls always render in a `1fr auto 1fr` grid; the inapplicable one is a non-focusable `aria-disabled` control with the approved disabled button style. The owner then reported that the disabled control still reacted to hover (color change); hover/active states now exclude `[aria-disabled="true"]` alongside `:disabled`, verified by computed-style checks.
-
-### T03 approvals — 2026-10-31
-
-- **D-020 / P-008 payload interface:** Owner approved using the existing `utm: {source, medium, campaign, term, content}` shape. This explicitly corrected and superseded the earlier approved suggestion of `attribution` with `utm_`-prefixed keys. Values are strings, trimmed, maximum 200 characters; empty values are omitted; unknown keys/types are rejected. Capture, touch policy, browser persistence and navigation verification remain T08.
-- **D-021 / landing composition:** Owner approved Kodeva/Blog/Katalog/Keranjang navigation (`/cart`), desktop two-column hero stacked on mobile, featured product name links from the registry without prices before T05, fictional testimonial disclosures, native details FAQ, then the lead form. Use DESIGN.md tokens and CMS illustration; no animation or additional dependency.
-- **D-022 / lead transport:** Owner approved same-origin POST JSON `/api/leads`, streamed 8 KiB body limit, `website` honeypot, no automatic retry/server deduplication, and responses 400 validation, 403 origin, 413 body limit, 415 media type, 503 CMS/write failure. Success follows confirmed storage only. Existing D-018 name/contact and private dataset policies apply.
-
-**D-023 / demo credential exception:** After the scoped-versus-Editor explanation, owner explicitly replied “Oke saya Approve A untuk token”. A server-only Editor token is allowed for this assessment demo, superseding D-018's scoped-token requirement only for T03's demo submission integration. Its read/write permissions cover all project datasets; private dataset isolation, server-only environment storage and no browser credential exposure remain required. The owner creates/stores the token manually; no token value is recorded here. A production rollout needs narrower credentials/access policy.
-
-**D-024 / T03 navigation correction:** Owner explicitly approved replacing the text “Keranjang” navigation item with a shopping-cart icon in the shared global header as part of T03. Implementation: inline SVG, `aria-label="Keranjang"`, minimum 44×44 px touch target, preserved `/cart` destination, no React hydration, no badge or cart state. Cart count and checkout flow remain T06/T07.
-
-**D-025 / T02 content-contract amendment (featured products):** Owner approved amending the accepted T02 campaign schema so the “Pilihan aplikasi” section supports CMS-editable marketing content. `featuredProducts` becomes an array of objects: required `product` selection from the existing shared registry, required `description` (≤200 characters), required `features` list (1–6 items, ≤100 characters each), and optional `image` (`contentImage`). Product IDs, names, prices, packages and all commerce business logic remain unchanged; the shared registry stays the source of truth. Duplicate product selections are rejected. Existing product routes and `isProductList` usage in article `relatedProducts` are unaffected. This is a scoped amendment to the T02 content contract.
-
-P-001 through P-003 are approved above. T02's P-004 through P-006 selections and detailed contract are approved in D-015–D-018; remaining access/credential verification is not implied. P-007 through P-009 remain pending except for T02's approved Node built-in checks and Indonesian demo content. The original proposal comparisons below remain context; the explicit decisions and T02 contract control the approved behavior.
-
-### P-001 — Approved
-
-Option A explicitly approved; see D-007. This is no longer a pending proposal.
-
-### P-002 — Approved
-
-Option A explicitly approved; see D-008. This is no longer a pending proposal.
-
-### P-003 — Approved
-
-Option A explicitly approved; see D-009. This is no longer a pending proposal.
-
-### P-004 — Public rendering and CMS freshness (before T02)
-
-Options: (A) request-time public CMS reads without application response caching (simple, immediate-on-next-request goal but adds CMS latency/dependency), or (B) explicit bounded caching/revalidation (faster repeated reads, stale window and extra configuration). Recommend A at this scale, server-rendering relevant routes on Vercel with published-only reads and CDN/cache policy explicitly configured and measured. Sanity CDN choice, response headers, error behavior, measured publication delay and unpublish handling must be recorded; do not promise immediate freshness without evidence. Static generation requiring manual deployment is ineligible. Related: T02, T03, T04, T09.
-
-### P-005 — Content and product contracts (before T02)
-
-Options: (A) Sanity campaign/article/category content with product references to a six-or-more-product TypeScript fixture source, or (B) keep products in Sanity too (single editor source, wider schema and validation scope). Recommend A for the frontend marketplace allowance; validate referenced fixture IDs and block broken related-product links. Proposed models: campaign singleton with fixed hero/featured/testimonial/FAQ fields; articles with cover, Portable Text, category, slug, related product IDs and native draft/publish; lead documents only under P-006. Exact fields, validation, media attribution, metadata defaults, pagination size (proposed 6), unknown-page behavior (proposed 404) and slug uniqueness/change handling require explicit sign-off. No generic page builder. Related: T02–T05.
-
-### P-006 — Leads, storage and basic spam protection (before T02/T03)
-
-Options: (A) Astro server endpoint writes restricted lead documents into existing Sanity and marketing reads them in Studio (no extra service), or (B) separate form service/store (extra integration and access management). Recommend A only with an approved private dataset/read boundary that prevents public lead reads; choose private content with server-only public-page queries, or a separate private leads dataset within Sanity. Dataset availability and permission behavior must be checked, not assumed.
-
-Proposed contact interpretation: require name and at least one of email/WhatsApp; alternative require both (stronger data collection, more friction). Proposed basic spam checks: honeypot and server validation with bounded fields; time checks may help but are not a durable rate limiter. Decide whether this meets assessment scope or add an explicitly approved platform limit. Approve data retention, editor permissions, token scope, contact validation, duplicate-submit behavior and failure feedback. Browser write credentials and publicly readable leads are unacceptable. Related: T02, T03, T09.
-
-### P-007 — Commerce fixtures, pricing and persistence (before T05)
-
-Options: (A) one IDR billing period, integer rupiah amounts, no taxes/vouchers, fixture-driven package prices and shared product quota, or (B) additional currencies/billing durations/tax rules (more behavior, some optional scope). Recommend A; approve actual product/category/price/quota fixture values and user/outlet quantity labels before use.
-
-Proposed behavior: distinct product+package cart lines; positive integer quantities; sum all package quantities for quota; block additions above quota, including zero quota; recompute prices from authoritative demo fixtures rather than persisted totals. Recover corrupt/old persisted state visibly; explain stale product/price/quota changes; block checkout until valid. Demonstrate deterministic success/failure via an explicit mock choice, prevent duplicate submissions, clear cart only after success, retain it after failure; no global quota decrement or cross-tab reservation guarantee. Alternatives: fail restore entirely instead of recovering valid lines; retain successful cart instead of clearing. Approve limits, migration/recovery and payment simulation behavior. Related: T05–T07.
-
-### P-008 — Attribution and analytics contract (before T08; agree payload interface before T03/T07)
-
-Options: (A) first-touch within a tab session using sessionStorage, or (B) last-touch persisted across browser sessions with an agreed expiry (broader attribution, more privacy/lifetime rules). Recommend A for a bounded demo. Proposed UTM keys: source, medium, campaign, term, content with utm_ prefixes; preserve an existing touch across internal navigation, whitelist/bound values and handle denied storage. Decide partial/new campaign behavior explicitly.
-
-Proposed events: view_item after successful product view (not per rerender); add_to_cart only after a successful accepted addition; begin_checkout on a meaningful transition into checkout with a valid nonempty cart; landing_cta_click on actual CTA activation. Include GA4-style ecommerce item IDs/names, package variant, currency, quantity/value where applicable, and campaign information. Agree navigation/back/refresh semantics, exactly when view counts as new, event reset convention, and mock order payload structure. No buyer PII in dataLayer. Related: T03, T05–T09.
-
-### P-009 — Verification, deployment and launch assumptions (before applicable work)
-
-Options for important pure-logic tests: (A) Vitest for TypeScript business logic plus existing Playwright CLI for browser evidence, or (B) Node's supported built-in runner with compatible TS execution and browser checks separately (fewer dependencies, runtime constraints). Recommend A only if approved; no test runner is installed during planning. Agree targeted business-logic tests and real CMS/browser checks, not an exhaustive framework suite. Related: T01, T06–T09.
-
-Propose Indonesian copy/IDR single-locale demo now; multi-locale content/currency as a documented future improvement. Alternative: translated launch now (scope/time impact). Confirm language/currency and content ownership. No localization feature is implied by expansion context.
-
-Vercel and Sanity hosting are approved destinations; actual project IDs, public URLs, environment values, demo editor access, deployment configuration, free-plan fit and deployment/push authorization remain pending. Access instructions must be shared securely, never committed passwords. Record brief-received time and deadline from developer. Related: T09, T10.
-
-## Approval record template
-
-For each response: decision ID; date; developer's explicit wording; selected option and modifications; rationale; task(s); implementation evidence if available. Move an entry to approved only after that response. Technical task acceptance and commit permission are separate fields in TASKS.md.
+For implementation-level details and verification, use the linked task briefs. Do not interpret an earlier task's temporary omission as a missing feature in the completed project.

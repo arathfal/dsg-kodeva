@@ -30,4 +30,4 @@ Out of scope: sending submission email, repository push, deployment, paid upgrad
 
 ## Status
 
-Completion: proposed, not started. Verification: not run. Acceptance: pending. Actual time: not measured; update TIME_LOG.md. Commit: none; separate authorization required.
+Completion: accepted by the owner on 2026-11-01. Verification: passed — README setup commands verified on a clean checkout (install, env copy, both builds, format:check/lint/typecheck, six Node suites, 109 tests, 0 failures), tracked-file secret scan clean (demo credentials absent), Lighthouse screenshot/report checked and copied to `evidence/lighthouse/`, deployed Studio demo-Editor login verified read-only, requirement audit summarized, links/artifacts/time arithmetic validated, and the submission handoff prepared for owner-side sending (kept local, not committed). Acceptance: owner 2026-11-01. Actual time: [TIME_LOG.md](../TIME_LOG.md) S-035 ~23m owner-confirmed (window 10:30–10:53 WIB), acceptance/commit tails untimed. Commit: separate authorization required; no push. Sending invitations/email, repository publishing and deployment remain owner-side actions.

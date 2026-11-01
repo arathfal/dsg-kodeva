@@ -1,54 +1,117 @@
-# AI usage log
+# AI Usage Log — Kodeva
 
-Filled incrementally under the owner-approval and verification rules in [AGENTS.md](AGENTS.md). T01 was reviewed and accepted by the owner on 2026-10-30 with the documented Studio authentication limitation. T03, T04, T05, T06, T07 and T08 were accepted on 2026-11-01.
+This document explains how AI was used during the Fullstack Developer assessment for PT Digital Solusi Grup, what I verified, where the AI output fell short, and which parts I revised myself. AI was an implementation assistant, not the final reviewer or decision-maker. The assessment requirements are documented in [ASSESSMENT_BRIEF.md](ASSESSMENT_BRIEF.md).
 
-## Tools used
+## 1. Tools and responsibilities
 
-| Tool | Purpose |
+| Tool | How it was used |
 | --- | --- |
-| Codex | Assist with assessment planning, project documentation and Git/ignore setup. |
-| OpenCode agent (DeepSeek V4.1 Flash) | Takeover implementation, verification and documentation for T03. |
-| OpenCode agent (GLM 5.3 Flash) | Implementation, verification and documentation for T05. |
-| Shell/Git | Inspect repository files, run checks and manage local repository state. |
-| Node / Sanity HTTP API | Run unit tests and verify lead storage, anonymous-read denial and CMS freshness. |
-| Web tool | Consult the design reference and official tooling documentation. |
-| Skills | Ponytail, verification-before-completion, design-taste-frontend, requesting-code-review, Astro best practices/docs lookup, Sanity best practices, systematic debugging, Playwright CLI and Impeccable used as guidance. |
-| Playwright CLI / Chrome | Inspect the assigned task in a browser. |
+| **Codex** | Initial planning, architecture and task documentation, Sanity CMS foundation, and implementation assistance. |
+| **OpenCode** (including DeepSeek V4.1 Flash and GLM 5.3 Flash) | Implementation assistance for the landing page, blog, marketplace, cart, checkout, tracking, integration QA, and final submission documentation (T10). Different tasks used different agent configurations. |
+| **AI-assisted development skills** | Development guidance for UI design, Astro, Sanity, debugging, code review, and verification; these are instructions/guidance, not separate AI-generated deliverables. |
+| **Playwright / Chrome DevTools** | Browser inspection: responsive UI, interaction states, keyboard behavior, user journeys, and Lighthouse. |
+| **Node.js tests, shell/Git, and Sanity API/CLI** | Independent checks of business rules, builds, published CMS content, lead storage, and data privacy. |
 
-## Owner-approved prompt references
+AI-assisted work followed the project requirements, [DESIGN.md](DESIGN.md), [AGENTS.md](AGENTS.md), and the approved decisions in [DECISIONS.md](DECISIONS.md). I reviewed outputs and requested revisions before accepting implementation tasks.
 
-- [Initial planning prompt](prompts/MASTER_PROMPT.md): the long prompt for preparing assessment planning documents and the execution workflow. The owner approved including this reference; it is not an implementation-task record.
+## 2. Examples of useful prompts and instructions
 
-## Owner-approved implementation contributions
+**1. Initial planning prompt — [MASTER_PROMPT.md](prompts/MASTER_PROMPT.md)**
 
-T02 — CMS contracts and public reads. Codex assisted with approved Sanity schemas/editor workspaces, shared product identities, typed published-only reads, request-time/no-store configuration, fictional seed material and documentation. Technical checks covered install/lint/typecheck/format, nine Node tests, both builds, live schema validation, draft isolation, publication/slug/unpublish behavior and anonymous lead non-disclosure. The owner reviewed content and invited-Editor access, verified separate publication dates for an original and duplicated article, and accepted T02 on 2026-10-31 with documented limitations. Stored-lead access through Editor, remaining category edge cases, scoped submission credentials and deployed caching remain unverified.
+This is the preserved full prompt used to establish the assessment plan, task breakdown, architecture boundaries, documentation, and approval workflow. Its main benefit was defining the scope and working agreements before implementation began.
 
-T03 — Campaign landing and stored leads. The OpenCode agent continued the implementation with CMS-driven hero, featured products, testimonials and FAQ sections, a server-validated lead endpoint writing to the private dataset, and an accessible cart icon in the shared header. Edge cases implemented and checked included name/contact combinations, malformed and oversized payloads, non-JSON content types, spam fields, anonymous private-dataset reads, SVG social images rasterized for `og:image`, and CMS edit/publish freshness without redeploy. Checks covered format/lint/typecheck, 14 CMS/contract tests, 7 lead tests, both production builds, and Playwright flows at 320/360/768/1280. The owner accepted T03 on 2026-11-01; Lighthouse, the `/cart` flow, and catalog/blog routes remain deferred to their assigned tasks.
+**2. Day-to-day task assignment — `Kerjakan task T10`**
 
-T04 — Blog listing, article detail and publication. The OpenCode agent implemented the `/blog` listing, `/blog/halaman/N` pagination, `/blog/[slug]` detail with a typed server-side Portable Text renderer, related-product links and route-level SEO/canonical/social metadata. Edge cases exercised with temporary CMS records (all later deleted): six-per-page splits, out-of-range/malformed/decimal/zero-padded pages → 404, publish→refresh freshness without redeploy, unpublish and slug-change 404s, draft isolation, no-store headers, uniform card heights and inert disabled hover after owner corrections (D-031/D-032). The owner accepted T04 after a parallel review.
+Most implementation tasks were assigned using short instructions such as this, rather than repeatedly pasting a long execution prompt. This worked because [AGENTS.md](AGENTS.md), [TASKS.md](TASKS.md), the individual task briefs, [ASSESSMENT_BRIEF.md](ASSESSMENT_BRIEF.md), and [DECISIONS.md](DECISIONS.md) already captured the requirements, dependencies, verification expectations, and approval rules. The agent was expected to consult those files before working on the assigned task.
 
-T05 — Katalog dan detail produk. The OpenCode agent implemented the approved commerce fixtures (D-033: annual IDR prices, struck promotional prices, one shared per-product quota field so no per-package quota can bypass shared limits, per outlet/per pengguna unit labels) with 8 Node tests asserting the approved values, shared-quota shape, category filtering/empty state and fixture-failure behavior. A server-rendered catalog with plain category filter links (D-034), a reachable empty-result state (D-035) and unknown-category 404 responses, and a product detail page with original SVG screenshot illustrations, struck promo prices, "Kuota promo habis"/sisa-kuota display and an accessible Basic/Pro/Business radio island updating the displayed price immediately; no add-to-cart control yet (D-036). Checked edge cases: zero horizontal overflow at 360/320px on all routes, immediate click and keyboard radio price updates with an `aria-live` price region, SSR initial price, unknown-category/unknown-product 404s, zero-quota and non-promo display, catalog/detail metadata (title/description/canonical/og:image), and landing-CTA and blog-to-product journeys; the cart href is present while its destination stays deferred to T06. AI-detected correction: package radio rows overflowed at 360px and were made wrappable before the handoff. The owner accepted T05 on 2026-11-01; add-to-cart (T06), `view_item` instrumentation (T08) and Lighthouse (T09) remain deferred.
+I also prepared a more detailed reusable [task-execution prompt template](prompts/TASK_PROMPT_TEMPLATE.md) covering code inspection, scope control, desktop/mobile review, testing, actual-time logging, owner verification, and commit authorization. **It was a developer reference, not a prompt automatically read by the agent or pasted in full for every task.** Its value was to make the instructions available when a more explicit handoff was needed.
 
-T06 — Persistent cart, pricing and shared quota. The OpenCode agent implemented the approved cart contracts (D-037–D-040): pure validated cart/quota/money logic in `shared/cart.ts` with 11 Node tests, a Zustand persist store whose mutations and rehydration revalidate against the approved fixtures, a `/cart` island with distinct restoring/empty/recovery states, a quota-aware add-to-cart control on the product detail page, and a hydrated header count badge. Checked edge cases: shared-quota boundaries across packages, invalid/oversized quantities, refresh restores, forged persisted totals ignored, over-quota clamping with notices, corrupt/old-version storage, blocked local storage (session-only cart), keyboard and 320/360/1280px layouts. After the owner rejected the agent's cart-page composition, the owner hand-revised the layout (see "Work done without AI") and the agent then executed the owner-requested verbatim file split (`CartView.tsx` + `CartRow.tsx`) with zero layout/behavior change, re-running format/lint/typecheck/test:cart/build and 1280/360px browser checks before the authorized commit. `CART_PATH` was added to `shared/content.ts` for the approved `/cart` destination. Checkout, payment simulation (T07), analytics (T08), and Lighthouse (T09) remain deferred.
+**3. Focused QA correction — `Kerjakan temuan yang memang masih ranah wajib`**
 
-T07 — Validated mock checkout and payment states. The OpenCode agent implemented the owner-approved D-041–D-044: a separate `/checkout` page with an explicit cannot-checkout state for empty/broken carts; `shared/checkout.ts` `validateBuyer` (approved lead-style name/email limits) and `buildMockOrder`, which revalidates the quote, every product's shared promo quota and the bounded utm attribution (D-020 contract) against the current fixtures before producing a strictly shaped client-side mock order (order id, buyer, item/package/unit/qty/line totals, itemCount, total, "IDR", "per tahun", simulation result + disclosure note); a deterministic Sukses/Gagal simulation radio, a visible pending state blocking duplicate submissions, failure retaining the cart with a distinct order-id alert and retry, and success clearing the cart only then. Highlights: 17 Node tests (`test:checkout`) assert the buyer, payload, quota-rejection and utm contracts; browser checks covered blank/invalid/oversized inputs with first-error focus, double submit during the pending window, stale-restored carts (clamp/drop with notices), quantity changes before submit, both outcomes, refresh/back after success, a redacted console inspection line (buyer PII never echoed; no analytics/dataLayer write and no network request), and no-overflow 320/360/1280 layouts. The agent also moved the T06 recovery/restore notices verbatim into a shared `CartNotices` component used by both pages, and later applied the owner's directed success-panel changes (CheckIcon React twin, hidden headers with vertical centering during the success state, file splitting and closed edited-dead code) without changing the owner's revised layout. Attribution capture/dataLayer (T08), Lighthouse/deployment (T09) and backend proposal (T10) remain deferred.
+During integrated QA, I limited the follow-up work to issues required by the assessment brief. The resulting fixes addressed the cart-aware remaining promo-quota display and PNG Open Graph product images, while non-mandatory polish was deferred. See [T09 verification](tasks/T09-quality-release.md) and [TIME_LOG.md](TIME_LOG.md) (S-034B).
 
-T08 — Attribution and GA4-style tracking. The OpenCode agent (GLM 5.3 Flash) implemented the approved P-008 contract (D-045–D-047): pure UTM capture rules in `shared/attribution.ts` with 8 Node tests, an SSR-safe dataLayer/touch module with first-touch sessionStorage persistence and a memory fallback for denied storage, `view_item`/`add_to_cart`/`begin_checkout`/`landing_cta_click` events wired to real actions without rerender duplication, and utm attribution carried into the stored lead and mock order payloads. Verification covered UTM survival across the landing/blog/catalog/product/cart/checkout journey, a Sanity-verified stored lead, event counts under reload/back/forward/repeated clicks/rejected adds/failed-payment retry, partial/second-campaign/oversized/injected parameters, denied-storage degradation, mobile 320/360 checks and PII exclusion. The owner accepted T08 on 2026-11-01.
+**Prompt-record limitation:** Only the complete initial planning prompt and the reusable (not routinely submitted) template were retained as files. Short task assignments and focused corrections are represented by examples supported by the development records or supplied by the developer; I did not reconstruct missing full chat transcripts or claim the template was executed verbatim.
 
-T09 — Integrated QA and release preparation. The OpenCode agent ran the full available verification suite (format/lint/typecheck, six Node test suites, both builds), built a scratch local production-build runner because the Vercel adapter has no preview support, and executed integrated browser journeys covering the lead and checkout paths with attribution/event evidence, temporary CMS QA records for publish/freshness/slug/unpublish with cleanup verified, client-asset and endpoint security scans, CMS-failure 503 rehearsal, Lighthouse mobile runs (97 then 100 on the local production build), responsive/keyboard checks with screenshots, and the deployment runbook. Two owner-directed mandatory fixes were implemented and re-verified: the cart-aware product quota label (QuotaLabel island) and rasterized PNG product og:image. Temporary QA data was deleted and verified; no deployment or push of the runbook occurred.
+## 3. What AI helped implement
 
-## AI errors detected and corrected (owner-reported)
+| Area | AI contribution | More detail |
+| --- | --- | --- |
+| **CMS and content** | Sanity schemas and workspaces, typed published-content queries, CMS-editable campaign sections, lead submission, blog pages and pagination. | [CMS](tasks/T02-cms.md), [Landing and leads](tasks/T03-landing-leads.md), [Blog](tasks/T04-blog.md) |
+| **Marketplace** | Product fixtures, six-product catalog, category filters, product/package selection, persistent cart, shared promo-quota rules, and simulated checkout. | [Products](tasks/T05-products.md), [Cart](tasks/T06-cart.md), [Checkout](tasks/T07-checkout.md) |
+| **Marketing and QA** | UTM first-touch attribution, GA4-style `dataLayer` events, automated tests, responsive checks, CMS publication tests, and integrated browser journeys. | [Tracking](tasks/T08-tracking.md), [QA](tasks/T09-quality-release.md) |
 
-- The first landing page presented "Pilihan Aplikasi" as a plain list of product links without visual hierarchy. The owner rejected it during visual review. The agent replaced it with product cards (icon, description, features, CTA) and proposed the scoped T02 amendment recorded in D-025 so marketing could edit card content. Browser checks then confirmed CMS-driven card content rendered correctly.
-- The agent's testimonial card redesign was still rejected by the owner as visually unbalanced. The owner manually revised the component with a centred, compact layout and separated disclosure. The agent did not redesign it again; it only re-ran type, test, build and focused browser checks, which passed.
+I did not accept these implementations solely because they compiled or passed automated tests. I also reviewed their rendered UI and tested meaningful user flows.
 
-## Work done without AI (owner-confirmed)
+### Example: AI-assisted cart logic and the edge cases I tested
 
-- The owner manually revised `apps/web/src/components/TestimonialCard.astro` after rejecting the agent's design.
-- The owner performed the visual reviews that identified both UI shortcomings and accepted T03.
-- The owner hand-revised `apps/web/src/components/CartView.tsx` into the final T06 cart layout (divided item rows with the integrated quantity stepper, a sticky subtotal aside, package chip and `useQuantityEditor` split) after rejecting the agent's layout composition, reviewed the delivered cart behavior, and authorized the T06 commit; the agent then only executed the requested file split without any layout change.
-- The owner hand-revised `apps/web/src/components/CheckoutView.tsx`'s payment-success panel into the final centered "Checkout berhasil" card. During the same review they directed the success-only page view (headers hidden through `body[data-checkout-success]`), the panel-only notice removal (recorded as AI-failure candidate C-001), and the vertical centering; the agent executed the directed changes, the `CheckIcon` substitution, the file split and the re-verification, and the owner confirmed the result ("Oke sudah sesuai", 2026-11-01).
+The cart is a substantial AI-assisted implementation using Zustand persistence and shared TypeScript validation. I specifically checked that:
 
-## Pending owner review
+- Adding the same product and package updates the existing line, while different packages remain separate lines.
+- The **promo quota is shared across packages** of the same product, so combining Basic and Pro cannot exceed the product's remaining quota.
+- Quantity and subtotal calculations remain correct after editing, removal, and page refresh.
+- Invalid, corrupted, or outdated persisted cart data cannot introduce unknown products, forged totals, or over-quota quantities; recovery is shown to the user.
+- Cart interactions work via keyboard and at mobile widths, including 320 px and 360 px.
 
-`AI_FAILURE_CANDIDATES.md` is a private, locally ignored queue for AI-failure candidates. It currently holds **C-001** — the owner-reported finding that `NoticeList` was still conditionally rendered on the checkout success view despite the success-only directive (removal instructed and executed on 2026-11-01). Per D-013 the candidate stays in this private queue as an owner-reported discovery until the owner decides whether/when it is promoted into this log; the corresponding code correction and its re-verification evidence are described under "Work done without AI" above.
+The cart logic has 11 Node tests in addition to browser checks. Checkout was also checked for invalid buyer details, duplicate submissions, empty/stale carts, and deterministic success/failure behavior (17 Node tests). See [T06](tasks/T06-cart.md), [T07](tasks/T07-checkout.md), and [T09](tasks/T09-quality-release.md) for the detailed verification records.
+
+## 4. AI output that I rejected or corrected
+
+The following are **shortcomings I identified during visual and functional review**. The first four concern UI quality or mismatch with the intended design; they are not claims that the underlying business logic was broken. For each, I checked the rendered result rather than relying on the agent's completion report.
+
+### Failure 1 — Featured products were presented as plain links (T03)
+
+**What went wrong:** The first landing page presented **“Pilihan Aplikasi”** as a plain list of product links. It lacked the visual hierarchy and product information needed for a featured-products section, despite being functionally navigable.
+
+**How I found it:** I inspected the landing page in the browser and rejected the section during UI review.
+
+**How it was corrected:** I asked the agent to replace the link list with product cards showing an icon, description, key features, and a CTA. I also approved a scoped CMS change so marketing could edit the cards' descriptions, features, and optional images without changing code-owned product pricing or identity.
+
+**How it was verified:** Browser checks confirmed the cards and their links; a CMS edit/publish check confirmed that revised product-card content appeared on the landing page without redeploying. See [T03](tasks/T03-landing-leads.md) and [DECISIONS.md](DECISIONS.md) (D-025).
+
+### Failure 2 — Testimonial card remained visually unbalanced (T03)
+
+**What went wrong:** The agent's revised testimonial card still did not have the visual balance and composition I wanted for the landing page.
+
+**How I found it:** I reviewed the rendered testimonial section after the agent's redesign and found that the result still needed manual adjustment.
+
+**How I corrected it:** Rather than requesting another redesign, I edited `apps/web/src/components/TestimonialCard.astro` myself, using a more centered, compact presentation with a separate disclosure. The agent did not redesign it again.
+
+**How it was verified:** The agent reran format, lint, type checks, tests, production builds, and focused responsive browser checks against my edited component; I then accepted the landing-page task. See [T03](tasks/T03-landing-leads.md) and [TIME_LOG.md](TIME_LOG.md) (S-020–S-022).
+
+### Failure 3 — Cart UI did not meet the intended layout (T06)
+
+**What went wrong:** The cart felt visually fragmented and did not give the item list and pricing summary the hierarchy I wanted. I asked for a more unified panel and clearer row separation, but the AI-assisted revision still did not match the intended result.
+
+**How I found it:** I reviewed the actual `/cart` page against the project's design direction after the agent's implementation and revision.
+
+**How I corrected it:** I manually revised `apps/web/src/components/CartView.tsx`, including divided item rows, quantity controls, package presentation, and a distinct sticky subtotal area. The agent subsequently performed my requested file split into `CartView.tsx` and `CartRow.tsx` **without changing the layout**.
+
+**How it was verified:** Cart tests and production builds passed again. Browser checks covered interactions and 1280 px / 360 px layouts without horizontal overflow. See [T06](tasks/T06-cart.md) and [TIME_LOG.md](TIME_LOG.md) (S-026–S-028).
+
+### Failure 4 — Payment success UI did not match the intended presentation (T07)
+
+**What went wrong:** The agent's successful-payment screen worked functionally, but its layout and visual emphasis still did not match the intended focused confirmation state. Further AI-assisted adjustments were not satisfactory.
+
+**How I found it:** I completed the simulated payment flow and inspected the rendered success state.
+
+**How I corrected it:** I manually revised the confirmation panel in `apps/web/src/components/CheckoutView.tsx` into the centered **“Checkout berhasil”** card. I then directed the agent to make only specific structural changes—hide surrounding headers on success, vertically center the panel, and split the component while retaining my design—instead of asking it to redesign the UI again.
+
+**Related requirement mismatch:** Even after I explicitly requested a **success-only view**, the agent's success branch could still render `NoticeList` for a recovered cart. I noticed this in review and instructed the agent to remove it from the success branch while preserving notices in the cart and checkout form. This was recorded as internal candidate C-001, not counted as a separate headline failure.
+
+**How it was verified:** Checkout tests, builds, and browser checks passed. A recovered-cart scenario verified that notices remained on the applicable screens but were absent on payment success; checks also covered header visibility, cart clearing, and responsive layout. I accepted the corrected result. See [T07](tasks/T07-checkout.md) and [TIME_LOG.md](TIME_LOG.md) (S-030–S-032).
+
+## 5. What I implemented myself, without AI-generated layout code
+
+I chose to take direct control of these UI details because iterating manually was faster than further prompting and let me make precise visual decisions:
+
+- **Testimonial card:** manually edited `apps/web/src/components/TestimonialCard.astro` after rejecting the agent's revised card layout.
+- **Cart layout:** manually revised `CartView.tsx` after the AI-generated layout and its refinement were still unsatisfactory. The agent later split the file without changing the owner-authored composition.
+- **Payment-success presentation:** manually revised the success panel in `CheckoutView.tsx`. The agent's follow-up work was limited to my explicit structural instructions and verification.
+
+This does **not** mean I implemented the whole cart or checkout without AI. Their business logic, state handling, and tests were substantially AI-assisted. My independent work was primarily the final UI composition and the decision to reject intermediate designs.
+
+## 6. Final verification and limitations
+
+The project passed the recorded format, lint, typecheck, build, and six automated test suites (**109 passing Node tests**). Integrated browser checks covered CMS publication, lead capture, marketplace flow, UTM attribution, responsive behavior, and simulated payment states. The deployed landing page recorded a **Lighthouse mobile Performance score of 100** in the final submitted evidence (developer run, 1 November 2026; QA-era runs ranged 97–99). Verification details and limitations are in [README.md](README.md), [T09](tasks/T09-quality-release.md), and [TIME_LOG.md](TIME_LOG.md).
+
+The checkout is intentionally simulated and does not integrate a real payment gateway or marketplace order backend, as permitted by the assessment brief. This log records the corrections supported by the development notes; it is not a claim that every AI mistake or every prompt was archived.

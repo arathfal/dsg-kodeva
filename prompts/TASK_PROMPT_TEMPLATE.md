@@ -1,32 +1,25 @@
 # Execute one task
 
-Copy and fill this English prompt. This file is a developer reference, not a required agent read.
+Reusable developer reference for detailed agent handoffs. **Not an automatically loaded instruction** and not a claim that this entire prompt was pasted for every task. Most assignments were short (for example, `Kerjakan task T10`) because the repository already contained task requirements and agent rules.
 
 ```text
-Execute {TASK_ID} using {TASK_FILE}. Work on this task only.
+Execute {TASK NUMBER}. Work on this task only.
 
-Read AGENTS.md, the assigned task, ASSESSMENT_BRIEF.md, and relevant PRD.md,
-DESIGN.md and DECISIONS.md sections. ASSESSMENT_BRIEF.md is permanently
-authoritative; never require the original PDF. Do not edit the brief.
-Inspect existing implementation (CodeGraph first if indexed), confirm dependencies
-and approvals, and identify blocking decisions. Ask for explicit approval before
-new substantive decisions; routine mechanics within approved scope need no
-repeated permission. Do not read TASK_PROMPT.md as a prerequisite.
+Read AGENTS.md, the assigned task, ASSESSMENT_BRIEF.md, and relevant project documentation. Follow existing decisions and approval rules.
+Inspect the current implementation before coding (CodeGraph first if indexed). Reuse existing work and avoid unnecessary changes.
 
-Use pnpm. Implement only approved scope: no unrelated refactors, new dependencies,
-bonus features or silent architecture/design changes. Track real active time for
-planning, debugging, checks and docs; exclude breaks and approval waits.
+Proactively identify issues within scope, including functional, visual, security, and integration gaps. Verify actual behavior, not just passing tests. For UI tasks, inspect desktop and mobile screenshots.
 
-Run and inspect appropriate typecheck/lint/format/build, business-logic tests and
-browser/CMS/UTM/dataLayer/security checks. A build alone is insufficient. Disclose
-unavailable/failed checks and leave required verification open. Report changed
-files, commands/results, flow evidence, risks and pending decisions. Keep task
-docs and AI_LOG truthful; never invent errors, results or independent work.
+Track actual active time and follow the documentation lifecycle in AGENTS.md.
 
-Stop for explicit human verification/acceptance. Do not start another task.
-After acceptance, obtain/confirm actual active time; reconcile TIME_LOG, README
-cumulative time, task status and AI_LOG before requesting separate commit approval.
-Never commit before verification, human acceptance and authorization; never
-auto-push, merge, squash or deploy. After an authorized commit ask how to record
-the hash if that needs another commit; never silently amend.
+For AI documentation:
+- AI_LOG.md: Propose factual AI implementation contributions and any developer-approved, verified failure write-ups. Obtain explicit developer approval before each addition or expansion; do not log speculation or AI-detected issues as developer-identified failures.
+- AI_FAILURE_CANDIDATES.md: Keep a private, uncommitted review queue of shortcomings explicitly reported by the developer; record what was observed and what remains to be verified. Do not automatically promote candidates into AI_LOG.md.
+- Never fabricate prompt history, time measurements, verification evidence, or developer approval.
+
+Report changes, verification results, risks, and blockers concisely. Stop for developer verification and acceptance.
+Do not start another task, commit, push, or deploy without explicit authorization.
+Once the developer explicitly authorizes a commit, use Conventional Commits format with a descriptive body explaining the changes.
 ```
+
+For routine work, a one-line task assignment is enough when the agent is already following [AGENTS.md](../AGENTS.md) and the linked task brief. This template is useful only when a more explicit handoff is needed.
