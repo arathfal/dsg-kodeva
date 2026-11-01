@@ -116,7 +116,7 @@ The blog uses the D-026 URL policy: `/blog` (page 1), `/blog/halaman/N` (pages 2
 
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024, S-025, S-026, S-028, owner-confirmed T07 windows S-029–S-031 and the observed T08/T09 windows S-033 and S-034/S-034B (S-027, S-032 and untimed tails remain unquantified):
+Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024, S-025, S-026, S-028, the owner-confirmed T07 windows S-029–S-031 and the owner-confirmed T08/T09 windows S-033 and S-034/S-034B (S-027, S-032 and untimed tails remain unquantified):
 
 | Scope | Recorded time |
 | --- | --- |
@@ -143,13 +143,13 @@ Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024, S-025, S-026
 | T07 notice removal, C-001 recording and simulations (S-031, owner-confirmed approximation) | ~10m |
 | T07 vertical centering plus final checks (S-032) | observed minutes-scale window, unquantified — not assumed zero |
 | T08 implementation, verification and documentation (S-033, stamped window ≈ 5m 17s; earlier reading/approval tails untimed) | ~5m 17s + untimed tails |
-| T09 integrated QA, verification and documentation (S-034, observed) | ~25m + untimed tails |
-| T09 owner-directed mandatory fix round (S-034B, observed) | ~16m + untimed tails |
+| T09 integrated QA, verification and documentation (S-034, owner-confirmed) | ~25m + untimed tails |
+| T09 owner-directed mandatory fix round (S-034B, owner-confirmed) | ~16m + untimed tails |
 | **Whole project combined (recorded)** | **~4h 51m 18s** (+ S-027, S-032, S-033 and S-034 tails untimed) |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
 
-T07 observed windows were confirmed by the owner on 2026-11-01: S-029 **~14m 44s** (implementation, verification and documentation; early reading/approval time untimed), S-030 **~15m** (owner manual revision plus directed changes), S-031 **~10m** (notice removal, C-001 recording and simulations). S-032 (vertical centering, turn yang singkat) remains an observed minutes-scale window without a separate figure and is not assumed zero. Confirmed windows add ~39m 44s on top of the previous combined total. T09 windows are owner-observed but not yet owner-confirmed: S-034 ≈25m (08:41–09:07 WIB) and S-034B ≈16m (09:14–09:30 WIB), plus untimed documentation/commit tails; the ~41m addition uses those observed figures and confirmation is outstanding.
+T07 observed windows were confirmed by the owner on 2026-11-01: S-029 **~14m 44s** (implementation, verification and documentation; early reading/approval time untimed), S-030 **~15m** (owner manual revision plus directed changes), S-031 **~10m** (notice removal, C-001 recording and simulations). S-032 (vertical centering, turn yang singkat) remains an observed minutes-scale window without a separate figure and is not assumed zero. Confirmed windows add ~39m 44s on top of the previous combined total. The T09 windows were also owner-confirmed on 2026-11-01: S-034 **~25m** (08:41–09:07 WIB QA and verification) and S-034B **~16m** (09:14–09:30 WIB mandatory-fix round), plus untimed documentation/commit tails; they add ~41m.
 
 These figures are sums of recorded and owner-confirmed intervals, **not complete actual active working-time totals**. Main agent windows still include unseparated approval waits, while some intake, discussion, staging/commit, handoff and later time-reconciliation work was not continuously timed. The T03 initial implementation duration is the owner-confirmed 12-minute figure, not an independently measured session. Unknown time is not assumed to be zero. [TIME_LOG.md](TIME_LOG.md) preserves session details, arithmetic and these limitations.
 
