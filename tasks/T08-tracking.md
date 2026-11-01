@@ -29,7 +29,7 @@ Out of scope: live GA integration, consent platform, ad pixels, attribution mode
 
 ## Status
 
-Completion: accepted by the owner ("Oke saat ini saya approve, bisa di commit", 2026-11-01). Verification: passed (2026-11-01, details below). Acceptance: recorded. Actual time: TIME_LOG.md S-033 — observed stamped window ≈ 5m 17s; earlier reading/approval tails untimed and not owner-confirmed with a figure. Commit: authorized 2026-11-01.
+Completion: accepted by the owner ("Oke saat ini saya approve, bisa di commit", 2026-11-01). Verification: passed (2026-11-01, details below). Acceptance: recorded. Actual time: TIME_LOG.md S-033 — observed stamped window ≈ 5m 17s; earlier reading/approval tails untimed and not owner-confirmed with a figure. Commit: authorized and executed as `f73af5e` (feat(tracking); Conventional Commit with body).
 
 ### Verification evidence (2026-11-01)
 
