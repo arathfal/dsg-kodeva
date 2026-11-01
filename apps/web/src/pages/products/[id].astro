@@ -1,6 +1,7 @@
 ---
 import Shell from "../../layouts/Shell.astro";
 import { PackageSelector } from "../../components/PackageSelector";
+import { QuotaLabel } from "../../components/QuotaLabel";
 import ScreenshotFigure from "../../components/ScreenshotFigure.astro";
 import {
   BILLING_PERIOD,
@@ -32,17 +33,16 @@ try {
   const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
   if (["https:", "http:"].includes(origin.protocol)) {
     if (entry) canonical = new URL(`/products/${entry.id}`, origin.origin);
-    if (entry) socialUrl = new URL(entry.screenshots[0].src, origin.origin);
+    // R-022: sharing previews rasterize the approved first screenshot via the
+    // committed PNG derivative (WhatsApp does not render SVG og:image).
+    if (entry) {
+      const source = entry.screenshots[0].src.replace(/\.svg$/, ".png");
+      socialUrl = new URL(source, origin.origin);
+    }
   }
 } catch {
   /* Missing configuration must not use an untrusted request origin. */
 }
-const quota =
-  entry?.promoQuota === 0
-    ? "Kuota promo habis"
-    : entry
-      ? `Sisa kuota promo: ${entry.promoQuota} lisensi`
-      : undefined;
 
 // T08 (R-020, D-047): the view_item payload reflects the page as rendered —
 // the default package matches the selector's initial choice. It is pushed once
@@ -134,14 +134,11 @@ const viewItemJson =
             client:load
           />
           <div class="mt-4 space-y-2 border-t border-border pt-3">
-            <p
-              class:list={[
-                "font-semibold",
-                entry.promoQuota === 0 && "text-error",
-              ]}
-            >
-              {quota}
-            </p>
+            <QuotaLabel
+              productId={entry.id}
+              promoQuota={entry.promoQuota}
+              client:load
+            />
             <p class="text-sm text-secondary">
               Kuota promo dipakai bersama oleh semua paket (Basic, Pro,
               Business) pada Promo Akhir Tahun.
