@@ -47,7 +47,7 @@ const initial = (): CartLine[] => [
   { productId: "hr", packageId: "pro", qty: 5 },
 ];
 
-// D-033 shared quotas: kasir 10, inventori 5, hr 8, payroll 12, akuntansi 15,
+// Shared quotas: kasir 10, inventori 5, hr 8, payroll 12, akuntansi 15,
 // laporan 0 (habis).
 test("identity is product+package; repeated adds grow one line", () => {
   let current: CartLine[] = [];
@@ -236,7 +236,7 @@ test("quote exposes fixture-derived unit data without trusting storage", () => {
       { productId: "kasir", packageId: "basic", qty: 2 },
       { productId: "inventori", packageId: "basic", qty: 1 },
     ],
-    // Forged persisted amounts must be ignored (D-038/R-014).
+    // Forged persisted amounts must be ignored.
     total: 999_999_999,
     savedSubtotal: "Rp165",
   });

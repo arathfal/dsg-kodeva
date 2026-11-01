@@ -1,9 +1,9 @@
 ---
-// Owner-directed catalog filter bar (S-036A): a full-width search input and a
-// single row of category chips plus a price-sort picker, following the owner's
-// reference layout. The chips are plain server-rendered links (D-034 state
-// pattern); the form submits the trimmed search text and chosen sort order so
-// state (kategori + q + harga) stays reflected in the URL. A small
+// Catalog filter bar: a full-width search input and a
+// single row of category chips plus a price-sort picker. The chips are plain
+// server-rendered links; the form submits the trimmed search text and chosen
+// sort order so state (kategori + q + harga) stays reflected in the URL. A
+// small
 // progressive-enhancement script debounces typed searches and submits the
 // sort change; a visible fallback button only appears without JavaScript.
 import {

@@ -1,4 +1,4 @@
-// Fictional assessment copy approved in the T02 contract; no customer data.
+// Fictional approved copy; no customer data.
 export const seedCampaign = {
   _type: "campaign",
   _id: "campaign",

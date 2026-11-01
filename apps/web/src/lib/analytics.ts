@@ -1,4 +1,4 @@
-// T08 client tracking (R-020/R-021; D-045–D-047): typed GA4-style dataLayer
+// Client tracking: typed GA4-style dataLayer
 // pushes plus the first-touch UTM session capture. Everything is guarded for
 // SSR, never touches the network, and no buyer PII enters the dataLayer. Pure
 // parse/merge rules live in shared/attribution.ts (Node-tested).
@@ -16,7 +16,7 @@ declare global {
   }
 }
 
-/** One captured attribution touch and where it currently lives (D-045). */
+/** One captured attribution touch and where it currently lives. */
 export type TouchSource = "storage" | "memory" | "none";
 
 export interface AnalyticsItem {
@@ -56,7 +56,7 @@ export function pushAnalyticsEvent(event: AnalyticsEvent): void {
 }
 
 /**
- * Captures the tab's attribution touch once per document (D-045 first-touch
+ * Captures the tab's attribution touch once per document (first-touch
  * per tab session): a usable stored touch wins over any parameters; otherwise
  * a valid parameter set is stored. When sessionStorage is denied or broken the
  * touch lives in memory for this document only, which keeps same-page lead or
@@ -107,7 +107,7 @@ export function readTouch(): UtmTouch | undefined {
   return memoryTouch;
 }
 
-/** Where the current touch lives; memory reports the D-045 degradation. */
+/** Where the current touch lives; memory reports the no-storage degradation. */
 export function currentTouchSource(): TouchSource {
   if (typeof window === "undefined" || !memoryUsable) return "none";
   return touchSource;

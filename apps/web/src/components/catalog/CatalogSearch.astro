@@ -1,10 +1,10 @@
 ---
-// Owner-directed catalog filter bar (S-036A/S-036B): a full-width search input
-// followed by one row of category chips and a price-sort popup, following the
-// owner's reference layout and later corrections. The entire region is a plain
+// Catalog filter bar: a full-width search input
+// followed by one row of category chips and a price-sort popup. The entire
+// region is a plain
 // GET form, so catalog state (kategori + q + harga) is reflected in the URL
 // and every combination is shareable. Typed searches are debounced (300 ms,
-// owner-directed realtime behaviour); the sort picker is a details/summary
+// realtime behaviour); the sort picker is a details/summary
 // popup whose options are plain links, and a visible fallback submit button
 // appears only without JavaScript. Every submission re-renders server-side, so
 // the URL remains the source of truth.

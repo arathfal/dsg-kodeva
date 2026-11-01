@@ -17,7 +17,7 @@ import { BuyerForm, FormFeedback } from "./CheckoutForm";
 import { CheckoutSuccess } from "./CheckoutSuccess";
 import { CheckoutUnavailable } from "./CheckoutUnavailable";
 
-// D-042/D-044: the pending window makes the simulated processing state visible
+// The pending window makes the simulated processing state visible
 // and blocks duplicate submissions; no network request or gateway is involved.
 const SIMULATION_DELAY_MS = 900;
 
@@ -39,7 +39,7 @@ export function CheckoutView() {
 
   const pending = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // T08 (D-047): begin_checkout is reported once per /checkout page load when
+  // begin_checkout is reported once per /checkout page load when
   // the restored cart is valid and nonempty; rerenders, later quantity edits,
   // a failed-payment retry and empty/broken carts never (re)fire it.
   const checkoutReported = useRef(false);
@@ -78,7 +78,7 @@ export function CheckoutView() {
     [],
   );
 
-  // Owner directive: once the simulated payment succeeds, the page shows only
+  // Once the simulated payment succeeds, the page shows only
   // the success panel; body[data-checkout-success] hides headers (global.css).
   useEffect(() => {
     if (result?.outcome !== "success") return;
@@ -109,7 +109,7 @@ export function CheckoutView() {
     ) {
       return "Keranjang berubah dan tidak dapat dibayar dengan data saat ini. Keranjang tidak dikosongkan; segarkan halaman untuk memuat keranjang terbaru.";
     }
-    // invalid-buyer / invalid-attribution: the form and the T08 contract keep
+    // invalid-buyer / invalid-attribution: the form and its validation keep
     // this unreachable, but the copy never claims an order was recorded.
     return "Pesanan belum dibuat: data tidak dapat diproses. Isian tetap ada; coba lagi.";
   }
@@ -141,8 +141,8 @@ export function CheckoutView() {
     }
 
     // Revalidates buyer, quote and every product's shared quota against the
-    // current fixtures (R-015) before any payment result can exist. The
-    // captured tab touch (D-045) rides along in the mock order payload (R-021).
+    // current fixtures before any payment result can exist. The
+    // captured tab touch rides along in the mock order payload.
     const built = buildMockOrder(checked.data, quote, readTouch(), simulation);
     if (!built.ok) {
       setFormError(orderFailureMessage(built.reason));
@@ -158,7 +158,7 @@ export function CheckoutView() {
       timer.current = null;
       setSending(false);
       setStatus("");
-      // D-043 inspection affordance: the full payload is asserted by the Node
+      // Inspection affordance: the full payload is asserted by the Node
       // tests; the console copy is redacted so buyer PII is never echoed, and
       // no analytics/dataLayer call exists on this page.
       console.info(
@@ -167,7 +167,7 @@ export function CheckoutView() {
       );
       setResult({ outcome: simulation, order: built.order });
       if (simulation === "success") {
-        // D-044: cart is cleared only after a successful simulation; a failure
+        // Cart is cleared only after a successful simulation; a failure
         // keeps every line exactly as submitted.
         clearCart();
       }

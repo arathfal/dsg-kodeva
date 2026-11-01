@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes } from "react";
 
-// Reusable text input (owner-requested S-036D): one shared component with one
+// Reusable text input: one shared component with one
 // class contract ("input w-full" plus optional extras) instead of repeated
 // input markup. Used by the checkout and lead form islands and server-rendered
 // by Astro for the catalog search bar (no hydration directive, so it ships no

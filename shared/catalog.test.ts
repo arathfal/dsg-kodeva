@@ -18,7 +18,7 @@ import {
   startingPrice,
 } from "./catalog.ts";
 
-// Approved fixture values (D-033 / P-007).
+// Approved fixture values.
 const approvedPrices: Record<string, [number, number, number]> = {
   kasir: [1_800_000, 2_700_000, 3_900_000],
   inventori: [1_200_000, 1_900_000, 2_900_000],
@@ -44,7 +44,7 @@ const approvedQuota: Record<string, number> = {
   laporan: 0,
 };
 
-test("approved fixtures match D-033 values exactly", () => {
+test("approved fixtures match the documented values exactly", () => {
   assert.equal(catalogResult().status, "ok");
   assert.equal(catalogFixture.length, 6);
   for (const [id, prices] of Object.entries(approvedPrices)) {

@@ -5,9 +5,9 @@ interface Props {
 }
 
 const { page, lastPage } = Astro.props;
-// Page 1 lives only at /blog; page 2 starts /blog/halaman/N (D-026).
-// Both controls stay rendered (the owner requested a disabled-looking
-// inactive control and a geometry-stable centered indicator).
+// Page 1 lives only at /blog; page 2 starts /blog/halaman/N.
+// Both controls stay rendered: an inactive one looks disabled and the
+// page indicator keeps its geometry stable.
 const hrefFor = (target: number) =>
   target === 1 ? "/blog" : `/blog/halaman/${target}`;
 const previous = page > 1 ? hrefFor(page - 1) : undefined;

@@ -17,7 +17,7 @@
   --radius-input: 8px;
   --radius-card: 12px;
   --radius-button: 8px;
-  /* Owner S-036D: buttons and inputs share the 8px radius; pill-shaped
+  /* Buttons and inputs share the 8px radius; pill-shaped
      controls (category chips, badges, the sort trigger) use rounded-full. */
   --text-sm: 14px;
   --text-sm--line-height: 1.5;

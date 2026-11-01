@@ -1,4 +1,4 @@
-// Approved commerce fixtures for T05–T07 (D-033 / P-007): one annual IDR billing
+// Approved commerce fixtures: one annual IDR billing
 // period, integer rupiah amounts, no taxes or vouchers. Promotional quota is
 // shared per product across all package variants; no per-package quota exists.
 import {
@@ -333,12 +333,12 @@ export function packageOffer(
   return entry.packages.find((offer) => offer.id === packageId)!;
 }
 
-// --- Bonus: URL-reflected search, category filter and price sort ---
-// Same interaction contract as D-034: server-rendered links and forms only,
+// --- URL-reflected search, category filter and price sort ---
+// Installed interaction contract: server-rendered links and forms only,
 // no client framework, so the catalog state (kategori + q + harga) lives
 // entirely in the URL and every combination can be shared as a link. A small
-// progressive-enhancement script debounces submitted searches (owner-directed
-// correction S-036A); links keep working without client JavaScript.
+// progressive-enhancement script debounces submitted searches; links keep
+// working without client JavaScript.
 
 export const CATEGORY_PARAM = "kategori";
 export const SEARCH_PARAM = "q";

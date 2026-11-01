@@ -151,7 +151,7 @@ const social = campaign?.seo?.image || campaign?.image;
     </section>
   )}
   {campaign && <script>
-    // T08 (R-020, D-047): landing_cta_click fires on each genuine activation
+    // landing_cta_click fires on each genuine activation
     // of the campaign CTA; listener setup is once per document, so rerenders
     // cannot duplicate it.
     import { pushAnalyticsEvent, readTouch } from "../lib/analytics";

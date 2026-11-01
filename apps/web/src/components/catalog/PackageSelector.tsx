@@ -15,8 +15,8 @@ import {
 import { CART_PATH, type ProductId } from "../../../../../shared/content.ts";
 
 // Small hydration-only island: package selection updates the displayed price
-// immediately (R-013) and "Tambah ke keranjang" adds the selected package with
-// quantity 1 through the validated cart store (D-036/D-039).
+// immediately and "Tambah ke keranjang" adds the selected package with
+// quantity 1 through the validated cart store.
 export function PackageSelector({
   productId,
   productName,
@@ -39,11 +39,11 @@ export function PackageSelector({
   }>({ ok: true, addedPackage: null, text: "" });
 
   function handleAdd() {
-    // Quota validation must see restored cart contents (D-038).
+    // Quota validation must see restored cart contents.
     ensureHydrated();
     const result = addItem(productId, selected);
     if (result.ok) {
-      // T08 (R-020, D-047): only an accepted addition is reported; rejected
+      // Only an accepted addition is reported; rejected
       // quota/invalid mutations never emit a successful add.
       pushAnalyticsEvent({
         event: "add_to_cart",

@@ -1,5 +1,5 @@
-// Pure checkout logic for T07 (R-015/R-016/R-021/R-023; D-020, D-042, D-043,
-// D-044). Buyer validation reuses the approved T03 limits, the order payload is
+// Pure checkout logic. Buyer validation reuses the approved limits, the
+// order payload is
 // a client-side mock built only from validated cart quotes and approved fixture
 // prices, and the whole checkout is revalidated against the current shared
 // promo quotas before any simulated payment result is produced.
@@ -43,7 +43,7 @@ export function validateBuyer(input: unknown): BuyerValidation {
   if (!email) errors.email = "Isi alamat email untuk pesanan ini.";
   else if (!isEmail(email))
     errors.email = "Isi alamat email yang valid, maksimal 254 karakter.";
-  // The radio value is produced by the form (D-042), but an explicitly present
+  // The radio value is produced by the form, but an explicitly present
   // unknown value must not be accepted either.
   if (input.simulation !== undefined && typeof input.simulation !== "string")
     errors.simulation = "Pilih hasil simulasi pembayaran.";
@@ -94,10 +94,10 @@ export type OrderBuild =
   | { ok: false; reason: OrderBuildError };
 
 /**
- * Validates the attribution payload against the approved D-020 contract: only
+ * Validates the attribution payload strictly: only
  * the five utm_ keys, string values, trimmed to at most 200 characters, and
  * empty values omitted. Unknown keys or malformed types are rejected rather
- * than silently widened; capture itself stays in T08.
+ * than silently widened.
  */
 function validatedUtm(
   utm: unknown,
@@ -119,9 +119,9 @@ function validatedUtm(
 }
 
 /**
- * Builds the mock order payload (D-043 client-side only). Every quote line is
+ * Builds the mock order payload (client-side only). Every quote line is
  * revalidated against the current fixtures and the per-product shared quota
- * (R-015) after the buyer validation, so a stale or hand-edited cart can never
+ * after the buyer validation, so a stale or hand-edited cart can never
  * produce an order whose amounts or quantities exceed approved limits.
  */
 export function buildMockOrder(

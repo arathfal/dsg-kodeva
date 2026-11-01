@@ -5,7 +5,7 @@ import { CATALOG_PATH, CHECKOUT_PATH } from "../../../../../shared/content.ts";
 import { CartRow } from "./CartRow";
 import { NoticeList, cartRecoveryNotices } from "./CartNotices";
 
-// Cart amounts are always recomputed from current catalog data (D-038).
+// Cart amounts are always recomputed from current catalog data.
 // Hydration and recovery states stay distinct from an empty cart.
 export function CartView() {
   useCartHydration();

@@ -1,8 +1,8 @@
-// Pure cart logic for T06 (R-014/R-015; D-038/D-039). Cart lines are identified
+// Pure cart logic. Cart lines are identified
 // by productId+packageId, the approved per-product quota is shared by every
 // package variant, and all amounts are integer rupiah recomputed from the
 // approved fixtures. Persisted storage is never trusted for prices or totals;
-// recovery validates every line against current catalog data (D-038).
+// recovery validates every line against current catalog data.
 import {
   getCatalogEntry,
   packageNames,
@@ -99,7 +99,7 @@ function replaceLine(
 }
 
 // One line identity per product+package; "add" increases an existing line
-// (D-039) and "set" replaces the typed quantity of a line.
+// and "set" replaces the typed quantity of a line.
 function attemptQuantity(
   lines: CartLine[],
   productId: unknown,
@@ -197,7 +197,7 @@ const emptyCart = (kind: CartRecovery["kind"]) => ({
 });
 
 /**
- * Recovers a persisted cart payload against current catalog data (D-038):
+ * Recovers a persisted cart payload against current catalog data:
  * positive safe integer quantities only, known product/package identities, and
  * per-product totals clamped to the current shared quota. Duplicate persisted
  * lines for one identity merge, unknown payload fields (such as forged totals)
@@ -295,7 +295,7 @@ export type CartQuote =
     };
 
 /**
- * Recomputes every amount from the approved fixtures (R-023/D-038). Storage
+ * Recomputes every amount from the approved fixtures. Storage
  * never carries prices, so persisted totals can be neither trusted nor lost.
  */
 export function quoteCart(lines: CartLine[]): CartQuote {

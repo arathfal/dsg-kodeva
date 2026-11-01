@@ -1,5 +1,5 @@
-// Node built-in tests for T07 checkout logic (R-015/R-016/R-021; D-020,
-// D-042–D-044): buyer validation, mock order payload construction against the
+// Node built-in tests for checkout logic: buyer validation, mock order
+// payload construction against the
 // approved fixtures, shared-quota revalidation at checkout, and the bounded
 // attribution (utm) contract.
 import assert from "node:assert/strict";
@@ -148,7 +148,7 @@ describe("buildMockOrder payload construction", () => {
 
 describe("buildMockOrder quota revalidation", () => {
   it("accepts mixed packages that exactly fill the shared quota", () => {
-    // Kasir quota 10: Basic 6 + Pro 4 (approved T06 boundary case).
+    // Kasir quota 10: Basic 6 + Pro 4 covers the exact shared-quota boundary.
     const quote = quoteCart([
       { productId: "kasir", packageId: "basic", qty: 6 },
       { productId: "kasir", packageId: "pro", qty: 4 },
@@ -213,11 +213,11 @@ describe("buildMockOrder quota revalidation", () => {
   });
 });
 
-describe("buildMockOrder attribution contract (D-020)", () => {
+describe("buildMockOrder attribution contract", () => {
   const quote = quoteCart([{ productId: "hr", packageId: "basic", qty: 1 }]);
   assert.ok(quote.ok);
 
-  it("keeps known keys (D-020 utm shape) trimmed", () => {
+  it("keeps known keys trimmed to the utm shape", () => {
     const result = buildMockOrder(
       buyer,
       quote,
@@ -247,7 +247,7 @@ describe("buildMockOrder attribution contract (D-020)", () => {
     assert.equal("utm" in emptyResult.order, false);
   });
 
-  it("omits utm when no attribution is passed (capture is T08)", () => {
+  it("omits utm when no attribution is passed", () => {
     const result = buildMockOrder(buyer, quote, undefined, "success");
     assert.ok(result.ok);
     assert.equal("utm" in result.order, false);

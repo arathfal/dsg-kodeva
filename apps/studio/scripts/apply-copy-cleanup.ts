@@ -4,7 +4,7 @@
 // without touching anything else the editor has added (portrait, seo, body
 // structure).
 //
-// Uses the server-side editor token from apps/web/.env.local (D-023); the
+// Uses the server-side editor token from apps/web/.env.local; the
 // token is never logged.
 //
 // Dry run by default; add --write to patch the live documents.

@@ -7,7 +7,7 @@ import { cms } from "../../../lib/cms/server";
 import type { ArticlePage } from "../../../lib/cms/models";
 
 // Only plain integers are page numbers; anything malformed is not-found.
-// Page 1 lives only at /blog (D-026), so the pagination segment starts at 2.
+// Page 1 lives only at /blog, so the pagination segment starts at 2.
 const raw = Astro.params.page;
 const valid = /^[1-9][0-9]*$/.test(raw ?? "") && raw !== "1";
 let data: ArticlePage | undefined;

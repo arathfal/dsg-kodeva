@@ -33,12 +33,12 @@ const description = summary
 const canonical = entry ? siteUrl(`/products/${entry.id}`) : undefined;
 let socialUrl: URL | undefined;
 if (entry) {
-  // R-022: sharing previews rasterize the approved first screenshot via the
+  // Sharing previews rasterize the approved first screenshot via the
   // committed PNG derivative (WhatsApp does not render SVG og:image).
   socialUrl = siteUrl(entry.screenshots[0].src.replace(/\.svg$/, ".png"));
 }
 
-// T08 (R-020, D-047): the view_item payload reflects the page as rendered —
+// The view_item payload reflects the page as rendered —
 // the default package matches the selector's initial choice. It is pushed once
 // per real page load by the bundled script below; rerenders and back/forward
 // restores never re-run it, and 404/unavailable views never emit it.

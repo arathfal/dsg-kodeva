@@ -4,7 +4,7 @@ import {
   useCartStore,
 } from "../../stores/cart-store";
 
-// D-040: tiny header island; the server render keeps the icon-only link and
+// Tiny header island; the server render keeps the icon-only link and
 // the count appears after hydration (or not at all when storage is denied).
 export function CartCount() {
   useCartHydration();

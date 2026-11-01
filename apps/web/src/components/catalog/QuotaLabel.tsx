@@ -1,10 +1,10 @@
 import type { ProductId } from "../../../../../shared/content.ts";
 import { useRemainingQuota } from "../../stores/cart-store";
 
-// R-023 shared-quota display on product pages: the reported remaining promo
+// Shared-quota display on product pages: the reported remaining promo
 // quota is the same value the add button validates against. SSR renders the
 // fixture quota (no cart data on the server); after hydration the value
-// accounts for the persisted cart exactly like the cart page (D-038/D-040).
+// accounts for the persisted cart exactly like the cart page.
 export function QuotaLabel({
   productId,
   promoQuota,

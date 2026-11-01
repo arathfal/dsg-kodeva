@@ -1,10 +1,9 @@
-// Pure T08 attribution capture logic (R-021; D-020, D-045, D-046). Values follow
-// the approved D-020 contract: only the five utm keys, string values, trimmed,
-// at most 200 characters, empty values omitted. The touch policy is first-touch
-// per tab session (D-045) with first-set-wins handling of partial and later
-// parameter sets (D-046). Browser storage access and the dataLayer live in
-// apps/web/src/lib/analytics.ts; this module stays pure so Node tests can
-// cover parsing, normalization and the merge decision.
+// Pure attribution capture logic. Only the five utm keys are kept, with
+// string values trimmed to at most 200 characters and empty values omitted.
+// The touch policy is first-touch per tab session with first-set-wins
+// handling of partial and later parameter sets. Browser storage access and
+// the dataLayer live in apps/web/src/lib/analytics.ts; this module stays
+// pure so Node tests can cover parsing, normalization and the merge decision.
 import { isRecord } from "./content.ts";
 
 export const UTM_KEYS = [
@@ -17,9 +16,9 @@ export const UTM_KEYS = [
 export type UtmKey = (typeof UTM_KEYS)[number];
 export type UtmTouch = Partial<Record<UtmKey, string>>;
 
-/** sessionStorage key of the tab's attribution touch (D-045). */
+/** sessionStorage key of the tab's attribution touch. */
 export const UTM_STORAGE_KEY = "kodeva-utm-touch";
-/** D-020 value limit, applied to the trimmed string. */
+/** Value limit, applied to the trimmed string. */
 export const UTM_VALUE_LIMIT = 200;
 
 /**
@@ -31,7 +30,7 @@ export const UTM_VALUE_LIMIT = 200;
 export type UtmCapture = { ok: true; utm?: UtmTouch } | { ok: false };
 
 /**
- * Validates a candidate touch against the D-020 contract. Unknown keys are
+ * Validates a candidate touch against the touch contract. Unknown keys are
  * rejected (payload strictness), strings are trimmed and bounded, and empty
  * values are omitted; a set with no remaining values is "no new touch".
  */
@@ -53,7 +52,7 @@ export function normalizeUtm(input: unknown): UtmCapture {
 
 /**
  * Parses the five known utm_ parameters from a request/query. Unknown utm_*
- * keys are ignored at capture time (D-046) so common extras such as utm_id do
+ * keys are ignored at capture time so common extras such as utm_id do
  * not invalidate the known keys; a known key with an oversized value makes the
  * whole set unusable. No known parameter at all is "no new touch".
  */
@@ -68,7 +67,7 @@ export function utmFromSearchParams(params: URLSearchParams): UtmCapture {
 }
 
 /**
- * D-045/D-046 first-touch merge: a usable stored touch always wins as-is
+ * First-touch merge: a usable stored touch always wins as-is
  * (even against a full later campaign); an absent or corrupt stored touch is
  * replaced by the incoming one when it exists.
  */
@@ -80,7 +79,7 @@ export function pickTouch(
 }
 
 /**
- * Reads a persisted touch from untrusted JSON: anything that fails the D-020
+ * Reads a persisted touch from untrusted JSON: anything that fails the touch
  * contract is treated as absent so a forged or stale value is replaced at the
  * next capture instead of being sent onward.
  */

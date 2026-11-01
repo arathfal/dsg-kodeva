@@ -1,6 +1,6 @@
-// T08 attribution capture tests (R-021; D-020 contract, D-045 first-touch per
-// tab, D-046 first-set-wins). Browser storage behavior itself is verified in
+// Attribution capture tests. Browser storage behavior itself is verified in
 // the browser journey; these tests pin the pure parse/normalize/pick rules.
+// First-touch per tab, first-set-wins
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
@@ -23,7 +23,7 @@ function search(input: string): URLSearchParams {
   return new URLSearchParams(input);
 }
 
-test("full parameter set is trimmed into the D-020 payload shape", () => {
+test("full parameter set is trimmed into the payload shape", () => {
   assert.deepEqual(
     utmFromSearchParams(
       search(
@@ -102,7 +102,7 @@ test("normalizeUtm rejects malformed payloads strictly", () => {
   assert.deepEqual(normalizeUtm({ source: "   " }), { ok: true });
 });
 
-test("pickTouch keeps the stored touch (first set wins, D-046)", () => {
+test("pickTouch keeps the stored touch (first set wins)", () => {
   const stored = { source: "instagram", medium: "social" };
   const second = { source: "tiktok", medium: "social", campaign: "lain" };
   assert.equal(pickTouch(stored, second), stored);

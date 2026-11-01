@@ -16,10 +16,10 @@ import {
 } from "../../../../../shared/catalog.ts";
 import { productSummaries } from "../../../../../shared/products.ts";
 
-// Bonus: kategori, q and harga live entirely in the URL (D-034 style:
-// server-rendered links and a GET form, with a small owner-directed debounce
-// script as progressive enhancement), so any combination can be shared as a
-// link. Unknown categories still return 404; unknown sort values and
+// Kategori, q and harga live entirely in the URL (server-rendered links and
+// a GET form, with a small debounce script as progressive enhancement), so
+// any combination can be shared as a link. Unknown categories still return
+// 404; unknown sort values and
 // blank/redundant searches fall back to the default view instead of failing.
 const query = Astro.url.searchParams.get("kategori");
 const selected =

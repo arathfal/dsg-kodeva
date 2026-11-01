@@ -1,6 +1,6 @@
 import type { CartRecovery } from "../../../../../shared/cart.ts";
 
-// Recovery/restore messaging shared by the cart and checkout pages (D-038):
+// Recovery/restore messaging shared by the cart and checkout pages:
 // both pages describe the same recovery policy with the same wording.
 export function cartRecoveryNotices(state: {
   recovery: CartRecovery | null;

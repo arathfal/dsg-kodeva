@@ -1,4 +1,4 @@
-// Read-only order summary shared by the checkout form view (R-016): amounts
+// Read-only order summary shared by the checkout form view: amounts
 // always come from a validated quote, never from persisted storage.
 import { formatRupiah } from "../../lib/format";
 import type { CartLineView } from "../../../../../shared/cart.ts";

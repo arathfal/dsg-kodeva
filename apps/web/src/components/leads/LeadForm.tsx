@@ -44,7 +44,7 @@ export function LeadForm({ campaignKey }: { campaignKey: string }) {
       whatsapp: fields.get("whatsapp"),
       website: fields.get("website"),
       campaignKey,
-      // R-021/D-045: the tab's captured touch rides along when it exists;
+      // The tab's captured touch rides along when it exists;
       // absent attribution stays absent rather than being faked.
       utm: readTouch(),
     };

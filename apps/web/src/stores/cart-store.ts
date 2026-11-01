@@ -1,4 +1,4 @@
-// T06 cart store (D-001 Zustand, D-038/D-039). Every mutation revalidates
+// Cart store on Zustand. Every mutation revalidates
 // against the approved catalog fixtures through shared/cart.ts, prices are
 // recomputed at render time (never read from storage), and rehydration is
 // explicit so restored data never silently overwrites in-session changes.
@@ -39,7 +39,7 @@ interface CartStore {
     qty: number,
   ): CartQuantityResult;
   removeLine(productId: ProductId, packageId: PackageId): CartQuantityResult;
-  /** Empties the cart after a successful simulated payment (D-044). */
+  /** Empties the cart after a successful simulated payment. */
   clearCart(): void;
 }
 
@@ -73,7 +73,7 @@ export const useCartStore = create<CartStore>()(
         if (result.ok) set({ lines: result.lines, mutated: true });
         return result;
       },
-      // D-044: empties the cart only after a successful simulated payment;
+      // Empties the cart only after a successful simulated payment;
       // mutationState:true keeps the persisted payload in sync (version 1).
       clearCart: () => {
         set({ lines: [], mutated: true });
@@ -86,7 +86,7 @@ export const useCartStore = create<CartStore>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state): { lines: CartLine[] } => ({ lines: state.lines }),
       // Old or versioned-off payloads reach merge as-is, marked below so
-      // recovery can report an empty cart with a visible notice (D-038).
+      // recovery can report an empty cart with a visible notice.
       migrate: (persisted) => ({
         legacy: true,
         ...(isRecord(persisted) ? persisted : {}),
