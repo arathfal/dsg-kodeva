@@ -70,5 +70,13 @@ const {
     <main id="main" class="page-container pb-16" tabindex="-1">
       <slot />
     </main>
+    <script>
+      // T08 (R-020/R-021, D-045–D-047): initialize the dataLayer once per
+      // document and capture the tab's first-touch UTM session attribute
+      // before any island can read it. No network calls, no PII.
+      import { captureTouch, initDataLayer } from "../lib/analytics";
+      initDataLayer();
+      captureTouch();
+    </script>
   </body>
 </html>

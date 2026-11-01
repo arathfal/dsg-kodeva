@@ -7,6 +7,7 @@ import {
 import { Button } from "./Button";
 import { isRecord } from "../../../../shared/content";
 import { validateLead, type LeadErrors } from "../../../../shared/leads";
+import { readTouch } from "../lib/analytics";
 
 const subscribe = () => () => {};
 
@@ -42,6 +43,9 @@ export function LeadForm({ campaignKey }: { campaignKey: string }) {
       whatsapp: fields.get("whatsapp"),
       website: fields.get("website"),
       campaignKey,
+      // R-021/D-045: the tab's captured touch rides along when it exists;
+      // absent attribution stays absent rather than being faked.
+      utm: readTouch(),
     };
     const checked = validateLead(payload);
     if (!checked.ok) {

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import { formatRupiah } from "../lib/format";
 import { useCartHydration, useCartStore } from "../lib/cart-store";
+import { pushAnalyticsEvent, readTouch } from "../lib/analytics";
 import { quoteCart } from "../../../../shared/cart.ts";
 import { BILLING_PERIOD } from "../../../../shared/catalog.ts";
 import {
@@ -38,11 +39,36 @@ export function CheckoutView() {
 
   const pending = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // T08 (D-047): begin_checkout is reported once per /checkout page load when
+  // the restored cart is valid and nonempty; rerenders, later quantity edits,
+  // a failed-payment retry and empty/broken carts never (re)fire it.
+  const checkoutReported = useRef(false);
   const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState<BuyerErrors>({});
   const [result, setResult] = useState<PaymentResult | null>(null);
   const [formError, setFormError] = useState("");
   const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    if (checkoutReported.current) return;
+    if (!hydrated || !quote.ok || quote.lines.length === 0) return;
+    checkoutReported.current = true;
+    pushAnalyticsEvent({
+      event: "begin_checkout",
+      ecommerce: {
+        currency: "IDR",
+        value: quote.total,
+        items: quote.lines.map((line) => ({
+          item_id: line.productId,
+          item_name: line.productName,
+          item_variant: line.packageId,
+          price: line.unitPrice,
+          quantity: line.qty,
+        })),
+      },
+      utm: readTouch(),
+    });
+  }, [hydrated, quote]);
 
   // A pending simulation never leaks setState into an unmounted page.
   useEffect(
@@ -115,8 +141,9 @@ export function CheckoutView() {
     }
 
     // Revalidates buyer, quote and every product's shared quota against the
-    // current fixtures (R-015) before any payment result can exist.
-    const built = buildMockOrder(checked.data, quote, undefined, simulation);
+    // current fixtures (R-015) before any payment result can exist. The
+    // captured tab touch (D-045) rides along in the mock order payload (R-021).
+    const built = buildMockOrder(checked.data, quote, readTouch(), simulation);
     if (!built.ok) {
       setFormError(orderFailureMessage(built.reason));
       return;

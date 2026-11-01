@@ -161,4 +161,23 @@ const social = campaign?.seo?.image || campaign?.image;
       </a>
     </section>
   )}
+  {campaign && <script>
+    // T08 (R-020, D-047): landing_cta_click fires on each genuine activation
+    // of the campaign CTA; listener setup is once per document, so rerenders
+    // cannot duplicate it.
+    import { pushAnalyticsEvent, readTouch } from "../lib/analytics";
+    const cta = document.querySelector<HTMLAnchorElement>(
+      "[data-campaign-key]",
+    );
+    cta?.addEventListener("click", () => {
+      pushAnalyticsEvent({
+        event: "landing_cta_click",
+        landing_cta: {
+          destination: cta.getAttribute("href") ?? "",
+          campaign_key: cta.dataset.campaignKey ?? "",
+        },
+        utm: readTouch(),
+      });
+    });
+  </script>}
 </Shell>

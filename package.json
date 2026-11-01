@@ -17,6 +17,7 @@
     "test:leads": "node --test shared/leads.test.ts apps/web/src/lib/leads/*.test.ts",
     "test:cart": "node --test shared/cart.test.ts",
     "test:checkout": "node --test shared/checkout.test.ts",
+    "test:attribution": "node --test shared/attribution.test.ts",
     "typecheck": "pnpm -r typecheck",
     "build": "pnpm -r build",
     "format": "prettier --write apps shared package.json pnpm-workspace.yaml eslint.config.mjs prettier.config.mjs",

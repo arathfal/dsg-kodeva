@@ -57,6 +57,14 @@ Interactive Q&A (D-007 interactive rule) before T06 implementation. Explicit own
 - **D-039 / P-007 line identity and add-to-cart interaction:** Owner selected "product+package lines, add qty 1 (Recommended)". Cart identity is `productId` + `packageId`; repeated adds of the same product+package increment one line. The product-detail "Tambah ke keranjang" control adds the currently selected package with quantity 1; quantity steppers live in the cart only.
 - **D-040 / header cart count:** Owner selected "Small header island (Recommended)". A small React island hydrated on every public page renders the cart count badge from the store; initial HTML shows the existing icon-only link without a count (no false data), the count appears after hydration, and it is absent when storage is unavailable.
 
+### T08 approvals — 2026-11-01
+
+Interactive Q&A (D-007 interactive rule) before T08 implementation. Explicit owner selections:
+
+- **D-045 / P-008 touch policy, lifetime and storage:** Owner selected "A: first-touch per tab (Recommended)". The first valid UTM set is captured per browser tab session in `sessionStorage`; it survives in-tab navigation and reloads and disappears when the tab closes. Denied/unavailable storage falls back to in-memory capture for the current page only (attribution attaches if the lead/order is submitted from that same page); the degradation is documented rather than faked. Last-touch with cross-session expiry was rejected.
+- **D-046 / P-008 partial parameters and second campaign:** Owner selected "A: first set wins (Recommended)". The first valid non-empty UTM set is stored as-is even if partial (e.g. only source+medium); later UTM links in the same session, including a second campaign, never change it. Pages without parameters never erase a stored touch; a set whose known values are all invalid/oversized is treated as no new touch and never erases an existing one. Unknown `utm_*` keys are ignored at capture (not stored) without invalidating the known keys; the D-020 payload contract continues to reject unknown keys in lead/order payloads.
+- **D-047 / P-008 event contract:** Owner selected "A: page-load semantics (Recommended)". `view_item` fires once per real product-detail page load (reload fires again; back/forward restore does not; rerenders never); `add_to_cart` only after the store accepts the addition (every accepted add fires; rejected/over-quota never); `begin_checkout` once per `/checkout` page load with a valid nonempty cart after hydration (failed-payment retry does not re-fire; a later real /checkout load does); the approved landing CTA event is named `landing_cta_click` and fires on each genuine click. Events carry GA4-style `ecommerce` items plus currency/value and the captured `utm` campaign data; no buyer PII. Session-deduplicated views were rejected.
+
 ### T07 approvals — 2026-11-01
 
 Interactive Q&A (D-007 interactive rule) before T07 implementation. Explicit owner selections:

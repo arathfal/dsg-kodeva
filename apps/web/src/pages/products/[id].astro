@@ -43,6 +43,31 @@ const quota =
     : entry
       ? `Sisa kuota promo: ${entry.promoQuota} lisensi`
       : undefined;
+
+// T08 (R-020, D-047): the view_item payload reflects the page as rendered —
+// the default package matches the selector's initial choice. It is pushed once
+// per real page load by the bundled script below; rerenders and back/forward
+// restores never re-run it, and 404/unavailable views never emit it.
+const defaultOffer = entry?.packages[0];
+const viewItemJson =
+  entry && product && defaultOffer
+    ? JSON.stringify({
+        event: "view_item",
+        ecommerce: {
+          currency: "IDR",
+          value: defaultOffer.price,
+          items: [
+            {
+              item_id: entry.id,
+              item_name: product.name,
+              item_variant: defaultOffer.id,
+              price: defaultOffer.price,
+              quantity: 1,
+            },
+          ],
+        },
+      }).replace(/</g, "\\u003c")
+    : undefined;
 ---
 
 <Shell
@@ -54,6 +79,25 @@ const quota =
 >
   {entry && product && summary ? (
     <div class="space-y-10">
+      {viewItemJson && (
+        <script
+          type="application/json"
+          id="kodeva-view-item"
+          set:html={viewItemJson}
+        />
+      )}
+      {viewItemJson && <script>
+        import {
+          pushAnalyticsEvent,
+          readTouch,
+          type AnalyticsEvent,
+        } from "../../lib/analytics";
+        const data = document.getElementById("kodeva-view-item")?.textContent;
+        if (data) {
+          const event = JSON.parse(data) as AnalyticsEvent;
+          pushAnalyticsEvent({ ...event, utm: readTouch() });
+        }
+      </script>}
       <a class="inline-flex min-h-11 items-center text-sm" href="/products">
         ← Kembali ke katalog
       </a>

@@ -6,6 +6,7 @@ import {
 } from "../../../../shared/catalog.ts";
 import { Button } from "./Button";
 import { formatRupiah } from "../lib/format";
+import { pushAnalyticsEvent, readTouch } from "../lib/analytics";
 import {
   ensureHydrated,
   useRemainingQuota,
@@ -41,13 +42,32 @@ export function PackageSelector({
     // Quota validation must see restored cart contents (D-038).
     ensureHydrated();
     const result = addItem(productId, selected);
-    if (result.ok)
+    if (result.ok) {
+      // T08 (R-020, D-047): only an accepted addition is reported; rejected
+      // quota/invalid mutations never emit a successful add.
+      pushAnalyticsEvent({
+        event: "add_to_cart",
+        ecommerce: {
+          currency: "IDR",
+          value: offer.price,
+          items: [
+            {
+              item_id: productId,
+              item_name: productName,
+              item_variant: selected,
+              price: offer.price,
+              quantity: 1,
+            },
+          ],
+        },
+        utm: readTouch(),
+      });
       setAddStatus({
         ok: true,
         addedPackage: selected,
         text: `Ditambahkan ke keranjang: 1 lisensi paket ${packageNames[selected]} ${productName}.`,
       });
-    else if (result.reason === "over-quota")
+    } else if (result.reason === "over-quota")
       setAddStatus({
         ok: false,
         addedPackage: null,
