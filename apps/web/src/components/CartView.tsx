@@ -1,8 +1,9 @@
 import { formatRupiah } from "../lib/format";
 import { useCartHydration, useCartStore } from "../lib/cart-store";
 import { quoteCart } from "../../../../shared/cart.ts";
-import { CATALOG_PATH } from "../../../../shared/content.ts";
+import { CATALOG_PATH, CHECKOUT_PATH } from "../../../../shared/content.ts";
 import { CartRow } from "./CartRow";
+import { NoticeList, cartRecoveryNotices } from "./CartNotices";
 
 // Cart amounts are always recomputed from current catalog data (D-038).
 // Hydration and recovery states stay distinct from an empty cart.
@@ -24,37 +25,11 @@ export function CartView() {
     );
   }
 
-  const notices: string[] = [];
-
-  if (storageDenied) {
-    notices.push(
-      "Penyimpanan browser tidak dapat dibaca, sehingga keranjang hanya berlaku selama halaman ini terbuka.",
-    );
-  }
-
-  if (recovery?.kind === "wrong-version" || recovery?.kind === "corrupt") {
-    notices.push(
-      "Format keranjang tersimpan tidak dikenali, sehingga isi tersimpan diabaikan dan keranjang dimulai kosong.",
-    );
-  } else if (recovery?.kind === "recovered") {
-    notices.push(
-      [
-        recovery.droppedLines > 0 &&
-          `${recovery.droppedLines} item tersimpan tidak valid dengan data saat ini dan dihapus.`,
-        recovery.clampedLines > 0 &&
-          `Jumlah pada ${recovery.clampedLines} item dikurangi mengikuti sisa kuota.`,
-        "Harga subtotal dihitung ulang dari data saat ini.",
-      ]
-        .filter(Boolean)
-        .join(" "),
-    );
-  }
-
-  if (restoreSkipped) {
-    notices.push(
-      "Isi keranjang tersimpan tidak dimuat karena keranjang pada sesi ini sudah dipakai terlebih dahulu.",
-    );
-  }
+  const notices = cartRecoveryNotices({
+    recovery,
+    restoreSkipped,
+    storageDenied,
+  });
 
   if (!quote.ok) {
     return <CartBroken />;
@@ -124,6 +99,9 @@ export function CartView() {
           <p className="text-xs text-secondary">
             Harga mengikuti katalog terbaru.
           </p>
+          <a className="button w-full" href={CHECKOUT_PATH}>
+            Lanjut ke pembayaran
+          </a>
         </aside>
       </div>
     </div>
@@ -167,17 +145,5 @@ function CartEmpty() {
         Buka katalog
       </a>
     </section>
-  );
-}
-
-function NoticeList({ notices }: { notices: string[] }) {
-  return (
-    <div className="space-y-2">
-      {notices.map((message) => (
-        <p key={message} role="status" className="text-sm text-secondary">
-          {message}
-        </p>
-      ))}
-    </div>
   );
 }

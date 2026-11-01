@@ -173,3 +173,20 @@
     }
   }
 }
+
+/* Checkout success (owner directive): once body[data-checkout-success] is set
+   by the checkout island, the page shows only the success panel; the site
+   header and the page header are removed from view, and the panel is centered
+   in the remaining viewport. Kept unlayered so it wins over the header/main
+   Tailwind display and spacing utilities. */
+body[data-checkout-success] > header,
+body[data-checkout-success] main header {
+  display: none;
+}
+
+body[data-checkout-success] main {
+  min-height: 100svh;
+  padding-block: 0;
+  display: grid;
+  place-items: center;
+}

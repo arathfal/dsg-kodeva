@@ -2,6 +2,7 @@ export const API_VERSION = "2026-10-31";
 export const PAGE_SIZE = 6;
 export const CATALOG_PATH = "/products";
 export const CART_PATH = "/cart";
+export const CHECKOUT_PATH = "/checkout";
 export const products = [
   { id: "kasir", name: "Kodeva Kasir" },
   { id: "inventori", name: "Kodeva Inventori" },

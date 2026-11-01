@@ -1,0 +1,34 @@
+---
+import Shell from "../layouts/Shell.astro";
+import { CheckoutView } from "../components/CheckoutView";
+import { CHECKOUT_PATH } from "../../../../shared/content.ts";
+
+// T07 checkout page (R-016/R-017/R-021/R-023; D-041–D-044): the static shell is
+// server rendered; buyer form, summary and simulation result come from the
+// validated checkout island. No real payment backend exists anywhere.
+const title = "Checkout | Kodeva";
+const description =
+  "Formulir pembeli dan simulasi pembayaran pesanan langganan Kodeva: ringkasan pesanan tervalidasi, hasil sukses/gagal yang jelas, tanpa gateway pembayaran nyata.";
+let canonical: URL | undefined;
+try {
+  const origin = new URL(import.meta.env.PUBLIC_SITE_URL);
+  if (["https:", "http:"].includes(origin.protocol))
+    canonical = new URL(CHECKOUT_PATH, origin.origin);
+} catch {
+  /* Missing configuration must not use an untrusted request origin. */
+}
+---
+
+<Shell title={title} description={description} canonical={canonical}>
+  <div class="space-y-8">
+    <header class="max-w-prose space-y-3">
+      <h1 class="text-hero font-semibold tracking-tight">Checkout</h1>
+      <p class="text-secondary">
+        Isi data pembeli, periksa ringkasan pesanan, lalu pilih hasil simulasi.
+        Simulasi ini tidak memakai gateway pembayaran nyata dan tidak ada uang
+        yang ditransfer.
+      </p>
+    </header>
+    <CheckoutView client:load />
+  </div>
+</Shell>

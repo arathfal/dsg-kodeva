@@ -18,6 +18,8 @@ T05 implements the marketplace catalog and product details from the approved com
 
 T06 implements the persistent cart behind approved D-037–D-040: a Zustand `persist` store (`kodeva-cart`, versioned) whose every mutation and restore is validated by pure logic in `shared/cart.ts` against the approved fixtures — line identity is product+package, repeated adds grow one line, the per-product promo quota is shared across all packages, quantities are positive safe integers to 9999, and amounts are always integer rupiah recomputed from fixtures so persisted totals are never trusted. Restore drops invalid/unknown lines, clamps over-limit quantities to the current shared quota, reports recovery/corrupt/version/denied-storage outcomes visibly in `/cart`, and never overwrites in-session changes made before restore. After two agent implementation rounds the owner finalized the `/cart` layout by hand in `CartView.tsx` (item-list panel with divided rows and an accessible quantity stepper plus a sticky subtotal aside, stacking on phones); the agent later split that file verbatim into `CartView.tsx` + `CartRow.tsx` with no layout change, verified by block diffs and 1280/360px screenshots. The header cart icon gains a hydrated count badge on every public page. Eleven new Node tests (`test:cart`) plus carried-over suites pass; browser checks covered add→change→refresh→remove, quota boundaries across packages (Basic 6 + Pro 4 at the shared limit), forged/corrupt/old-version storage, blocked localStorage (session-only cart), keyboard use, and layouts without overflow at 320/360px. Cross-tab sync is a documented limitation (no storage-event synchronization). Checkout, payments, analytics and Lighthouse remain T07–T09.
 
+T07 implements validated checkout behind owner-approved D-041–D-044: a separate `/checkout` page reached from the cart's "Lanjut ke pembayaran" button; `shared/checkout.ts` builds a strictly bounded client-side mock order (buyer, item/package/unit prices recomputed from fixtures, itemCount, total, currency "IDR", annual billing, simulation result) after revalidating the buyer (approved lead-style limits), the quote, every product's shared promo quota and the attributed utm payload (D-020 contract; capture itself is T08). A clearly labelled Sukses/Gagal radio makes both simulated results deterministic; a visible pending state blocks duplicate submissions; failure retains the cart with a distinct order-id alert and retry; success clears the cart and shows the owner-revised centered "Checkout berhasil" panel with only that content visible (page headers hidden through `body[data-checkout-success]` while the island state is active; refresh/back then shows the empty-cart cannot-checkout state; no quota decrement, no gateway, no network request, buyer PII never logged — the inspection console line is redacted). Seventeen Node tests (`test:checkout`) assert the buyer validation, payload shape/values, quota revalidation and the utm contract; browser checks covered blank/invalid/long inputs with focus, double submit, stale-cart clamp/drop recovery, quantity changes before submit, and each notice-display scenario at 320/360/1280 without overflow. The owner hand-revised the success panel layout, directed the panel-only success view, the notice removal from that view (recorded as failure candidate C-001) and its vertical centering; analytics (T08), Lighthouse/deployment (T09) and backend proposal (T10) remain deferred.
+
 Requirements and implementation scope are documented in [PRD.md](PRD.md) and [TASKS.md](TASKS.md).
 
 ## Approved architecture
@@ -95,6 +97,7 @@ pnpm test:cms
 pnpm test:catalog
 pnpm test:leads
 pnpm test:cart
+pnpm test:checkout
 pnpm build
 ```
 
@@ -108,7 +111,7 @@ The blog uses the D-026 URL policy: `/blog` (page 1), `/blog/halaman/N` (pages 2
 
 ## Recorded working time
 
-Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024, S-025, S-026 and S-028 (S-027 remains unquantified):
+Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024, S-025, S-026, S-028 and owner-confirmed T07 windows S-029–S-031 (S-027 and S-032 remain unquantified):
 
 | Scope | Recorded time |
 | --- | --- |
@@ -130,9 +133,15 @@ Recorded-interval snapshot through TIME_LOG sessions S-023B, S-024, S-025, S-026
 | T06 implementation, verification and documentation (S-025, observed) | ~22m 25s |
 | T06 owner-directed UI refinement (S-026, observed) | ~3m |
 | T06 acceptance round: owner manual revision, verbatim file split, authorized commit (S-027) and approved log/hash reconciliation (S-028) | observed windows of minutes, not individually quantified |
-| **Whole project combined (recorded)** | **~3h 25m 17s** |
+| T07 implementation, verification and documentation (S-029, owner-confirmed approximation) | ~14m 44s |
+| T07 owner manual revision plus directed changes (S-030, owner-confirmed approximation) | ~15m |
+| T07 notice removal, C-001 recording and simulations (S-031, owner-confirmed approximation) | ~10m |
+| T07 vertical centering plus final checks (S-032) | observed minutes-scale window, unquantified — not assumed zero |
+| **Whole project combined (recorded)** | **~4h 05m 01s** (+ S-027 and S-032 untimed tails) |
 
 The owner explicitly confirmed that their six-minute review did not overlap agent work, so it is included once in both combined figures. Concurrent agent review and tool checks are already inside parent session intervals and are not added again.
+
+T07 observed windows were confirmed by the owner on 2026-11-01: S-029 **~14m 44s** (implementation, verification and documentation; early reading/approval time untimed), S-030 **~15m** (owner manual revision plus directed changes), S-031 **~10m** (notice removal, C-001 recording and simulations). S-032 (vertical centering, turn yang singkat) remains an observed minutes-scale window without a separate figure and is not assumed zero. Confirmed windows add ~39m 44s on top of the previous combined total.
 
 These figures are sums of recorded and owner-confirmed intervals, **not complete actual active working-time totals**. Main agent windows still include unseparated approval waits, while some intake, discussion, staging/commit, handoff and later time-reconciliation work was not continuously timed. The T03 initial implementation duration is the owner-confirmed 12-minute figure, not an independently measured session. Unknown time is not assumed to be zero. [TIME_LOG.md](TIME_LOG.md) preserves session details, arithmetic and these limitations.
 

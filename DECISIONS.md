@@ -57,6 +57,15 @@ Interactive Q&A (D-007 interactive rule) before T06 implementation. Explicit own
 - **D-039 / P-007 line identity and add-to-cart interaction:** Owner selected "product+package lines, add qty 1 (Recommended)". Cart identity is `productId` + `packageId`; repeated adds of the same product+package increment one line. The product-detail "Tambah ke keranjang" control adds the currently selected package with quantity 1; quantity steppers live in the cart only.
 - **D-040 / header cart count:** Owner selected "Small header island (Recommended)". A small React island hydrated on every public page renders the cart count badge from the store; initial HTML shows the existing icon-only link without a count (no false data), the count appears after hydration, and it is absent when storage is unavailable.
 
+### T07 approvals — 2026-11-01
+
+Interactive Q&A (D-007 interactive rule) before T07 implementation. Explicit owner selections:
+
+- **D-041 / checkout placement:** Owner selected "Separate /checkout page (Recommended)". A new `/checkout` page, reached from a cart-page primary button; the cart remains the review/edit page. Direct checkout with an empty or broken cart gets an explicit cannot-checkout state. Cart/checkout stack on phones per D-005.
+- **D-042 / payment simulation trigger:** Owner selected "Explicit radio in the form (Recommended)". A clearly labelled mock radio group in the buyer form selects the simulated result: "Sukses" default, or "Gagal" actively chosen. Both outcomes deterministic and reproducible; the simulation is visually obvious.
+- **D-043 / mock order destination:** Owner selected "Client-side mock only (Recommended)". A shared typed module builds and validates the order object (buyer, items, totals, currency, bounded attribution per D-020, simulation result); the payload is inspected through Node tests and DevTools. No `/api/orders` endpoint, no persistence, no Sanity write — R-023 frontend-only boundary.
+- **D-044 / results and cart semantics:** Owner selected "Confirm proposed P-007 semantics (Recommended)". Pending state disables submission (no duplicate simulation); failure retains the cart with a distinct error and retry; success clears the cart and shows a confirmation state with order number/total/items; refresh/back after success leaves checkout unusable with the empty-cart state; no quota decrement in the local demo (no cross-user guarantee).
+
 ### T04 approvals — 2026-11-01
 
 Interactive Q&A (D-007 interactive rule) for T04. Explicit owner selections:

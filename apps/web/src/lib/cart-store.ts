@@ -39,6 +39,8 @@ interface CartStore {
     qty: number,
   ): CartQuantityResult;
   removeLine(productId: ProductId, packageId: PackageId): CartQuantityResult;
+  /** Empties the cart after a successful simulated payment (D-044). */
+  clearCart(): void;
 }
 
 // Set by the persist post-rehydration callback; read right after the
@@ -70,6 +72,11 @@ export const useCartStore = create<CartStore>()(
         const result = removeCartLine(get().lines, productId, packageId);
         if (result.ok) set({ lines: result.lines, mutated: true });
         return result;
+      },
+      // D-044: empties the cart only after a successful simulated payment;
+      // mutationState:true keeps the persisted payload in sync (version 1).
+      clearCart: () => {
+        set({ lines: [], mutated: true });
       },
     }),
     {
